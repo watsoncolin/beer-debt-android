@@ -1,6 +1,8 @@
 package me.colinwatson.beerdebt.health
 
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import androidx.health.connect.client.HealthConnectClient
 import androidx.health.connect.client.changes.DeletionChange
 import androidx.health.connect.client.changes.UpsertionChange
@@ -22,6 +24,8 @@ import java.util.UUID
  * incremental, with deletions.
  */
 class HealthConnectService(private val context: Context) {
+    companion object { const val PROVIDER_PACKAGE = "com.google.android.apps.healthdata" }
+
     data class FetchResult(val runs: List<RunEntry>, val deletedWorkoutIDs: List<UUID>, val token: String)
 
     val permissions: Set<String> = setOf(
@@ -31,6 +35,18 @@ class HealthConnectService(private val context: Context) {
 
     val isAvailable: Boolean
         get() = HealthConnectClient.getSdkStatus(context) == HealthConnectClient.SDK_AVAILABLE
+
+    /** Android 13 and below ship Health Connect as a Play Store app; this is true when it is missing or stale. */
+    val needsInstall: Boolean
+        get() = HealthConnectClient.getSdkStatus(context) == HealthConnectClient.SDK_UNAVAILABLE_PROVIDER_UPDATE_REQUIRED
+
+    /** Play Store deep link to Health Connect's onboarding, as the Health Connect guide prescribes. */
+    fun installIntent(): Intent = Intent(Intent.ACTION_VIEW).apply {
+        setPackage("com.android.vending")
+        data = Uri.parse("market://details?id=$PROVIDER_PACKAGE&url=healthconnect%3A%2F%2Fonboarding")
+        putExtra("overlay", true)
+        putExtra("callerId", context.packageName)
+    }
 
     private val client: HealthConnectClient get() = HealthConnectClient.getOrCreate(context)
 

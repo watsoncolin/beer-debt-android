@@ -46,7 +46,8 @@ import me.colinwatson.beerdebt.ui.theme.Palette
 /** First run: explain the one permission, ask for it, allow "not now". */
 @Composable
 fun OnboardingScreen(onDone: () -> Unit) {
-    val app = LocalContext.current.applicationContext as BeerDebtApp
+    val context = LocalContext.current
+    val app = context.applicationContext as BeerDebtApp
     val scope = rememberCoroutineScope()
     var connecting by remember { mutableStateOf(false) }
     val launcher = rememberLauncherForActivityResult(PermissionController.createRequestPermissionResultContract()) {
@@ -77,7 +78,9 @@ fun OnboardingScreen(onDone: () -> Unit) {
                 connecting = true
                 launcher.launch(app.sync.health.permissions)
             }
-            if (!app.sync.isAvailable) {
+            if (app.sync.health.needsInstall) {
+                TextButton(onClick = { context.startActivity(app.sync.health.installIntent()) }) { Text("Install Health Connect from Google Play", color = Palette.gold) }
+            } else if (!app.sync.isAvailable) {
                 Text("Health Connect isn't available on this device.", color = Palette.cream.copy(alpha = 0.6f), fontSize = 13.sp, modifier = Modifier.padding(top = 8.dp))
             }
             TextButton(onClick = onDone) { Text("Not now", color = Palette.cream.copy(alpha = 0.7f)) }

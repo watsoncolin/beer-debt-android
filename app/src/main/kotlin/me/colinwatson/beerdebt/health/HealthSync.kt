@@ -12,6 +12,7 @@ import kotlinx.serialization.json.Json
 import me.colinwatson.beerdebt.data.LedgerStore
 import me.colinwatson.beerdebt.engine.BalanceState
 import me.colinwatson.beerdebt.notify.RunNotifier
+import me.colinwatson.beerdebt.notify.WeeklySummary
 import java.time.Instant
 import java.util.concurrent.TimeUnit
 import kotlinx.serialization.Serializable
@@ -36,6 +37,8 @@ data class SyncState(
 class HealthSync(context: Context, private val store: LedgerStore, private val notifier: RunNotifier) {
     private val app = context.applicationContext
     val health = HealthConnectService(app)
+    /** The weekly recap; owned here as on iOS so Settings has one place to reach it. */
+    val weekly = WeeklySummary(app)
     private val prefs = app.getSharedPreferences("health", Context.MODE_PRIVATE)
 
     private val _state = MutableStateFlow(

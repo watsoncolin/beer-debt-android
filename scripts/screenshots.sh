@@ -67,7 +67,13 @@ launch debt; shoot debt
 launch beerDetail; shoot beer-detail
 launch runs; shoot runs
 launch settings; shoot settings
+launch privacy; shoot privacy
 launch debtFree; shoot debt-free
+# Weekly summary on, so Settings shows the day/time rows.
+$ADB shell run-as $PKG sh -c "'printf \"<?xml version=\\\"1.0\\\" encoding=\\\"utf-8\\\" standalone=\\\"yes\\\"?><map><boolean name=\\\"enabled\\\" value=\\\"true\\\" /></map>\" > shared_prefs/weekly.xml'"
+launch settings; sleep 2; $ADB shell input swipe 540 2000 540 700 500; shoot settings-weekly
+# Pin the widget (launcher confirmation button position is for the Pixel 6 profile), then the home screen.
+launch widget; sleep 3; $ADB shell input tap 844 2252; sleep 2; $ADB shell input keyevent KEYCODE_HOME; shoot widget-home
 seed credit
 launch; shoot home-credit
 launch runs; shoot runs-credit

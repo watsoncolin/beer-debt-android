@@ -17,13 +17,18 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Switch
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.TimePicker
+import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -45,6 +50,7 @@ import kotlinx.coroutines.launch
 import me.colinwatson.beerdebt.BeerDebtApp
 import me.colinwatson.beerdebt.engine.CompoundingPeriod
 import me.colinwatson.beerdebt.engine.Rules
+import me.colinwatson.beerdebt.notify.WeeklySummary
 import me.colinwatson.beerdebt.ui.Format
 import me.colinwatson.beerdebt.ui.components.Card
 import me.colinwatson.beerdebt.ui.components.ForestTopBar
@@ -53,7 +59,7 @@ import me.colinwatson.beerdebt.ui.theme.Palette
 
 /** Tune the rules; every change is a forward-only rules event. */
 @Composable
-fun SettingsScreen(onBack: () -> Unit) {
+fun SettingsScreen(onBack: () -> Unit, onOpenPrivacy: () -> Unit = {}) {
     val context = LocalContext.current
     val app = context.applicationContext as BeerDebtApp
     val ledger by app.store.ledger.collectAsState()
@@ -67,6 +73,16 @@ fun SettingsScreen(onBack: () -> Unit) {
     }
     val notificationsLauncher = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
         app.sync.setRunNotifications(granted)
+    }
+    val weekly = app.sync.weekly
+    var weeklyEnabled by remember { mutableStateOf(weekly.enabled) }
+    var weeklyDenied by remember { mutableStateOf(false) }
+    var weeklyWeekday by remember { mutableStateOf(weekly.weekday) }
+    var weeklyHour by remember { mutableStateOf(weekly.hour) }
+    var weeklyMinute by remember { mutableStateOf(weekly.minute) }
+    var pickingTime by remember { mutableStateOf(false) }
+    val weeklyLauncher = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
+        weekly.setEnabled(granted); weeklyEnabled = granted; weeklyDenied = !granted
     }
 
     ForestBackground {
@@ -91,7 +107,11 @@ fun SettingsScreen(onBack: () -> Unit) {
                 item {
                     Card {
                         Column {
-                            if (!app.sync.isAvailable) {
+                            if (app.sync.health.needsInstall) {
+                                ValueRow("Health Connect", "Not installed")
+                                HorizontalDivider(color = Palette.cream.copy(alpha = 0.1f))
+                                Text("Install Health Connect", color = Palette.gold, modifier = Modifier.fillMaxWidth().clickable { context.startActivity(app.sync.health.installIntent()) }.padding(vertical = 12.dp))
+                            } else if (!app.sync.isAvailable) {
                                 Text("Health Connect isn't available on this device.", color = Palette.cream.copy(alpha = 0.7f))
                             } else if (sync.isConnected) {
                                 ValueRow("Health Connect", "Connected")
@@ -116,6 +136,33 @@ fun SettingsScreen(onBack: () -> Unit) {
                 }
                 item { Footer("Only running workouts count toward your balance. Runs sync when you open the app and about hourly in the background.") }
 
+                item { SectionHeader("Weekly Summary") }
+                item {
+                    Card {
+                        Column {
+                            Row(Modifier.fillMaxWidth().padding(vertical = 6.dp), verticalAlignment = Alignment.CenterVertically) {
+                                Text("Weekly summary", color = Palette.cream, modifier = Modifier.weight(1f))
+                                Switch(checked = weeklyEnabled, onCheckedChange = { on ->
+                                    if (on && Build.VERSION.SDK_INT >= 33 && !app.notifier.canPost()) weeklyLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                                    else { weekly.setEnabled(on); weeklyEnabled = on; weeklyDenied = false }
+                                }, colors = SwitchDefaults.colors(checkedTrackColor = Palette.gold, checkedThumbColor = Palette.ink))
+                            }
+                            if (weeklyEnabled) {
+                                HorizontalDivider(color = Palette.cream.copy(alpha = 0.1f))
+                                PickerRow("Day", (1..7).toList(), weeklyWeekday, { WeeklySummary.weekdayNames[it - 1] }) { d -> weekly.weekday = d; weeklyWeekday = d }
+                                Row(Modifier.fillMaxWidth().clickable { pickingTime = true }.padding(vertical = 12.dp), verticalAlignment = Alignment.CenterVertically) {
+                                    Text("Time", color = Palette.cream, modifier = Modifier.weight(1f))
+                                    Text(Format.clock(weeklyHour, weeklyMinute), color = Palette.gold)
+                                }
+                            }
+                            if (weeklyDenied) {
+                                Text("Notifications are off for Beer Debt. Turn them on in Settings › Apps › Beer Debt › Notifications.", color = Palette.debt, fontSize = 13.sp, modifier = Modifier.padding(top = 8.dp))
+                            }
+                        }
+                    }
+                }
+                item { Footer("A once-a-week recap: beers, miles, and where your tab stands.") }
+
                 item { SectionHeader("About") }
                 item {
                     Card {
@@ -123,12 +170,30 @@ fun SettingsScreen(onBack: () -> Unit) {
                             ValueRow("Books opened", Format.dateTime(ledger.booksOpenedAt))
                             HorizontalDivider(color = Palette.cream.copy(alpha = 0.1f))
                             ValueRow("Version", context.packageManager.getPackageInfo(context.packageName, 0).versionName ?: "?")
+                            HorizontalDivider(color = Palette.cream.copy(alpha = 0.1f))
+                            Text("Privacy Policy", color = Palette.gold, modifier = Modifier.fillMaxWidth().clickable(onClick = onOpenPrivacy).padding(vertical = 12.dp))
                         }
                     }
                 }
             }
         }
     }
+
+    if (pickingTime) {
+        WeeklyTimePicker(weeklyHour, weeklyMinute, onPick = { h, m -> weekly.hour = h; weekly.minute = m; weeklyHour = h; weeklyMinute = m; pickingTime = false }, onDismiss = { pickingTime = false })
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun WeeklyTimePicker(hour: Int, minute: Int, onPick: (Int, Int) -> Unit, onDismiss: () -> Unit) {
+    val state = rememberTimePickerState(initialHour = hour, initialMinute = minute)
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        confirmButton = { TextButton(onClick = { onPick(state.hour, state.minute) }) { Text("Set") } },
+        dismissButton = { TextButton(onClick = onDismiss) { Text("Cancel") } },
+        text = { TimePicker(state = state) },
+    )
 }
 
 private fun <T : Comparable<T>> List<T>.withCurrent(current: T): List<T> = (this + current).distinct().sorted()

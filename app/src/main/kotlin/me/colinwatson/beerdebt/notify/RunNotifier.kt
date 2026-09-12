@@ -11,6 +11,7 @@ import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import me.colinwatson.beerdebt.MainActivity
+import me.colinwatson.beerdebt.R
 import me.colinwatson.beerdebt.engine.Balance
 import me.colinwatson.beerdebt.engine.BalanceState
 import me.colinwatson.beerdebt.engine.RunEntry
@@ -26,16 +27,19 @@ class RunNotifier(private val context: Context) {
         manager.createNotificationChannel(NotificationChannel(CHANNEL, "Runs", NotificationManager.IMPORTANCE_DEFAULT).apply {
             description = "When a run pays your tab"
         })
+        manager.createNotificationChannel(NotificationChannel(CHANNEL_WEEKLY, "Weekly summary", NotificationManager.IMPORTANCE_DEFAULT).apply {
+            description = "A once-a-week recap of beers, miles, and your tab"
+        })
     }
 
     fun canPost(): Boolean =
         Build.VERSION.SDK_INT < 33 || ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED
 
-    fun post(message: Message) {
+    fun post(message: Message, channel: String = CHANNEL) {
         if (!canPost()) return
         val open = PendingIntent.getActivity(context, 0, Intent(context, MainActivity::class.java), PendingIntent.FLAG_IMMUTABLE)
-        val notification = NotificationCompat.Builder(context, CHANNEL)
-            .setSmallIcon(android.R.drawable.ic_menu_myplaces)
+        val notification = NotificationCompat.Builder(context, channel)
+            .setSmallIcon(R.drawable.ic_notification)
             .setContentTitle(message.title)
             .setContentText(message.body)
             .setStyle(NotificationCompat.BigTextStyle().bigText(message.body))
@@ -47,6 +51,7 @@ class RunNotifier(private val context: Context) {
 
     companion object {
         const val CHANNEL = "runs"
+        const val CHANNEL_WEEKLY = "weekly"
 
         /** Pure, same copy as iOS. */
         fun message(change: Change): Message? {

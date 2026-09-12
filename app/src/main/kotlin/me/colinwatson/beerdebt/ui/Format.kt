@@ -43,6 +43,8 @@ object Format {
 
     fun dateTime(instant: Instant): String = dateTimeFmt.format(instant.atZone(zone))
     fun time(instant: Instant): String = timeFmt.format(instant.atZone(zone))
+    /** A time of day with no date, e.g. "6:00 PM". */
+    fun clock(hour: Int, minute: Int): String = timeFmt.format(java.time.LocalTime.of(hour, minute))
     fun day(instant: Instant): String = dayFmt.format(instant.atZone(zone))
 
     fun dayHeader(instant: Instant, now: Instant = Instant.now()): String {

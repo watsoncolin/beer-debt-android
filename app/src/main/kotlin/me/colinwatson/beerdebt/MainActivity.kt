@@ -1,6 +1,10 @@
 package me.colinwatson.beerdebt
 
 import android.app.Activity
+import android.appwidget.AppWidgetManager
+import android.content.ComponentName
+import android.content.Intent
+import android.os.Build
 import android.content.pm.ApplicationInfo
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -25,6 +29,9 @@ import me.colinwatson.beerdebt.ui.debt.DebtScreen
 import me.colinwatson.beerdebt.ui.home.DebtFreeSheet
 import me.colinwatson.beerdebt.ui.home.HomeScreen
 import me.colinwatson.beerdebt.ui.onboarding.OnboardingScreen
+import me.colinwatson.beerdebt.ui.privacy.PrivacyScreen
+import me.colinwatson.beerdebt.widget.BalanceWidgetReceiver
+import androidx.compose.runtime.LaunchedEffect
 import me.colinwatson.beerdebt.ui.runs.RunsScreen
 import me.colinwatson.beerdebt.ui.settings.SettingsScreen
 import me.colinwatson.beerdebt.ui.theme.BeerDebtTheme
@@ -43,12 +50,14 @@ object Routes {
     const val DEBT = "debt"
     const val RUNS = "runs"
     const val SETTINGS = "settings"
+    const val PRIVACY = "privacy"
 }
 
 /**
  * Debug builds only, for `scripts/screenshots.sh` (the iOS `-debugScreen` equivalent):
  * `am start -n me.colinwatson.beerdebt/.MainActivity --es debugScreen runs` opens a screen
- * directly. Values: debt | runs | settings | beerAdded | beerDetail | debtFree.
+ * directly. Values: debt | runs | settings | privacy | beerAdded | beerDetail | debtFree | widget
+ * (widget asks the launcher to pin the home screen widget).
  */
 object DebugLaunch {
     const val EXTRA = "debugScreen"
@@ -59,6 +68,9 @@ object DebugLaunch {
     }
 }
 
+/** Health Connect sends these when the user asks why we want access; both land on the Privacy screen. */
+private val rationaleActions = setOf("androidx.health.ACTION_SHOW_PERMISSIONS_RATIONALE", "android.intent.action.VIEW_PERMISSION_USAGE")
+
 @Composable
 private fun Root() {
     val context = LocalContext.current
@@ -66,6 +78,7 @@ private fun Root() {
     val prefs = remember { context.getSharedPreferences("app", 0) }
     var onboardingComplete by remember { mutableStateOf(prefs.getBoolean("onboardingComplete", false)) }
     val debugScreen = remember { (context as? Activity)?.let(DebugLaunch::screen) }
+    val rationale = remember { (context as? Activity)?.intent?.action in rationaleActions }
     val nav = rememberNavController()
     val scope = rememberCoroutineScope()
     val syncState by app.sync.state.collectAsState()
@@ -77,11 +90,15 @@ private fun Root() {
     LifecycleEventEffect(Lifecycle.Event.ON_PAUSE) { app.sync.isAppActive = false }
 
     val start = when {
+        rationale || debugScreen == "privacy" -> Routes.PRIVACY
         !onboardingComplete -> Routes.ONBOARDING
         debugScreen == "debt" || debugScreen == "beerDetail" -> Routes.DEBT
         debugScreen == "runs" -> Routes.RUNS
         debugScreen == "settings" -> Routes.SETTINGS
         else -> Routes.HOME
+    }
+    if (debugScreen == "widget") LaunchedEffect(Unit) {
+        AppWidgetManager.getInstance(context).requestPinAppWidget(ComponentName(context, BalanceWidgetReceiver::class.java), null, null)
     }
     NavHost(nav, startDestination = start) {
         composable(Routes.ONBOARDING) {
@@ -101,7 +118,8 @@ private fun Root() {
         }
         composable(Routes.DEBT) { DebtScreen(onBack = { nav.popBackStack() }, openFirstBeer = debugScreen == "beerDetail") }
         composable(Routes.RUNS) { RunsScreen(onBack = { nav.popBackStack() }) }
-        composable(Routes.SETTINGS) { SettingsScreen(onBack = { nav.popBackStack() }) }
+        composable(Routes.SETTINGS) { SettingsScreen(onBack = { nav.popBackStack() }, onOpenPrivacy = { nav.navigate(Routes.PRIVACY) }) }
+        composable(Routes.PRIVACY) { PrivacyScreen(onBack = { if (!nav.popBackStack()) (context as? Activity)?.finish() }) }
     }
 
     var sampleParty by remember {

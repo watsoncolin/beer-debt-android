@@ -65,16 +65,49 @@ beerDetail|debtFree` handled by `DebugLaunch` in `MainActivity` (the iOS
   record id. `HealthSync` mirrors iOS `HealthSync` (foreground sync on
   resume, hourly `SyncWorker`, deletions, debt-free celebration, run
   notifications through `RunNotifier`, whose copy is identical to iOS).
+- `notify/` — `RunNotifier` (channels `runs` and `weekly`, the pure run
+  copy) and `WeeklySummary` (prefs `weekly`; iOS numbering 1 = Sunday; the
+  pure `message`/`nextFireDates`; schedules one `WeeklySummaryWorker` via
+  WorkManager that builds the copy at fire time from the live ledger, so
+  unlike iOS nothing is rescheduled on ledger changes).
+- `widget/` — `BalanceWidget` (Glance, responsive small 110×110 / medium
+  250×110, copy identical to iOS `BalanceWidgetView`), its receiver, and
+  `WidgetRefreshWorker` (re-render at the next interest posting).
+  `BeerDebtApp` refreshes every placed widget on each ledger save through
+  `LedgerStore.onChange`; `res/xml/balance_widget_info.xml` adds a
+  half-hourly tick.
 - `ui/` — `home` (HomeScreen + BeerAddedSheet + DebtFreeSheet), `debt`
   (DebtScreen + BeerDetailSheet), `runs` (RunsScreen with a Canvas bar
-  chart), `settings`, `onboarding`, `components`, `theme` (Palette from iOS
-  `Theme.swift`, `Backdrop`, `ForestBackground`). Everything is dark.
+  chart), `settings` (rules, Health Connect incl. the Play install link,
+  weekly summary, About with the Privacy link), `privacy` (the Health
+  Connect rationale screen; also what Health Connect's
+  ACTION_SHOW_PERMISSIONS_RATIONALE and VIEW_PERMISSION_USAGE open),
+  `onboarding`, `components`, `theme` (Palette from iOS `Theme.swift`,
+  `Backdrop`, `ForestBackground`). Everything is dark.
 - Art is copied from `~/beer-debt-ios/docs/art` into `res/drawable-nodpi`;
   the adaptive launcher icon uses the transparent trail mug.
+
+## Tests
+
+`./gradlew :engine:test :app:testDebugUnitTest`. The app module's tests are
+plain JUnit 4 (`app/src/test/kotlin`): `LedgerStoreTest`, `RunNotifierTest`,
+`WeeklySummaryTest`, the same cases as the iOS `BeerDebtTests` with the
+same fixture instants in `TestSupport.kt`. Keep pure logic (copy builders,
+schedules) free of Android types so it stays testable on the JVM.
+
+## Release
+
+`docs/release.md`: upload key in `~/.signing/`, `keystore.properties`
+(gitignored) for local signed builds, `ci.yml` on push, manual `release.yml`
+to build a signed AAB and upload to Play. `docs/play/` has the listing
+copy and graphics. `versionName` tracks iOS `MARKETING_VERSION`;
+`versionCode` is the Actions run number.
 
 ## Conventions
 
 - Kotlin, Compose, Material 3, forced dark (forest palette from iOS `Theme`).
 - Version catalog in `gradle/libs.versions.toml`; Gradle Kotlin DSL.
 - No third-party dependencies beyond AndroidX, Kotlin, and Health Connect.
-- Health Connect is read-only, running sessions only.
+- Health Connect is read-only, running sessions only. Don't add data types
+  without updating the manifest permissions, the Privacy screen, and the
+  privacy page in the iOS repo (it is shared and Play reads it).

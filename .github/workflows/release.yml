@@ -1,0 +1,126 @@
+name: Release to Play
+
+# Manual trigger so a release is always intentional, the same shape as
+# pourcraft-android. Builds a signed AAB with the upload key from secrets,
+# keeps it as a workflow artifact, and uploads it to the chosen Play track
+# when PLAY_SERVICE_ACCOUNT_JSON is set. The very first AAB for a new app
+# has to go through the Play Console by hand (the API refuses it), so run
+# this with the artifact only, download it, and upload it there once.
+on:
+  workflow_dispatch:
+    inputs:
+      track:
+        description: "Play track"
+        required: true
+        default: "internal"
+        type: choice
+        options: [internal, alpha, beta, production]
+      status:
+        description: "Release status"
+        required: true
+        default: "completed"
+        type: choice
+        options: [completed, draft, inProgress]
+      release_notes:
+        description: "Release notes (en-US, ≤500 chars)"
+        required: false
+        default: ""
+
+concurrency:
+  group: release-${{ inputs.track }}
+  cancel-in-progress: false
+
+jobs:
+  release:
+    name: Build & upload AAB
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: gradle/actions/wrapper-validation@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+      - uses: gradle/actions/setup-gradle@v4
+
+      - name: Unit tests
+        run: ./gradlew :engine:test :app:testDebugUnitTest --stacktrace
+
+      # Decode the upload keystore from a base64 secret and write a
+      # keystore.properties at the repo root, which app/build.gradle.kts
+      # reads the same way it does locally.
+      - name: Configure signing
+        env:
+          UPLOAD_KEYSTORE_BASE64: ${{ secrets.UPLOAD_KEYSTORE_BASE64 }}
+          UPLOAD_KEYSTORE_PASSWORD: ${{ secrets.UPLOAD_KEYSTORE_PASSWORD }}
+          UPLOAD_KEY_ALIAS: ${{ secrets.UPLOAD_KEY_ALIAS }}
+          UPLOAD_KEY_PASSWORD: ${{ secrets.UPLOAD_KEY_PASSWORD }}
+        run: |
+          set -euo pipefail
+          mkdir -p "$HOME/.signing"
+          echo "$UPLOAD_KEYSTORE_BASE64" | base64 -d > "$HOME/.signing/upload.jks"
+          cat <<EOT > keystore.properties
+          storeFile=$HOME/.signing/upload.jks
+          storePassword=$UPLOAD_KEYSTORE_PASSWORD
+          keyAlias=$UPLOAD_KEY_ALIAS
+          keyPassword=$UPLOAD_KEY_PASSWORD
+          EOT
+
+      # versionCode = run number. Nothing has been uploaded by hand with a
+      # higher code, so no offset is needed; if that ever happens, add one
+      # here that lands past it.
+      - name: Compute versionCode
+        id: vc
+        run: echo "code=${{ github.run_number }}" >> "$GITHUB_OUTPUT"
+
+      - name: Build signed AAB
+        run: ./gradlew :app:bundleRelease -PversionCode=${{ steps.vc.outputs.code }} --stacktrace
+
+      - name: Verify AAB signature
+        run: jarsigner -verify app/build/outputs/bundle/release/app-release.aab
+
+      - name: Keep the AAB
+        uses: actions/upload-artifact@v4
+        with:
+          name: beerdebt-${{ steps.vc.outputs.code }}-release
+          path: app/build/outputs/bundle/release/app-release.aab
+          retention-days: 90
+
+      - name: Stage release notes
+        env:
+          NOTES_INPUT: ${{ inputs.release_notes }}
+        run: |
+          set -euo pipefail
+          mkdir -p whatsnew
+          NOTES="${NOTES_INPUT:-}"
+          if [ -z "$NOTES" ]; then NOTES="Bug fixes and improvements."; fi
+          printf '%s' "$NOTES" | cut -c1-500 > whatsnew/whatsnew-en-US
+
+      - name: Check for Play credentials
+        id: play
+        env:
+          PLAY_SERVICE_ACCOUNT_JSON: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
+        run: echo "enabled=$([ -n "$PLAY_SERVICE_ACCOUNT_JSON" ] && echo true || echo false)" >> "$GITHUB_OUTPUT"
+
+      - name: Upload to Play
+        if: steps.play.outputs.enabled == 'true'
+        uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJsonPlainText: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
+          packageName: me.colinwatson.beerdebt
+          releaseFiles: app/build/outputs/bundle/release/app-release.aab
+          track: ${{ inputs.track }}
+          status: ${{ inputs.status }}
+          whatsNewDirectory: whatsnew
+
+      - name: Summary
+        run: |
+          {
+            echo "### Beer Debt versionCode ${{ steps.vc.outputs.code }}"
+            if [ "${{ steps.play.outputs.enabled }}" = "true" ]; then
+              echo "Uploaded to Play track **${{ inputs.track }}** (${{ inputs.status }})."
+            else
+              echo "PLAY_SERVICE_ACCOUNT_JSON is not set: the signed AAB is attached as an artifact. Upload it in the Play Console."
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
