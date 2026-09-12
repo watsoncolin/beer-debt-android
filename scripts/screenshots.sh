@@ -32,13 +32,16 @@ mode = sys.argv[1]
 now = datetime.now(timezone.utc).replace(microsecond=0)
 iso = lambda d: d.strftime("%Y-%m-%dT%H:%M:%SZ")
 H, D = timedelta(hours=1), timedelta(days=1)
-rules = {"milesPerBeer": 1.0, "interestRate": 0.1, "interestPeriod": "daily", "gracePeriod": 86400.0, "maximumCreditBeers": 3.0, "creditDecayRatePerWeek": 0.1}
+rules = {"milesPerBeer": 1.0, "interestRate": 0.1, "interestPeriod": "daily", "gracePeriod": 86400.0, "maximumCreditBeers": 3.0, "creditDecayRatePerWeek": 0.1, "streakProtection": True}
+# Runs at 07:12 local on given days back, so the streak reads as consecutive calendar days (same seeds as iOS).
+local = now.astimezone()
+def morning(days_back, miles): return (local.replace(hour=7, minute=12, second=0) - days_back*D).astimezone(timezone.utc), miles
 if mode == "debt":
-    beers = [now - 5*D - H, now - 3*D - 2*H, now - 2*D - 3*H, now - 6*H]
-    runs = [(now - 9*D, 2.1), (now - 4*D + H, 1.0), (now - 2*D, 0.8)]
+    beers = [now - 6*D - H, now - 5*D - 2*H, now - 4*D - 3*H, now - 3*D - H, now - 2*D - 2*H, now - 6*H]
+    runs = [morning(5, 1.0), morning(2, 1.1), morning(1, 1.2), morning(0, 1.0)]
 else:
     beers = [now - 6*D]
-    runs = [(now - 8*D, 1.6), (now - 5*D, 1.0), (now - 1*D, 2.4)]
+    runs = [morning(3, 1.0), morning(2, 1.2), morning(1, 2.4)]
 ledger = {"version": 1, "booksOpenedAt": iso(now - 10*D), "rulesHistory": [{"effectiveAt": iso(now - 10*D), "rules": rules}],
   "beers": [{"id": str(uuid.uuid4()).upper(), "createdAt": iso(b), "recordedAt": iso(b)} for b in beers],
   "runs": [{"id": str(uuid.uuid4()).upper(), "healthKitWorkoutID": str(uuid.uuid4()).upper(), "startedAt": iso(e - timedelta(minutes=int(m*9.5))), "endedAt": iso(e),
@@ -67,6 +70,8 @@ launch debt; shoot debt
 launch beerDetail; shoot beer-detail
 launch runs; shoot runs
 launch settings; shoot settings
+launch streak; shoot streak
+launch streakActivated; shoot streak-activated
 launch privacy; shoot privacy
 launch debtFree; shoot debt-free
 # Weekly summary on, so Settings shows the day/time rows.

@@ -125,7 +125,10 @@ fun RunRow(statement: RunStatement) {
             Text(Format.dateTime(statement.run.endedAt), color = Palette.cream.copy(alpha = 0.65f), fontSize = 15.sp)
             breakdown(statement)?.let { Text(it, color = Palette.cream.copy(alpha = 0.5f), fontSize = 12.sp) }
         }
-        if (statement.ignored) Pill("Ignored", Palette.cream.copy(alpha = 0.6f)) else Pill("Applied")
+        Column(horizontalAlignment = Alignment.End, verticalArrangement = Arrangement.spacedBy(6.dp)) {
+            if (statement.ignored) Pill("Ignored", Palette.cream.copy(alpha = 0.6f)) else Pill("Applied")
+            statement.streakDayNumber?.let { Pill("🔥 Day $it", Palette.gold) }
+        }
     }
 }
 

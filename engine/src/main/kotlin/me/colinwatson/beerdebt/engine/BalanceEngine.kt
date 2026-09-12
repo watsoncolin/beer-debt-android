@@ -1,6 +1,7 @@
 package me.colinwatson.beerdebt.engine
 
 import java.time.Instant
+import java.time.ZoneId
 import java.util.UUID
 import kotlin.math.floor
 import kotlin.math.pow
@@ -14,7 +15,9 @@ import kotlin.math.roundToLong
  *
  * Time is Double seconds since the epoch inside the replay, exactly as the
  * Swift engine does its arithmetic, so the two agree to floating-point
- * precision.
+ * precision. Interest postings that land on an interest-protected streak day
+ * (spec §25) are skipped while the `streakProtection` rule is on; streak days
+ * are calendar days in [zone].
  */
 object BalanceEngine {
     const val EPSILON = 1e-9
@@ -24,7 +27,7 @@ object BalanceEngine {
     /** A remnant smaller than this left after a run or a credit cover is written off. */
     const val WRITE_OFF_THRESHOLD_MILES = 0.05
 
-    fun report(ledger: Ledger, at: Instant): Report = Replay(ledger, at.seconds).run()
+    fun report(ledger: Ledger, at: Instant, zone: ZoneId = ZoneId.systemDefault()): Report = Replay(ledger, at.seconds, zone).run()
 }
 
 internal val Instant.seconds: Double get() = epochSecond.toDouble() + nano / 1e9
@@ -70,8 +73,11 @@ private class DebtAccount(
     }
 }
 
-private class Replay(private val ledger: Ledger, private val now: Double) {
+private class Replay(private val ledger: Ledger, private val now: Double, zone: ZoneId) {
     private var rules: Rules = ledger.rulesHistory.firstOrNull()?.rules ?: Rules()
+    private val streak: StreakStatus = StreakEngine.calculate(
+        ledger.runs.filter { it.endedAt.seconds >= ledger.booksOpenedAt.seconds }, now.toInstant(), zone,
+    )
     private val open = mutableListOf<DebtAccount>()
     private val closed = mutableListOf<DebtAccount>()
     private var credit = 0.0
@@ -102,7 +108,8 @@ private class Replay(private val ledger: Ledger, private val now: Double) {
         if (t < clock) return
         for (account in open) {
             while (account.nextPostingAt <= t) {
-                if (rules.interestEnabled) {
+                val paused = rules.streakProtection && streak.isProtected(account.nextPostingAt.toInstant())
+                if (rules.interestEnabled && !paused) {
                     val step = account.outstanding * rules.interestRate
                     account.interestRemaining += step
                     account.interestAccrued += step
@@ -154,7 +161,7 @@ private class Replay(private val ledger: Ledger, private val now: Double) {
     private fun apply(run: RunEntry) {
         val endedAt = run.endedAt.seconds
         if (endedAt < ledger.booksOpenedAt.seconds) {
-            runStatements.add(RunStatement(run, 0.0, 0.0, 0.0, ignored = true))
+            runStatements.add(RunStatement(run, 0.0, 0.0, 0.0, ignored = true, streakDayNumber = null))
             return
         }
         var miles = run.distanceMiles
@@ -181,7 +188,7 @@ private class Replay(private val ledger: Ledger, private val now: Double) {
         val room = maxOf(0.0, rules.creditCapMiles - credit)
         val earned = minOf(leftover, room)
         credit += earned
-        runStatements.add(RunStatement(run, debtPaid, earned, leftover - earned, ignored = false))
+        runStatements.add(RunStatement(run, debtPaid, earned, leftover - earned, ignored = false, streakDayNumber = streak.streakDayNumber(run.endedAt)))
     }
 
     private fun summary(): Report {
@@ -215,6 +222,7 @@ private class Replay(private val ledger: Ledger, private val now: Double) {
             rules = rules,
             nextInterestAt = if (rules.interestEnabled) open.minOfOrNull { it.nextPostingAt }?.toInstant() else null,
             creditExpiringThisWeekMiles = credit * rules.creditDecayRatePerWeek,
+            streak = streak,
         )
     }
 }

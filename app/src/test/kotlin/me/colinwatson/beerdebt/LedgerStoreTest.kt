@@ -2,6 +2,7 @@ package me.colinwatson.beerdebt
 
 import me.colinwatson.beerdebt.data.LedgerStore
 import me.colinwatson.beerdebt.engine.BalanceState
+import me.colinwatson.beerdebt.engine.Ledger
 import me.colinwatson.beerdebt.engine.Rules
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -22,7 +23,7 @@ class LedgerStoreTest {
         assertTrue(store.current.runs.isEmpty())
         assertEquals(1, store.current.rulesHistory.size)
         assertEquals(t0, store.current.booksOpenedAt)
-        assertEquals(Rules(), store.currentRules)
+        assertEquals(Rules.OPENING, store.currentRules)
         assertEquals(BalanceState.EVEN, store.report(at(HOUR)).balance.state)
     }
 
@@ -145,5 +146,35 @@ class LedgerStoreTest {
         assertEquals(at(HOUR), beer.createdAt)
         assertEquals(t0, store.current.booksOpenedAt)
         assertEquals(store.current, LedgerStore(dir, now = at(DAY)).current)
+    }
+
+    @Test fun theBooksCanBeOpenedEarlierButNotLater() {
+        val dir = tempDir()
+        val store = LedgerStore(dir, now = t0)
+        assertFalse(store.reopenBooks(at(DAY), now = at(2 * DAY)))
+        assertFalse(store.reopenBooks(t0, now = at(2 * DAY)))
+        assertTrue(store.reopenBooks(at(-3 * DAY), now = at(2 * DAY)))
+        assertEquals(at(-3 * DAY), store.current.booksOpenedAt)
+        assertEquals(at(-3 * DAY), store.current.rulesHistory.first().effectiveAt)
+        store.importRuns(listOf(run(2.0, at(-2 * DAY))))
+        assertEquals(false, store.report(at(2 * DAY)).runs.first().ignored)
+        assertEquals(at(-3 * DAY), LedgerStore(dir, now = at(3 * DAY)).current.booksOpenedAt)
+    }
+
+    @Test fun reopeningIsClampedToAYear() {
+        val store = LedgerStore(tempDir(), now = t0)
+        assertTrue(store.reopenBooks(at(-800 * DAY), now = t0))
+        assertEquals(at(-365 * DAY), store.current.booksOpenedAt)
+    }
+
+    @Test fun anOldLedgerGetsStreakProtectionSwitchedOnForwardOnly() {
+        val dir = tempDir()
+        val old = Ledger.open(t0, Rules())   // written before the feature: protection off
+        File(dir, "ledger.json").writeText(LedgerStore.json.encodeToString(Ledger.serializer(), old))
+        val store = LedgerStore(dir, now = at(DAY))
+        assertEquals(2, store.current.rulesHistory.size)
+        assertEquals(false, store.current.rulesHistory[0].rules.streakProtection)
+        assertEquals(true, store.currentRules.streakProtection)
+        assertEquals(at(DAY), store.current.rulesHistory[1].effectiveAt)
     }
 }

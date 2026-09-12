@@ -20,7 +20,13 @@ import me.colinwatson.beerdebt.ui.Format
 /** Local notifications for runs that arrive while the app is closed. */
 class RunNotifier(private val context: Context) {
     data class Message(val title: String, val body: String)
-    data class Change(val addedRuns: List<RunEntry>, val removedRuns: Int, val before: Balance, val after: Balance, val beersPaidOff: Int)
+    data class Change(
+        val addedRuns: List<RunEntry>, val removedRuns: Int, val before: Balance, val after: Balance, val beersPaidOff: Int,
+        /** The streak after the sync, and whether the new runs landed on a streak day. */
+        val streakDays: Int = 0, val streakDay: Boolean = false,
+        /** This sync made it two days in a row: interest just paused. */
+        val streakActivated: Boolean = false,
+    )
 
     init {
         val manager = context.getSystemService(NotificationManager::class.java)
@@ -80,6 +86,11 @@ class RunNotifier(private val context: Context) {
                 else -> "Books are clean."
             }
             if (change.removedRuns > 0) return Message("Runs updated", "You're at ${standing(after)}.")
+            if (change.streakActivated) {
+                return Message("${change.streakDays} day streak: 0% APR, earned", "$title. $body Your debt interest is now paused.")
+            }
+            if (change.streakDay && change.streakDays >= 2) return Message(title, "$body 🔥 ${change.streakDays} day streak, interest paused.")
+            if (change.streakDay && change.streakDays == 1) return Message(title, "$body 🔥 Day one of a streak. Run 1+ mile tomorrow to pause interest.")
             return Message(title, body)
         }
 

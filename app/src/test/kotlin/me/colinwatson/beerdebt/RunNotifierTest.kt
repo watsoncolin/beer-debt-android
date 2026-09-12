@@ -46,4 +46,28 @@ class RunNotifierTest {
     @Test fun nothingChangedMeansNoNotification() {
         assertNull(message(emptyList(), 0, balance(EVEN), balance(EVEN)))
     }
+
+    // Streaks (spec §25)
+
+    @Test fun dayTwoActivationGetsItsOwnTitle() {
+        val m = RunNotifier.message(RunNotifier.Change(listOf(run(1.2, t0)), 0, balance(DEBT, debt = 3.0), balance(DEBT, debt = 1.8), 1,
+            streakDays = 2, streakDay = true, streakActivated = true))
+        assertEquals("2 day streak: 0% APR, earned", m?.title)
+        assertEquals("Run logged: 1.2 mi. Paid off 1 beer. 1.8 mi still owed. Your debt interest is now paused.", m?.body)
+    }
+
+    @Test fun aStreakDayAddsOneLine() {
+        val m = RunNotifier.message(RunNotifier.Change(listOf(run(1.5, t0)), 0, balance(EVEN), balance(CREDIT, credit = 1.5), 0, streakDays = 5, streakDay = true))
+        assertEquals(RunNotifier.Message("Run logged: 1.5 mi", "1.5 beers banked for later. 🔥 5 day streak, interest paused."), m)
+    }
+
+    @Test fun dayOneNudgesTowardTomorrow() {
+        val m = RunNotifier.message(RunNotifier.Change(listOf(run(1.0, t0)), 0, balance(DEBT, debt = 2.0), balance(DEBT, debt = 1.0), 1, streakDays = 1, streakDay = true))
+        assertEquals(true, m?.body?.endsWith("🔥 Day one of a streak. Run 1+ mile tomorrow to pause interest."))
+    }
+
+    @Test fun aShortRunSaysNothingAboutStreaks() {
+        val m = RunNotifier.message(RunNotifier.Change(listOf(run(0.5, t0)), 0, balance(DEBT, debt = 2.0), balance(DEBT, debt = 1.5), 0, streakDays = 3, streakDay = false))
+        assertEquals("Knocked 0.5 mi off your tab. 1.5 mi still owed.", m?.body)
+    }
 }

@@ -20,6 +20,10 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class DebtFreeCelebration(val totalBeers: Int, val milesRepaid: Double, val creditBeers: Double)
 
+/** Shown when a sync turns a one-day streak into two: interest is now paused (spec §25). */
+@Serializable
+data class StreakCelebration(val days: Int)
+
 data class SyncState(
     val isConnected: Boolean = false,
     val isSyncing: Boolean = false,
@@ -27,6 +31,7 @@ data class SyncState(
     val lastError: String? = null,
     val runNotificationsEnabled: Boolean = false,
     val celebration: DebtFreeCelebration? = null,
+    val streakCelebration: StreakCelebration? = null,
 )
 
 /**
@@ -68,13 +73,30 @@ class HealthSync(context: Context, private val store: LedgerStore, private val n
     }
 
     fun clearCelebration() = _state.update { it.copy(celebration = null) }
+    fun clearStreakCelebration() = _state.update { it.copy(streakCelebration = null) }
 
+    /** Surfaces a celebration earned while the app was closed. Debt-free first; the streak sheet waits. */
     fun showPendingCelebration() {
-        val raw = prefs.getString(KEY_PENDING_CELEBRATION, null) ?: return
-        prefs.edit().remove(KEY_PENDING_CELEBRATION).apply()
-        runCatching { Json.decodeFromString<DebtFreeCelebration>(raw) }.getOrNull()?.let { party ->
-            _state.update { it.copy(celebration = party) }
+        prefs.getString(KEY_PENDING_CELEBRATION, null)?.let { raw ->
+            prefs.edit().remove(KEY_PENDING_CELEBRATION).apply()
+            runCatching { Json.decodeFromString<DebtFreeCelebration>(raw) }.getOrNull()?.let { party ->
+                _state.update { it.copy(celebration = party) }
+            }
+            return
         }
+        if (_state.value.celebration == null) prefs.getString(KEY_PENDING_STREAK, null)?.let { raw ->
+            prefs.edit().remove(KEY_PENDING_STREAK).apply()
+            runCatching { Json.decodeFromString<StreakCelebration>(raw) }.getOrNull()?.let { party ->
+                _state.update { it.copy(streakCelebration = party) }
+            }
+        }
+    }
+
+    /** Moves the books-opened date back and re-reads Health Connect from scratch (the store dedups on workout id). */
+    suspend fun reopenBooks(at: Instant) {
+        if (!store.reopenBooks(at)) return
+        prefs.edit().remove(KEY_TOKEN).apply()
+        syncIfConnected()
     }
 
     suspend fun syncIfConnected() { if (_state.value.isConnected) sync() }
@@ -99,10 +121,19 @@ class HealthSync(context: Context, private val store: LedgerStore, private val n
                 if (isAppActive) _state.update { it.copy(celebration = party) }
                 else prefs.edit().putString(KEY_PENDING_CELEBRATION, Json.encodeToString(party)).apply()
             }
+            val streakActivated = added.isNotEmpty() && !before.streak.interestProtectionActive && after.streak.interestProtectionActive
+            if (streakActivated) {
+                val party = StreakCelebration(after.streak.currentStreakDays)
+                if (isAppActive) _state.update { it.copy(streakCelebration = party) }
+                else prefs.edit().putString(KEY_PENDING_STREAK, Json.encodeToString(party)).apply()
+            }
             if (!isAppActive && _state.value.runNotificationsEnabled) {
                 val change = RunNotifier.Change(
                     addedRuns = added, removedRuns = removed, before = before.balance, after = after.balance,
                     beersPaidOff = maxOf(0, after.beers.count { it.isPaid } - before.beers.count { it.isPaid }),
+                    streakDays = after.streak.currentStreakDays,
+                    streakDay = added.any { after.streak.qualifies(it.endedAt) },
+                    streakActivated = streakActivated,
                 )
                 RunNotifier.message(change)?.let(notifier::post)
             }
@@ -125,5 +156,6 @@ class HealthSync(context: Context, private val store: LedgerStore, private val n
         private const val KEY_TOKEN = "changesToken"
         private const val KEY_NOTIFY = "runNotifications"
         private const val KEY_PENDING_CELEBRATION = "pendingCelebration"
+        private const val KEY_PENDING_STREAK = "pendingStreakCelebration"
     }
 }

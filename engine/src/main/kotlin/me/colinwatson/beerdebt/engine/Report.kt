@@ -49,6 +49,8 @@ data class RunStatement(
     val discardedMiles: Double,
     /** Ended before the books opened; contributes nothing. */
     val ignored: Boolean,
+    /** Which day of a two-or-more-day streak this run's day was; null for a short day or a lone mile. */
+    val streakDayNumber: Int? = null,
 ) {
     val id: UUID get() = run.id
 }
@@ -63,6 +65,8 @@ data class Report(
     val rules: Rules,
     val nextInterestAt: Instant?,
     val creditExpiringThisWeekMiles: Double,
+    /** The running streak as of [at] (spec §25). */
+    val streak: StreakStatus,
 ) {
     fun statement(beerID: UUID): BeerStatement? = beers.firstOrNull { it.id == beerID }
 }

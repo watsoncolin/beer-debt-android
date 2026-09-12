@@ -40,6 +40,7 @@ import me.colinwatson.beerdebt.health.DebtFreeCelebration
 import me.colinwatson.beerdebt.ui.Format
 import me.colinwatson.beerdebt.ui.components.GoldButton
 import me.colinwatson.beerdebt.ui.components.StatRow
+import me.colinwatson.beerdebt.ui.streak.StreakFlame
 import me.colinwatson.beerdebt.ui.theme.Palette
 import java.time.Instant
 import java.time.ZoneId
@@ -80,6 +81,17 @@ fun BeerAddedSheet(beerID: UUID, onDismiss: () -> Unit) {
                             else -> ""
                         }
                         if (sub.isNotEmpty()) Text(sub, color = Palette.cream.copy(alpha = 0.7f), textAlign = TextAlign.Center)
+                    }
+                }
+                if (current.streak.interestProtectionActive) {
+                    Spacer(Modifier.height(18.dp))
+                    Row(Modifier.fillMaxWidth().background(Palette.card.copy(alpha = 0.85f), RoundedCornerShape(14.dp)).padding(14.dp), verticalAlignment = Alignment.CenterVertically) {
+                        StreakFlame(lit = true, size = 28)
+                        Spacer(Modifier.size(10.dp))
+                        Column {
+                            Text("${current.streak.currentStreakDays} day streak", color = Palette.cream, fontWeight = FontWeight.SemiBold)
+                            Text(if (current.streak.todayProtected) "0% APR while your streak holds." else "Run 1+ mile today and this beer earns 0% APR.", color = Palette.cream.copy(alpha = 0.7f), fontSize = 12.sp)
+                        }
                     }
                 }
                 if (!statement.isPaid) {

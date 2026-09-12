@@ -46,13 +46,14 @@ import me.colinwatson.beerdebt.engine.Report
 import me.colinwatson.beerdebt.ui.Format
 import me.colinwatson.beerdebt.ui.components.GoldButton
 import me.colinwatson.beerdebt.ui.milesRunInWeekOf
+import me.colinwatson.beerdebt.ui.streak.StreakCard
 import me.colinwatson.beerdebt.ui.theme.Backdrop
 import me.colinwatson.beerdebt.ui.theme.Palette
 import java.time.Instant
 
 /** The product: the balance dominates; one big + Beer; one line of context. */
 @Composable
-fun HomeScreen(onOpenDebt: () -> Unit, onOpenRuns: () -> Unit, onOpenSettings: () -> Unit, showLatestBeerSheet: Boolean = false) {
+fun HomeScreen(onOpenDebt: () -> Unit, onOpenRuns: () -> Unit, onOpenSettings: () -> Unit, onOpenStreak: () -> Unit = {}, showLatestBeerSheet: Boolean = false) {
     val app = LocalContext.current.applicationContext as BeerDebtApp
     val ledger by app.store.ledger.collectAsState()
     var tick by remember { mutableIntStateOf(0) }
@@ -81,6 +82,8 @@ fun HomeScreen(onOpenDebt: () -> Unit, onOpenRuns: () -> Unit, onOpenSettings: (
                 Text("Your tab ›", color = Palette.gold.copy(alpha = 0.9f), fontSize = 13.sp, fontWeight = FontWeight.SemiBold)
             }
             Spacer(Modifier.weight(1f))
+            StreakCard(report.streak, report.balance.state, onOpenStreak)
+            Spacer(Modifier.height(16.dp))
             GoldButton("🍺  + Beer") { addedBeer = app.store.addBeer() }
             Spacer(Modifier.height(16.dp))
             RunsCard(report, now, onOpenRuns)

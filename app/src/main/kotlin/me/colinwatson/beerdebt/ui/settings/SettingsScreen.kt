@@ -18,6 +18,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.DatePicker
+import androidx.compose.material3.DatePickerDialog
+import androidx.compose.material3.SelectableDates
+import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.HorizontalDivider
@@ -81,6 +85,7 @@ fun SettingsScreen(onBack: () -> Unit, onOpenPrivacy: () -> Unit = {}) {
     var weeklyHour by remember { mutableStateOf(weekly.hour) }
     var weeklyMinute by remember { mutableStateOf(weekly.minute) }
     var pickingTime by remember { mutableStateOf(false) }
+    var reopeningBooks by remember { mutableStateOf(false) }
     val weeklyLauncher = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
         weekly.setEnabled(granted); weeklyEnabled = granted; weeklyDenied = !granted
     }
@@ -167,7 +172,10 @@ fun SettingsScreen(onBack: () -> Unit, onOpenPrivacy: () -> Unit = {}) {
                 item {
                     Card {
                         Column {
-                            ValueRow("Books opened", Format.dateTime(ledger.booksOpenedAt))
+                            Row(Modifier.fillMaxWidth().clickable { reopeningBooks = true }.padding(vertical = 12.dp)) {
+                                Text("Books opened", color = Palette.cream, modifier = Modifier.weight(1f))
+                                Text(Format.dateTime(ledger.booksOpenedAt), color = Palette.gold)
+                            }
                             HorizontalDivider(color = Palette.cream.copy(alpha = 0.1f))
                             ValueRow("Version", context.packageManager.getPackageInfo(context.packageName, 0).versionName ?: "?")
                             HorizontalDivider(color = Palette.cream.copy(alpha = 0.1f))
@@ -175,10 +183,14 @@ fun SettingsScreen(onBack: () -> Unit, onOpenPrivacy: () -> Unit = {}) {
                         }
                     }
                 }
+                item { Footer("Runs that ended before the books opened don't count. Tap the date to open the books earlier and pull those runs in from Health Connect.") }
             }
         }
     }
 
+    if (reopeningBooks) {
+        ReopenBooksPicker(current = ledger.booksOpenedAt, onPick = { scope.launch { app.sync.reopenBooks(it) }; reopeningBooks = false }, onDismiss = { reopeningBooks = false })
+    }
     if (pickingTime) {
         WeeklyTimePicker(weeklyHour, weeklyMinute, onPick = { h, m -> weekly.hour = h; weekly.minute = m; weeklyHour = h; weeklyMinute = m; pickingTime = false }, onDismiss = { pickingTime = false })
     }
@@ -229,4 +241,34 @@ private fun <T> PickerRow(label: String, options: List<T>, selected: T, text: (T
         }
     }
     if (!last) HorizontalDivider(color = Palette.cream.copy(alpha = 0.1f))
+}
+
+/** Pick an earlier opening for the books: the whole picked day counts. Earlier only, a year at most. */
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun ReopenBooksPicker(current: java.time.Instant, onPick: (java.time.Instant) -> Unit, onDismiss: () -> Unit) {
+    val zone = java.time.ZoneId.systemDefault()
+    val utc = java.time.ZoneId.of("UTC")
+    val currentDay = current.atZone(zone).toLocalDate()
+    val earliestDay = java.time.Instant.now().minusSeconds(me.colinwatson.beerdebt.data.LedgerStore.REOPENING_WINDOW_SECONDS).atZone(zone).toLocalDate()
+    val state = rememberDatePickerState(
+        initialSelectedDateMillis = currentDay.atStartOfDay(utc).toInstant().toEpochMilli(),
+        selectableDates = object : SelectableDates {
+            override fun isSelectableDate(utcTimeMillis: Long): Boolean {
+                val d = java.time.Instant.ofEpochMilli(utcTimeMillis).atZone(utc).toLocalDate()
+                return !d.isAfter(currentDay) && !d.isBefore(earliestDay)
+            }
+        },
+    )
+    DatePickerDialog(
+        onDismissRequest = onDismiss,
+        confirmButton = {
+            TextButton(onClick = {
+                val millis = state.selectedDateMillis ?: return@TextButton
+                val day = java.time.Instant.ofEpochMilli(millis).atZone(utc).toLocalDate()
+                onPick(day.atStartOfDay(zone).toInstant())
+            }) { Text("Move back") }
+        },
+        dismissButton = { TextButton(onClick = onDismiss) { Text("Cancel") } },
+    ) { DatePicker(state = state, title = { Text("Open the books earlier", modifier = Modifier.padding(start = 24.dp, top = 16.dp)) }) }
 }

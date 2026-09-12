@@ -6,6 +6,7 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.UseSerializers
 import kotlinx.serialization.json.Json
 import java.time.Instant
+import java.time.ZoneId
 import java.util.UUID
 import kotlin.math.abs
 import kotlin.test.Test
@@ -19,7 +20,7 @@ import kotlin.test.fail
  */
 class FixtureTest {
     @Serializable
-    private data class Fixtures(val version: Int, val tolerance: Double, val note: String, val cases: List<Case>)
+    private data class Fixtures(val version: Int, val tolerance: Double, val timeZone: String = "UTC", val note: String, val cases: List<Case>)
 
     @Serializable
     private data class Case(val name: String, val now: Instant, val ledger: Ledger, val expected: Expected)
@@ -31,6 +32,16 @@ class FixtureTest {
         val runs: List<ExpectedRun>,
         val nextInterestAt: Instant? = null,
         val creditExpiringThisWeekMiles: Double,
+        val streak: ExpectedStreak,
+    )
+
+    @Serializable
+    private data class ExpectedStreakDay(val day: Instant, val miles: Double, val qualifies: Boolean, val streakNumber: Int, val interestProtected: Boolean)
+
+    @Serializable
+    private data class ExpectedStreak(
+        val currentStreakDays: Int, val longestStreakDays: Int, val totalQualifyingDays: Int, val todayMiles: Double,
+        val todayQualifies: Boolean, val interestProtectionActive: Boolean, val todayProtected: Boolean, val days: List<ExpectedStreakDay>,
     )
 
     @Serializable
@@ -50,6 +61,7 @@ class FixtureTest {
     @Serializable
     private data class ExpectedRun(
         val id: UUID, val debtPaidMiles: Double, val creditEarnedMiles: Double, val discardedMiles: Double, val ignored: Boolean,
+        val streakDayNumber: Int? = null,
     )
 
     private val json = Json { ignoreUnknownKeys = true }
@@ -60,15 +72,16 @@ class FixtureTest {
         val fixtures = json.decodeFromString<Fixtures>(text)
         assertTrue(fixtures.cases.size >= 60, "expected the full fixture set, got ${fixtures.cases.size}")
 
+        val zone = ZoneId.of(fixtures.timeZone)
         val failures = fixtures.cases.mapNotNull { case ->
-            runCatching { check(case, fixtures.tolerance) }.exceptionOrNull()?.let { "• ${case.name}: ${it.message}" }
+            runCatching { check(case, fixtures.tolerance, zone) }.exceptionOrNull()?.let { "• ${case.name}: ${it.message}" }
         }
         assertTrue(failures.isEmpty(), "${failures.size} of ${fixtures.cases.size} fixtures failed:\n" + failures.joinToString("\n"))
         println("✓ ${fixtures.cases.size} Swift fixtures reproduced")
     }
 
-    private fun check(case: Case, tol: Double) {
-        val report = BalanceEngine.report(case.ledger, case.now)
+    private fun check(case: Case, tol: Double, zone: ZoneId) {
+        val report = BalanceEngine.report(case.ledger, case.now, zone)
         val e = case.expected
 
         fun near(label: String, actual: Double, expected: Double) {
@@ -102,7 +115,23 @@ class FixtureTest {
             val tag = "run ${x.id}"
             same("$tag id", a.id, x.id); near("$tag debtPaid", a.debtPaidMiles, x.debtPaidMiles)
             near("$tag creditEarned", a.creditEarnedMiles, x.creditEarnedMiles); near("$tag discarded", a.discardedMiles, x.discardedMiles)
-            same("$tag ignored", a.ignored, x.ignored)
+            same("$tag ignored", a.ignored, x.ignored); same("$tag streakDayNumber", a.streakDayNumber, x.streakDayNumber)
+        }
+
+        val s = report.streak; val xs = e.streak
+        same("streak.currentStreakDays", s.currentStreakDays, xs.currentStreakDays)
+        same("streak.longestStreakDays", s.longestStreakDays, xs.longestStreakDays)
+        same("streak.totalQualifyingDays", s.totalQualifyingDays, xs.totalQualifyingDays)
+        near("streak.todayMiles", s.todayMiles, xs.todayMiles)
+        same("streak.todayQualifies", s.todayQualifies, xs.todayQualifies)
+        same("streak.interestProtectionActive", s.interestProtectionActive, xs.interestProtectionActive)
+        same("streak.todayProtected", s.todayProtected, xs.todayProtected)
+        same("streak.days.count", s.days.size, xs.days.size)
+        s.days.zip(xs.days).forEach { (a, x) ->
+            val tag = "streak day ${x.day}"
+            same("$tag day", a.day.atStartOfDay(zone).toInstant(), x.day); near("$tag miles", a.miles, x.miles)
+            same("$tag qualifies", a.qualifies, x.qualifies); same("$tag streakNumber", a.streakNumber, x.streakNumber)
+            same("$tag interestProtected", a.interestProtected, x.interestProtected)
         }
     }
 }

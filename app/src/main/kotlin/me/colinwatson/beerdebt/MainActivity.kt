@@ -30,6 +30,9 @@ import me.colinwatson.beerdebt.ui.home.DebtFreeSheet
 import me.colinwatson.beerdebt.ui.home.HomeScreen
 import me.colinwatson.beerdebt.ui.onboarding.OnboardingScreen
 import me.colinwatson.beerdebt.ui.privacy.PrivacyScreen
+import me.colinwatson.beerdebt.ui.streak.StreakActivatedSheet
+import me.colinwatson.beerdebt.ui.streak.StreakScreen
+import me.colinwatson.beerdebt.health.StreakCelebration
 import me.colinwatson.beerdebt.widget.BalanceWidgetReceiver
 import androidx.compose.runtime.LaunchedEffect
 import me.colinwatson.beerdebt.ui.runs.RunsScreen
@@ -51,12 +54,13 @@ object Routes {
     const val RUNS = "runs"
     const val SETTINGS = "settings"
     const val PRIVACY = "privacy"
+    const val STREAK = "streak"
 }
 
 /**
  * Debug builds only, for `scripts/screenshots.sh` (the iOS `-debugScreen` equivalent):
  * `am start -n me.colinwatson.beerdebt/.MainActivity --es debugScreen runs` opens a screen
- * directly. Values: debt | runs | settings | privacy | beerAdded | beerDetail | debtFree | widget
+ * directly. Values: debt | runs | settings | privacy | streak | beerAdded | beerDetail | debtFree | streakActivated | widget
  * (widget asks the launcher to pin the home screen widget).
  */
 object DebugLaunch {
@@ -95,6 +99,7 @@ private fun Root() {
         debugScreen == "debt" || debugScreen == "beerDetail" -> Routes.DEBT
         debugScreen == "runs" -> Routes.RUNS
         debugScreen == "settings" -> Routes.SETTINGS
+        debugScreen == "streak" -> Routes.STREAK
         else -> Routes.HOME
     }
     if (debugScreen == "widget") LaunchedEffect(Unit) {
@@ -113,12 +118,14 @@ private fun Root() {
                 onOpenDebt = { nav.navigate(Routes.DEBT) },
                 onOpenRuns = { nav.navigate(Routes.RUNS) },
                 onOpenSettings = { nav.navigate(Routes.SETTINGS) },
+                onOpenStreak = { nav.navigate(Routes.STREAK) },
                 showLatestBeerSheet = debugScreen == "beerAdded",
             )
         }
         composable(Routes.DEBT) { DebtScreen(onBack = { nav.popBackStack() }, openFirstBeer = debugScreen == "beerDetail") }
         composable(Routes.RUNS) { RunsScreen(onBack = { nav.popBackStack() }) }
         composable(Routes.SETTINGS) { SettingsScreen(onBack = { nav.popBackStack() }, onOpenPrivacy = { nav.navigate(Routes.PRIVACY) }) }
+        composable(Routes.STREAK) { StreakScreen(onBack = { nav.popBackStack() }) }
         composable(Routes.PRIVACY) { PrivacyScreen(onBack = { if (!nav.popBackStack()) (context as? Activity)?.finish() }) }
     }
 
@@ -126,7 +133,14 @@ private fun Root() {
         mutableStateOf(if (debugScreen == "debtFree") DebtFreeCelebration(totalBeers = 4, milesRepaid = 4.6, creditBeers = 0.4) else null)
     }
     sampleParty?.let { party -> DebtFreeSheet(party, onDismiss = { sampleParty = null }) }
+    var sampleStreak by remember {
+        mutableStateOf(if (debugScreen == "streakActivated") StreakCelebration(maxOf(2, app.store.report().streak.currentStreakDays)) else null)
+    }
+    sampleStreak?.let { party -> StreakActivatedSheet(party, onDismiss = { sampleStreak = null }) }
     syncState.celebration?.let { party ->
         DebtFreeSheet(party, onDismiss = { app.sync.clearCelebration() })
+    }
+    if (syncState.celebration == null) syncState.streakCelebration?.let { party ->
+        StreakActivatedSheet(party, onDismiss = { app.sync.clearStreakCelebration() })
     }
 }

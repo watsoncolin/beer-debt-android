@@ -16,7 +16,12 @@ build numbers drift freely.
 
 `engine/` is pure Kotlin (no Android). `BalanceEngine.kt` mirrors the Swift
 `BalanceEngine` line for line, including replaying with `Double` seconds so
-floating-point results agree. `engine/src/test/resources/cases.json` comes
+floating-point results agree. `StreakEngine.kt` mirrors the Swift
+`StreakEngine` (spec §25): calendar days in a `ZoneId`, passed to
+`BalanceEngine.report(ledger, at, zone)`; the fixtures carry `timeZone`
+(UTC) and the app passes the system zone. `Rules.streakProtection` decodes
+as off when absent; `Rules.OPENING` (on) is what new ledgers use, and
+`LedgerStore` appends a rules change turning it on for old ledgers. `engine/src/test/resources/cases.json` comes
 from `~/beer-debt-ios/scripts/fixtures.sh`; `FixtureTest` replays all cases
 and compares every field to 1e-6. **Never change engine behaviour here
 first**: change it on iOS, regenerate the fixtures, copy them over, then port.
@@ -76,6 +81,9 @@ beerDetail|debtFree` handled by `DebugLaunch` in `MainActivity` (the iOS
   `BeerDebtApp` refreshes every placed widget on each ledger save through
   `LedgerStore.onChange`; `res/xml/balance_widget_info.xml` adds a
   half-hourly tick.
+- `ui/streak/Streak.kt` — `StreakFlame`, `StreakCopy` (words identical to
+  iOS), `StreakCard` (Home), `StreakScreen` ("Your Streak"),
+  `StreakActivatedSheet` (day two, paired with Debt Free).
 - `ui/` — `home` (HomeScreen + BeerAddedSheet + DebtFreeSheet), `debt`
   (DebtScreen + BeerDetailSheet), `runs` (RunsScreen with a Canvas bar
   chart), `settings` (rules, Health Connect incl. the Play install link,

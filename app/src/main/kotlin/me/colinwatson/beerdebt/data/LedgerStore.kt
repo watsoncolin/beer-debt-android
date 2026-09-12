@@ -25,6 +25,12 @@ class LedgerStore(private val directory: File, now: Instant = Instant.now()) {
     private val _ledger = MutableStateFlow(load(now))
     val ledger: StateFlow<Ledger> = _ledger.asStateFlow()
 
+    init {
+        // Streak protection arrived after 1.0. Ledgers from before decode it as
+        // off; switch it on from now, as a rules change, so history stands.
+        if (!current.currentRules.streakProtection) updateRules(current.currentRules.copy(streakProtection = true), now)
+    }
+
     /** Set when an existing file couldn't be read; it is kept, renamed. */
     var loadError: String? = null
         private set
@@ -98,6 +104,24 @@ class LedgerStore(private val directory: File, now: Instant = Instant.now()) {
         return true
     }
 
+    /**
+     * Moves the opening of the books earlier so runs from the newly covered
+     * days can count. Earlier only, a year at most; the opening rules move
+     * with it. The caller re-reads Health Connect from scratch afterwards.
+     */
+    fun reopenBooks(at: Instant, now: Instant = Instant.now()): Boolean {
+        val earliest = now.minusSeconds(REOPENING_WINDOW_SECONDS).floored()
+        val opened = maxOf(at.floored(), earliest)
+        if (!opened.isBefore(current.booksOpenedAt)) return false
+        val previous = current.booksOpenedAt
+        mutate { l ->
+            val history = l.rulesHistory.toMutableList()
+            if (history.isNotEmpty() && history[0].effectiveAt == previous) history[0] = RulesChange(opened, history[0].rules)
+            l.copy(booksOpenedAt = opened, rulesHistory = history)
+        }
+        return true
+    }
+
     /** Forward-only: appended as an event, never rewrites history. */
     fun updateRules(rules: Rules, at: Instant = Instant.now()) {
         if (rules == currentRules) return
@@ -123,6 +147,7 @@ class LedgerStore(private val directory: File, now: Instant = Instant.now()) {
 
     companion object {
         const val BACKDATING_WINDOW_SECONDS = 30L * 24 * 60 * 60
+        const val REOPENING_WINDOW_SECONDS = 365L * 24 * 60 * 60
         val json = Json { prettyPrint = true; ignoreUnknownKeys = true; encodeDefaults = true }
     }
 }

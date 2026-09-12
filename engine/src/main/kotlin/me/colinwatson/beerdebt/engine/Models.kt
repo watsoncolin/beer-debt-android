@@ -38,6 +38,13 @@ data class Rules(
     val maximumCreditBeers: Double = 3.0,
     /** Fraction of banked credit lost per week, applied continuously. 0 = off. */
     val creditDecayRatePerWeek: Double = 0.10,
+    /**
+     * A running streak of two or more days pauses debt interest (spec §25).
+     * Absent in ledgers written before the feature, which decode as off so
+     * their history stands; the store turns it on forward-only at upgrade.
+     * New ledgers open with [OPENING], which has it on.
+     */
+    val streakProtection: Boolean = false,
 ) {
     val interestEnabled: Boolean get() = interestRate > 0
     val creditDecayEnabled: Boolean get() = creditDecayRatePerWeek > 0
@@ -45,6 +52,11 @@ data class Rules(
 
     /** Interest can post neither before grace ends nor before a full period has elapsed. */
     val firstPostingDelay: Double get() = maxOf(gracePeriod, interestPeriod.seconds)
+
+    companion object {
+        /** The rules a new ledger opens with (iOS `Rules.default`). */
+        val OPENING = Rules(streakProtection = true)
+    }
 }
 
 @Serializable
@@ -94,7 +106,7 @@ data class Ledger(
     val currentRules: Rules get() = rulesHistory.lastOrNull()?.rules ?: Rules()
 
     companion object {
-        fun open(at: Instant, rules: Rules = Rules()): Ledger =
+        fun open(at: Instant, rules: Rules = Rules.OPENING): Ledger =
             Ledger(booksOpenedAt = at, rulesHistory = listOf(RulesChange(at, rules)))
     }
 }
