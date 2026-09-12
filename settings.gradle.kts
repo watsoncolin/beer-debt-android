@@ -21,5 +21,4 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "BeerDebt"
-include(":engine")
-// ":app" is added once the Android SDK is set up; see README.
+include(":engine", ":app")

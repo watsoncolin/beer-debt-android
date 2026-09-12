@@ -34,8 +34,31 @@ export JAVA_HOME="/Applications/Android Studio.app/Contents/jbr/Contents/Home"
 ./gradlew :engine:test
 ```
 
-`settings.gradle.kts` includes only `:engine` until the app module lands and
-the Android SDK is installed on the machine.
+`./gradlew :app:assembleDebug` builds the app. AGP 9 has built-in Kotlin, so
+`app/build.gradle.kts` applies only the Android application, Compose
+compiler, and serialization plugins (no `kotlin.android`). `compileSdk` 37
+is required by Compose 2026.09. AGP auto-downloaded the SDK into
+`~/Library/Android/sdk` once the license hashes were present.
+
+## App structure (mirrors iOS)
+
+- `BeerDebtApp` (Application) owns `LedgerStore` and `HealthSync`, no DI.
+- `data/LedgerStore` — `StateFlow<Ledger>`, atomic JSON writes to
+  `filesDir/BeerDebt/ledger.json`, the same shape as iOS; `addBeer`,
+  `updateBeerDate` (30-day window), `removeBeer`, `importRuns` (dedup +
+  excluded set), `removeRuns`, `deleteRun`, `updateRules` (forward-only).
+- `health/HealthConnectService` — read-only Health Connect; running
+  sessions via the Changes API (token persisted; full re-read on expiry),
+  distance aggregated per session; workout ids are UUIDs derived from the
+  record id. `HealthSync` mirrors iOS `HealthSync` (foreground sync on
+  resume, hourly `SyncWorker`, deletions, debt-free celebration, run
+  notifications through `RunNotifier`, whose copy is identical to iOS).
+- `ui/` — `home` (HomeScreen + BeerAddedSheet + DebtFreeSheet), `debt`
+  (DebtScreen + BeerDetailSheet), `runs` (RunsScreen with a Canvas bar
+  chart), `settings`, `onboarding`, `components`, `theme` (Palette from iOS
+  `Theme.swift`, `Backdrop`, `ForestBackground`). Everything is dark.
+- Art is copied from `~/beer-debt-ios/docs/art` into `res/drawable-nodpi`;
+  the adaptive launcher icon uses the transparent trail mug.
 
 ## Conventions
 

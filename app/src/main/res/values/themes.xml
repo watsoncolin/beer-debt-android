@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Dark forest from the first frame; Compose draws everything else. -->
+    <style name="Theme.BeerDebt" parent="android:Theme.Material.NoActionBar">
+        <item name="android:windowBackground">@color/forest</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+</resources>
