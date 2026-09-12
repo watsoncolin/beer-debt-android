@@ -25,6 +25,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -54,9 +55,12 @@ import java.time.Instant
 fun HomeScreen(onOpenDebt: () -> Unit, onOpenRuns: () -> Unit, onOpenSettings: () -> Unit, showLatestBeerSheet: Boolean = false) {
     val app = LocalContext.current.applicationContext as BeerDebtApp
     val ledger by app.store.ledger.collectAsState()
-    var now by remember { mutableStateOf(Instant.now()) }
-    LaunchedEffect(Unit) { while (true) { delay(60_000); now = Instant.now() } }   // interest can post while on screen
-    val report = remember(ledger, now) { app.store.report(now) }
+    var tick by remember { mutableIntStateOf(0) }
+    LaunchedEffect(Unit) { while (true) { delay(60_000); tick++ } }   // interest can post while on screen
+    // Dated fresh on every ledger change as well as every tick: a beer just added is
+    // timestamped after the last tick and the replay would leave it out until the next one.
+    val now = remember(ledger, tick) { Instant.now() }
+    val report = remember(now) { app.store.report(now) }
     var addedBeer by remember { mutableStateOf<BeerEntry?>(if (showLatestBeerSheet) ledger.beers.maxByOrNull { it.createdAt } else null) }
 
     Backdrop {
