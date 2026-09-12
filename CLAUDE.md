@@ -34,7 +34,19 @@ export JAVA_HOME="/Applications/Android Studio.app/Contents/jbr/Contents/Home"
 ./gradlew :engine:test
 ```
 
-`./gradlew :app:assembleDebug` builds the app. AGP 9 has built-in Kotlin, so
+`./gradlew :app:assembleDebug` builds the app.
+
+## Screenshots / manual testing on the emulator
+
+`scripts/screenshots.sh [outdir]` boots the `beerdebt` AVD headless (create it
+once with `scripts/emulator-bootstrap.sh`, or Android Studio's device
+manager), installs the debug APK, seeds demo ledgers (debt and credit states)
+straight into `files/BeerDebt/ledger.json` via `run-as`, marks onboarding
+complete, and screenshots every screen into `docs/screenshots/`. It relies on
+the debug-only intent extra `--es debugScreen debt|runs|settings|beerAdded|
+beerDetail|debtFree` handled by `DebugLaunch` in `MainActivity` (the iOS
+`-debugScreen` equivalent). Keep the seed shapes in that script in sync with
+`Ledger`'s JSON and with the iOS script. AGP 9 has built-in Kotlin, so
 `app/build.gradle.kts` applies only the Android application, Compose
 compiler, and serialization plugins (no `kotlin.android`). `compileSdk` 37
 is required by Compose 2026.09. AGP auto-downloaded the SDK into

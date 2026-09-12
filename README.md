@@ -32,6 +32,10 @@ the ports drift.
 ./gradlew :app:assembleDebug     # the app; AGP downloads missing SDK packages
 ```
 
+`scripts/emulator-bootstrap.sh` installs the emulator and an API 36 image and
+creates a Pixel AVD; `scripts/screenshots.sh` boots it, seeds demo data, and
+screenshots every screen into `docs/screenshots/`.
+
 `local.properties` points `sdk.dir` at `~/Library/Android/sdk`. With the
 license hashes in `$SDK/licenses/`, AGP installs the platform and build
 tools it needs on first build; only the emulator and system images need

@@ -51,13 +51,13 @@ import java.time.Instant
 
 /** The product: the balance dominates; one big + Beer; one line of context. */
 @Composable
-fun HomeScreen(onOpenDebt: () -> Unit, onOpenRuns: () -> Unit, onOpenSettings: () -> Unit) {
+fun HomeScreen(onOpenDebt: () -> Unit, onOpenRuns: () -> Unit, onOpenSettings: () -> Unit, showLatestBeerSheet: Boolean = false) {
     val app = LocalContext.current.applicationContext as BeerDebtApp
     val ledger by app.store.ledger.collectAsState()
     var now by remember { mutableStateOf(Instant.now()) }
     LaunchedEffect(Unit) { while (true) { delay(60_000); now = Instant.now() } }   // interest can post while on screen
     val report = remember(ledger, now) { app.store.report(now) }
-    var addedBeer by remember { mutableStateOf<BeerEntry?>(null) }
+    var addedBeer by remember { mutableStateOf<BeerEntry?>(if (showLatestBeerSheet) ledger.beers.maxByOrNull { it.createdAt } else null) }
 
     Backdrop {
         Column(Modifier.fillMaxSize().safeDrawingPadding().padding(horizontal = 24.dp, vertical = 12.dp)) {

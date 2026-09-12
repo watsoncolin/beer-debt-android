@@ -54,13 +54,13 @@ private enum class Filter(val label: String) { ACTIVE("Active"), PAID("Paid") }
 
 /** Your Debt: active beers with what they cost now, paid beers behind a tab. */
 @Composable
-fun DebtScreen(onBack: () -> Unit) {
+fun DebtScreen(onBack: () -> Unit, openFirstBeer: Boolean = false) {
     val app = LocalContext.current.applicationContext as BeerDebtApp
     val ledger by app.store.ledger.collectAsState()
     val now = Instant.now()
     val report = remember(ledger) { app.store.report(now) }
     var filter by remember { mutableStateOf(Filter.ACTIVE) }
-    var selected by remember { mutableStateOf<UUID?>(null) }
+    var selected by remember { mutableStateOf<UUID?>(if (openFirstBeer) report.beers.firstOrNull { !it.isPaid }?.id else null) }
     var toDelete by remember { mutableStateOf<BeerStatement?>(null) }
     val active = report.beers.filter { !it.isPaid }.reversed()
     val paid = report.beers.filter { it.isPaid }.reversed()
