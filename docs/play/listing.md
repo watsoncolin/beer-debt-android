@@ -10,7 +10,7 @@ Beer Debt
 
 ## Short description (80)
 
-Every beer costs a mile. Runs from Health Connect pay it back.
+Every beer costs a mile. Runs pay it back. Run daily and interest pauses.
 
 ## Full description
 
@@ -24,6 +24,7 @@ HOW IT WORKS
 • Tap + Beer. One tap, that's it.
 • Run. Your running workouts come straight from Health Connect, from whatever app or watch you already use. Only runs count, so walking to the bar doesn't pay for the beer.
 • Watch the tab shrink. Or grow, if you skip the run.
+• Run every day. Two days in a row and interest on your tab pauses. Miss a day and it starts again.
 
 MAKE YOUR OWN RULES
 • How many miles a beer costs
@@ -50,7 +51,7 @@ First release. Drink now. Run later.
 - Contact email: colin.watson@gmail.com. Website: https://watsoncolin.github.io/beer-debt-ios/
 - Privacy policy: https://watsoncolin.github.io/beer-debt-ios/privacy.html
 - Graphics: `icon-512.png` (512×512), `feature-graphic.png` (1024×500),
-  phone screenshots in `screenshots/` (1080×1920, composed in
+  eight phone screenshots in `screenshots/` (1080×1920, composed in
   `~/app-utils` from `apps/beerdebt-android/config.mjs`; raws come from
   `scripts/screenshots.sh`).
 - Content rating: alcohol references only. Target audience 18+.
