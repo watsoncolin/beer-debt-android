@@ -21,6 +21,17 @@ same shape as pourcraft-android. The iOS pipeline is documented in
 Listing copy, screenshots, and the graphics live in `docs/play/` (see
 `docs/play/listing.md`).
 
+**State on 2026-09-12 (night):** release run #3 uploaded versionCode 3
+(1.0, streaks + reopen books) to the internal track and it is live there.
+A production release with the same bundle is saved as a draft, all
+countries selected, release notes filled. The store listing has eight
+screenshots and the streak line. The Health apps declaration includes the
+per-permission explanations for `READ_EXERCISE` and `READ_DISTANCE` that
+Play asks for once a bundle with those permissions exists. What remains is
+the **Send app for review** button in Publishing overview, which starts
+Play's review (including the Health Connect declaration) and, on approval,
+the production rollout. That click is Colin's.
+
 ## Signing
 
 Play App Signing: Google holds the app signing key; we hold an **upload
