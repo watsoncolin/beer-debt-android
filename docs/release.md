@@ -10,6 +10,8 @@ same shape as pourcraft-android. The iOS pipeline is documented in
 |---|---|
 | Package | `me.colinwatson.beerdebt` |
 | App name | Beer Debt |
+| Play Console app | created 2026-09-12, app ID `4972402712627858415` (developer account `8797158237570022507`) |
+| Internal testing | track `4701306367860282704`; testers join at https://play.google.com/apps/internaltest/4701306367860282704 (the account-level "Internal" list, shared with Pour Craft Cocktails) |
 | Category | Health & Fitness |
 | Price | Free, no ads, no in-app purchases |
 | Privacy policy | https://watsoncolin.github.io/beer-debt-ios/privacy.html (shared with iOS; has a Health Connect section) |
@@ -35,8 +37,11 @@ key**. It was generated 2026-09-12 with Android Studio's JBR `keytool`:
   Signing an upload key can be reset through Play support if lost, but it
   takes days.
 
-CI needs four repository secrets (Settings → Secrets and variables →
-Actions), the same names pourcraft-android uses:
+CI has the four signing secrets (set 2026-09-12) plus
+`PLAY_SERVICE_ACCOUNT_JSON`, a key for Pourcraft's
+`play-publisher@pourcraft-dev.iam.gserviceaccount.com`, which has release
+permissions on Beer Debt in Users and permissions. To rotate the signing
+secrets:
 
 ```sh
 cd ~/beer-debt-android
@@ -68,8 +73,17 @@ printf '%s' "$PW" | gh secret set UPLOAD_KEY_PASSWORD
 
 ## One-time Play Console setup
 
-Everything below is web UI; the Play Developer API cannot create an app or
-accept the first bundle.
+Done 2026-09-12 through the web UI (the Play Developer API cannot create an
+app or accept the first bundle): app created, store listing (copy, icon,
+feature graphic, seven screenshots), category Health & Fitness, contact
+details, privacy policy URL, all App content declarations (no ads, no
+sign-in, target audience 18+, data safety "no data collected", not a
+government app, no financial features, Health apps → activity and fitness,
+no advertising ID, IARC content rating with alcohol references, which came
+back as PEGI 3 / USK 0 / IARC 3+ / ClassInd 10), the first bundle
+(versionCode 1 from release run #1) rolled out to internal testing with the
+"Internal" tester list, and the service account granted release
+permissions. The steps below are kept for reference.
 
 1. **Create the app** at https://play.google.com/console: name Beer Debt,
    default language English (US), App, Free. Accept the declarations.
