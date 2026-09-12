@@ -1,0 +1,45 @@
+# Gradle
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+
+# Android Studio / IntelliJ
+.idea/
+*.iml
+.kotlin/
+captures/
+local.properties
+
+# Android build outputs
+*.apk
+*.aab
+*.ap_
+*.dex
+output.json
+release/
+
+# Generated files
+bin/
+gen/
+out/
+
+# Logs
+*.log
+
+# macOS
+.DS_Store
+
+# Keystores (NEVER commit signing keys)
+*.jks
+*.keystore
+keystore.properties
+
+# Crashlytics / Firebase secrets
+google-services.json.real
+firebase-app-distribution.json
+
+# Profiling
+profile/
+
+# Kotlin
+.kotlin/

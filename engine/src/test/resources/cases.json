@@ -1,0 +1,4979 @@
+{
+  "cases" : [
+    {
+      "expected" : {
+        "balance" : {
+          "creditBeers" : 0,
+          "creditMiles" : 0,
+          "debtMiles" : 0,
+          "interestMiles" : 0,
+          "principalMiles" : 0,
+          "state" : "even"
+        },
+        "beers" : [
+
+        ],
+        "creditExpiringThisWeekMiles" : 0,
+        "runs" : [
+
+        ]
+      },
+      "ledger" : {
+        "beers" : [
+
+        ],
+        "booksOpenedAt" : "2026-09-12T20:00:00Z",
+        "excludedWorkoutIDs" : [
+
+        ],
+        "rulesHistory" : [
+          {
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "rules" : {
+              "creditDecayRatePerWeek" : 0.1,
+              "gracePeriod" : 86400,
+              "interestPeriod" : "daily",
+              "interestRate" : 0.1,
+              "maximumCreditBeers" : 3,
+              "milesPerBeer" : 1
+            }
+          }
+        ],
+        "runs" : [
+
+        ],
+        "version" : 1
+      },
+      "name" : "fresh ledger is even",
+      "now" : "2026-09-12T21:00:00Z"
+    },
+    {
+      "expected" : {
+        "balance" : {
+          "creditBeers" : 0,
+          "creditMiles" : 0,
+          "debtMiles" : 1,
+          "interestMiles" : 0,
+          "principalMiles" : 1,
+          "state" : "debt"
+        },
+        "beers" : [
+          {
+            "costMiles" : 1,
+            "coveredByCreditMiles" : 0,
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000001",
+            "interestAccruedMiles" : 0,
+            "interestRemainingMiles" : 0,
+            "nextInterestAt" : "2026-09-13T20:00:00Z",
+            "number" : 1,
+            "paidMiles" : 0,
+            "principalMiles" : 1,
+            "principalRemainingMiles" : 1,
+            "writtenOffMiles" : 0
+          }
+        ],
+        "creditExpiringThisWeekMiles" : 0,
+        "nextInterestAt" : "2026-09-13T20:00:00Z",
+        "runs" : [
+
+        ]
+      },
+      "ledger" : {
+        "beers" : [
+          {
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000001"
+          }
+        ],
+        "booksOpenedAt" : "2026-09-12T20:00:00Z",
+        "excludedWorkoutIDs" : [
+
+        ],
+        "rulesHistory" : [
+          {
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "rules" : {
+              "creditDecayRatePerWeek" : 0.1,
+              "gracePeriod" : 86400,
+              "interestPeriod" : "daily",
+              "interestRate" : 0.1,
+              "maximumCreditBeers" : 3,
+              "milesPerBeer" : 1
+            }
+          }
+        ],
+        "runs" : [
+
+        ],
+        "version" : 1
+      },
+      "name" : "one beer is one mile of debt",
+      "now" : "2026-09-12T21:00:00Z"
+    },
+    {
+      "expected" : {
+        "balance" : {
+          "creditBeers" : 0,
+          "creditMiles" : 0,
+          "debtMiles" : 3,
+          "interestMiles" : 0,
+          "principalMiles" : 3,
+          "state" : "debt"
+        },
+        "beers" : [
+          {
+            "costMiles" : 1,
+            "coveredByCreditMiles" : 0,
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000003",
+            "interestAccruedMiles" : 0,
+            "interestRemainingMiles" : 0,
+            "nextInterestAt" : "2026-09-13T20:00:00Z",
+            "number" : 1,
+            "paidMiles" : 0,
+            "principalMiles" : 1,
+            "principalRemainingMiles" : 1,
+            "writtenOffMiles" : 0
+          },
+          {
+            "costMiles" : 1,
+            "coveredByCreditMiles" : 0,
+            "createdAt" : "2026-09-12T21:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000004",
+            "interestAccruedMiles" : 0,
+            "interestRemainingMiles" : 0,
+            "nextInterestAt" : "2026-09-13T21:00:00Z",
+            "number" : 2,
+            "paidMiles" : 0,
+            "principalMiles" : 1,
+            "principalRemainingMiles" : 1,
+            "writtenOffMiles" : 0
+          },
+          {
+            "costMiles" : 1,
+            "coveredByCreditMiles" : 0,
+            "createdAt" : "2026-09-12T22:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000002",
+            "interestAccruedMiles" : 0,
+            "interestRemainingMiles" : 0,
+            "nextInterestAt" : "2026-09-13T22:00:00Z",
+            "number" : 3,
+            "paidMiles" : 0,
+            "principalMiles" : 1,
+            "principalRemainingMiles" : 1,
+            "writtenOffMiles" : 0
+          }
+        ],
+        "creditExpiringThisWeekMiles" : 0,
+        "nextInterestAt" : "2026-09-13T20:00:00Z",
+        "runs" : [
+
+        ]
+      },
+      "ledger" : {
+        "beers" : [
+          {
+            "createdAt" : "2026-09-12T22:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000002"
+          },
+          {
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000003"
+          },
+          {
+            "createdAt" : "2026-09-12T21:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000004"
+          }
+        ],
+        "booksOpenedAt" : "2026-09-12T20:00:00Z",
+        "excludedWorkoutIDs" : [
+
+        ],
+        "rulesHistory" : [
+          {
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "rules" : {
+              "creditDecayRatePerWeek" : 0.1,
+              "gracePeriod" : 86400,
+              "interestPeriod" : "daily",
+              "interestRate" : 0.1,
+              "maximumCreditBeers" : 3,
+              "milesPerBeer" : 1
+            }
+          }
+        ],
+        "runs" : [
+
+        ],
+        "version" : 1
+      },
+      "name" : "beers add up and are numbered in order",
+      "now" : "2026-09-12T23:00:00Z"
+    },
+    {
+      "expected" : {
+        "balance" : {
+          "creditBeers" : 0,
+          "creditMiles" : 0,
+          "debtMiles" : 2,
+          "interestMiles" : 0,
+          "principalMiles" : 2,
+          "state" : "debt"
+        },
+        "beers" : [
+          {
+            "costMiles" : 2,
+            "coveredByCreditMiles" : 0,
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000005",
+            "interestAccruedMiles" : 0,
+            "interestRemainingMiles" : 0,
+            "nextInterestAt" : "2026-09-13T20:00:00Z",
+            "number" : 1,
+            "paidMiles" : 0,
+            "principalMiles" : 2,
+            "principalRemainingMiles" : 2,
+            "writtenOffMiles" : 0
+          }
+        ],
+        "creditExpiringThisWeekMiles" : 0,
+        "nextInterestAt" : "2026-09-13T20:00:00Z",
+        "runs" : [
+
+        ]
+      },
+      "ledger" : {
+        "beers" : [
+          {
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000005"
+          }
+        ],
+        "booksOpenedAt" : "2026-09-12T20:00:00Z",
+        "excludedWorkoutIDs" : [
+
+        ],
+        "rulesHistory" : [
+          {
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "rules" : {
+              "creditDecayRatePerWeek" : 0.1,
+              "gracePeriod" : 86400,
+              "interestPeriod" : "daily",
+              "interestRate" : 0.1,
+              "maximumCreditBeers" : 3,
+              "milesPerBeer" : 2
+            }
+          }
+        ],
+        "runs" : [
+
+        ],
+        "version" : 1
+      },
+      "name" : "miles per beer sets the principal",
+      "now" : "2026-09-12T21:00:00Z"
+    },
+    {
+      "expected" : {
+        "balance" : {
+          "creditBeers" : 0,
+          "creditMiles" : 0,
+          "debtMiles" : 0,
+          "interestMiles" : 0,
+          "principalMiles" : 0,
+          "state" : "even"
+        },
+        "beers" : [
+
+        ],
+        "creditExpiringThisWeekMiles" : 0,
+        "runs" : [
+
+        ]
+      },
+      "ledger" : {
+        "beers" : [
+          {
+            "createdAt" : "2026-09-13T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000006"
+          }
+        ],
+        "booksOpenedAt" : "2026-09-12T20:00:00Z",
+        "excludedWorkoutIDs" : [
+
+        ],
+        "rulesHistory" : [
+          {
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "rules" : {
+              "creditDecayRatePerWeek" : 0.1,
+              "gracePeriod" : 86400,
+              "interestPeriod" : "daily",
+              "interestRate" : 0.1,
+              "maximumCreditBeers" : 3,
+              "milesPerBeer" : 1
+            }
+          }
+        ],
+        "runs" : [
+
+        ],
+        "version" : 1
+      },
+      "name" : "events after now do not exist yet",
+      "now" : "2026-09-12T20:00:00Z"
+    },
+    {
+      "expected" : {
+        "balance" : {
+          "creditBeers" : 0,
+          "creditMiles" : 0,
+          "debtMiles" : 1,
+          "interestMiles" : 0,
+          "principalMiles" : 1,
+          "state" : "debt"
+        },
+        "beers" : [
+          {
+            "costMiles" : 1,
+            "coveredByCreditMiles" : 0,
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000007",
+            "interestAccruedMiles" : 0,
+            "interestRemainingMiles" : 0,
+            "nextInterestAt" : "2026-09-13T20:00:00Z",
+            "number" : 1,
+            "paidMiles" : 0,
+            "principalMiles" : 1,
+            "principalRemainingMiles" : 1,
+            "writtenOffMiles" : 0
+          }
+        ],
+        "creditExpiringThisWeekMiles" : 0,
+        "nextInterestAt" : "2026-09-13T20:00:00Z",
+        "runs" : [
+
+        ]
+      },
+      "ledger" : {
+        "beers" : [
+          {
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000007"
+          }
+        ],
+        "booksOpenedAt" : "2026-09-12T20:00:00Z",
+        "excludedWorkoutIDs" : [
+
+        ],
+        "rulesHistory" : [
+          {
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "rules" : {
+              "creditDecayRatePerWeek" : 0.1,
+              "gracePeriod" : 86400,
+              "interestPeriod" : "daily",
+              "interestRate" : 0.1,
+              "maximumCreditBeers" : 3,
+              "milesPerBeer" : 1
+            }
+          }
+        ],
+        "runs" : [
+
+        ],
+        "version" : 1
+      },
+      "name" : "no interest during grace",
+      "now" : "2026-09-13T19:59:59Z"
+    },
+    {
+      "expected" : {
+        "balance" : {
+          "creditBeers" : 0,
+          "creditMiles" : 0,
+          "debtMiles" : 1.1,
+          "interestMiles" : 0.1,
+          "principalMiles" : 1,
+          "state" : "debt"
+        },
+        "beers" : [
+          {
+            "costMiles" : 1,
+            "coveredByCreditMiles" : 0,
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000008",
+            "interestAccruedMiles" : 0.1,
+            "interestRemainingMiles" : 0.1,
+            "nextInterestAt" : "2026-09-14T20:00:00Z",
+            "number" : 1,
+            "paidMiles" : 0,
+            "principalMiles" : 1,
+            "principalRemainingMiles" : 1,
+            "writtenOffMiles" : 0
+          }
+        ],
+        "creditExpiringThisWeekMiles" : 0,
+        "nextInterestAt" : "2026-09-14T20:00:00Z",
+        "runs" : [
+
+        ]
+      },
+      "ledger" : {
+        "beers" : [
+          {
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000008"
+          }
+        ],
+        "booksOpenedAt" : "2026-09-12T20:00:00Z",
+        "excludedWorkoutIDs" : [
+
+        ],
+        "rulesHistory" : [
+          {
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "rules" : {
+              "creditDecayRatePerWeek" : 0.1,
+              "gracePeriod" : 86400,
+              "interestPeriod" : "daily",
+              "interestRate" : 0.1,
+              "maximumCreditBeers" : 3,
+              "milesPerBeer" : 1
+            }
+          }
+        ],
+        "runs" : [
+
+        ],
+        "version" : 1
+      },
+      "name" : "interest posts daily after grace @ 1d",
+      "now" : "2026-09-13T20:00:00Z"
+    },
+    {
+      "expected" : {
+        "balance" : {
+          "creditBeers" : 0,
+          "creditMiles" : 0,
+          "debtMiles" : 1.21,
+          "interestMiles" : 0.21000000000000002,
+          "principalMiles" : 1,
+          "state" : "debt"
+        },
+        "beers" : [
+          {
+            "costMiles" : 1,
+            "coveredByCreditMiles" : 0,
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000008",
+            "interestAccruedMiles" : 0.21000000000000002,
+            "interestRemainingMiles" : 0.21000000000000002,
+            "nextInterestAt" : "2026-09-15T20:00:00Z",
+            "number" : 1,
+            "paidMiles" : 0,
+            "principalMiles" : 1,
+            "principalRemainingMiles" : 1,
+            "writtenOffMiles" : 0
+          }
+        ],
+        "creditExpiringThisWeekMiles" : 0,
+        "nextInterestAt" : "2026-09-15T20:00:00Z",
+        "runs" : [
+
+        ]
+      },
+      "ledger" : {
+        "beers" : [
+          {
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000008"
+          }
+        ],
+        "booksOpenedAt" : "2026-09-12T20:00:00Z",
+        "excludedWorkoutIDs" : [
+
+        ],
+        "rulesHistory" : [
+          {
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "rules" : {
+              "creditDecayRatePerWeek" : 0.1,
+              "gracePeriod" : 86400,
+              "interestPeriod" : "daily",
+              "interestRate" : 0.1,
+              "maximumCreditBeers" : 3,
+              "milesPerBeer" : 1
+            }
+          }
+        ],
+        "runs" : [
+
+        ],
+        "version" : 1
+      },
+      "name" : "interest posts daily after grace @ 2d",
+      "now" : "2026-09-14T20:00:00Z"
+    },
+    {
+      "expected" : {
+        "balance" : {
+          "creditBeers" : 0,
+          "creditMiles" : 0,
+          "debtMiles" : 1.61051,
+          "interestMiles" : 0.61051,
+          "principalMiles" : 1,
+          "state" : "debt"
+        },
+        "beers" : [
+          {
+            "costMiles" : 1,
+            "coveredByCreditMiles" : 0,
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000008",
+            "interestAccruedMiles" : 0.61051,
+            "interestRemainingMiles" : 0.61051,
+            "nextInterestAt" : "2026-09-18T20:00:00Z",
+            "number" : 1,
+            "paidMiles" : 0,
+            "principalMiles" : 1,
+            "principalRemainingMiles" : 1,
+            "writtenOffMiles" : 0
+          }
+        ],
+        "creditExpiringThisWeekMiles" : 0,
+        "nextInterestAt" : "2026-09-18T20:00:00Z",
+        "runs" : [
+
+        ]
+      },
+      "ledger" : {
+        "beers" : [
+          {
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000008"
+          }
+        ],
+        "booksOpenedAt" : "2026-09-12T20:00:00Z",
+        "excludedWorkoutIDs" : [
+
+        ],
+        "rulesHistory" : [
+          {
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "rules" : {
+              "creditDecayRatePerWeek" : 0.1,
+              "gracePeriod" : 86400,
+              "interestPeriod" : "daily",
+              "interestRate" : 0.1,
+              "maximumCreditBeers" : 3,
+              "milesPerBeer" : 1
+            }
+          }
+        ],
+        "runs" : [
+
+        ],
+        "version" : 1
+      },
+      "name" : "interest posts daily after grace @ 5d",
+      "now" : "2026-09-17T20:00:00Z"
+    },
+    {
+      "expected" : {
+        "balance" : {
+          "creditBeers" : 0,
+          "creditMiles" : 0,
+          "debtMiles" : 1,
+          "interestMiles" : 0,
+          "principalMiles" : 1,
+          "state" : "debt"
+        },
+        "beers" : [
+          {
+            "costMiles" : 1,
+            "coveredByCreditMiles" : 0,
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000009",
+            "interestAccruedMiles" : 0,
+            "interestRemainingMiles" : 0,
+            "nextInterestAt" : "2026-09-19T20:00:00Z",
+            "number" : 1,
+            "paidMiles" : 0,
+            "principalMiles" : 1,
+            "principalRemainingMiles" : 1,
+            "writtenOffMiles" : 0
+          }
+        ],
+        "creditExpiringThisWeekMiles" : 0,
+        "nextInterestAt" : "2026-09-19T20:00:00Z",
+        "runs" : [
+
+        ]
+      },
+      "ledger" : {
+        "beers" : [
+          {
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000009"
+          }
+        ],
+        "booksOpenedAt" : "2026-09-12T20:00:00Z",
+        "excludedWorkoutIDs" : [
+
+        ],
+        "rulesHistory" : [
+          {
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "rules" : {
+              "creditDecayRatePerWeek" : 0.1,
+              "gracePeriod" : 86400,
+              "interestPeriod" : "weekly",
+              "interestRate" : 0.1,
+              "maximumCreditBeers" : 3,
+              "milesPerBeer" : 1
+            }
+          }
+        ],
+        "runs" : [
+
+        ],
+        "version" : 1
+      },
+      "name" : "weekly period waits a full week @ 6d",
+      "now" : "2026-09-18T20:00:00Z"
+    },
+    {
+      "expected" : {
+        "balance" : {
+          "creditBeers" : 0,
+          "creditMiles" : 0,
+          "debtMiles" : 1.1,
+          "interestMiles" : 0.1,
+          "principalMiles" : 1,
+          "state" : "debt"
+        },
+        "beers" : [
+          {
+            "costMiles" : 1,
+            "coveredByCreditMiles" : 0,
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000009",
+            "interestAccruedMiles" : 0.1,
+            "interestRemainingMiles" : 0.1,
+            "nextInterestAt" : "2026-09-26T20:00:00Z",
+            "number" : 1,
+            "paidMiles" : 0,
+            "principalMiles" : 1,
+            "principalRemainingMiles" : 1,
+            "writtenOffMiles" : 0
+          }
+        ],
+        "creditExpiringThisWeekMiles" : 0,
+        "nextInterestAt" : "2026-09-26T20:00:00Z",
+        "runs" : [
+
+        ]
+      },
+      "ledger" : {
+        "beers" : [
+          {
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000009"
+          }
+        ],
+        "booksOpenedAt" : "2026-09-12T20:00:00Z",
+        "excludedWorkoutIDs" : [
+
+        ],
+        "rulesHistory" : [
+          {
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "rules" : {
+              "creditDecayRatePerWeek" : 0.1,
+              "gracePeriod" : 86400,
+              "interestPeriod" : "weekly",
+              "interestRate" : 0.1,
+              "maximumCreditBeers" : 3,
+              "milesPerBeer" : 1
+            }
+          }
+        ],
+        "runs" : [
+
+        ],
+        "version" : 1
+      },
+      "name" : "weekly period waits a full week @ 7d",
+      "now" : "2026-09-19T20:00:00Z"
+    },
+    {
+      "expected" : {
+        "balance" : {
+          "creditBeers" : 0,
+          "creditMiles" : 0,
+          "debtMiles" : 1,
+          "interestMiles" : 0,
+          "principalMiles" : 1,
+          "state" : "debt"
+        },
+        "beers" : [
+          {
+            "costMiles" : 1,
+            "coveredByCreditMiles" : 0,
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000010",
+            "interestAccruedMiles" : 0,
+            "interestRemainingMiles" : 0,
+            "nextInterestAt" : "2026-09-13T20:00:00Z",
+            "number" : 1,
+            "paidMiles" : 0,
+            "principalMiles" : 1,
+            "principalRemainingMiles" : 1,
+            "writtenOffMiles" : 0
+          }
+        ],
+        "creditExpiringThisWeekMiles" : 0,
+        "nextInterestAt" : "2026-09-13T20:00:00Z",
+        "runs" : [
+
+        ]
+      },
+      "ledger" : {
+        "beers" : [
+          {
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000010"
+          }
+        ],
+        "booksOpenedAt" : "2026-09-12T20:00:00Z",
+        "excludedWorkoutIDs" : [
+
+        ],
+        "rulesHistory" : [
+          {
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "rules" : {
+              "creditDecayRatePerWeek" : 0.1,
+              "gracePeriod" : 0,
+              "interestPeriod" : "daily",
+              "interestRate" : 0.1,
+              "maximumCreditBeers" : 3,
+              "milesPerBeer" : 1
+            }
+          }
+        ],
+        "runs" : [
+
+        ],
+        "version" : 1
+      },
+      "name" : "no grace still waits one period @ 1h",
+      "now" : "2026-09-12T21:00:00Z"
+    },
+    {
+      "expected" : {
+        "balance" : {
+          "creditBeers" : 0,
+          "creditMiles" : 0,
+          "debtMiles" : 1.1,
+          "interestMiles" : 0.1,
+          "principalMiles" : 1,
+          "state" : "debt"
+        },
+        "beers" : [
+          {
+            "costMiles" : 1,
+            "coveredByCreditMiles" : 0,
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000010",
+            "interestAccruedMiles" : 0.1,
+            "interestRemainingMiles" : 0.1,
+            "nextInterestAt" : "2026-09-14T20:00:00Z",
+            "number" : 1,
+            "paidMiles" : 0,
+            "principalMiles" : 1,
+            "principalRemainingMiles" : 1,
+            "writtenOffMiles" : 0
+          }
+        ],
+        "creditExpiringThisWeekMiles" : 0,
+        "nextInterestAt" : "2026-09-14T20:00:00Z",
+        "runs" : [
+
+        ]
+      },
+      "ledger" : {
+        "beers" : [
+          {
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000010"
+          }
+        ],
+        "booksOpenedAt" : "2026-09-12T20:00:00Z",
+        "excludedWorkoutIDs" : [
+
+        ],
+        "rulesHistory" : [
+          {
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "rules" : {
+              "creditDecayRatePerWeek" : 0.1,
+              "gracePeriod" : 0,
+              "interestPeriod" : "daily",
+              "interestRate" : 0.1,
+              "maximumCreditBeers" : 3,
+              "milesPerBeer" : 1
+            }
+          }
+        ],
+        "runs" : [
+
+        ],
+        "version" : 1
+      },
+      "name" : "no grace still waits one period @ 1d",
+      "now" : "2026-09-13T20:00:00Z"
+    },
+    {
+      "expected" : {
+        "balance" : {
+          "creditBeers" : 0,
+          "creditMiles" : 0,
+          "debtMiles" : 1,
+          "interestMiles" : 0,
+          "principalMiles" : 1,
+          "state" : "debt"
+        },
+        "beers" : [
+          {
+            "costMiles" : 1,
+            "coveredByCreditMiles" : 0,
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000011",
+            "interestAccruedMiles" : 0,
+            "interestRemainingMiles" : 0,
+            "nextInterestAt" : "2026-09-19T20:00:00Z",
+            "number" : 1,
+            "paidMiles" : 0,
+            "principalMiles" : 1,
+            "principalRemainingMiles" : 1,
+            "writtenOffMiles" : 0
+          }
+        ],
+        "creditExpiringThisWeekMiles" : 0,
+        "nextInterestAt" : "2026-09-19T20:00:00Z",
+        "runs" : [
+
+        ]
+      },
+      "ledger" : {
+        "beers" : [
+          {
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000011"
+          }
+        ],
+        "booksOpenedAt" : "2026-09-12T20:00:00Z",
+        "excludedWorkoutIDs" : [
+
+        ],
+        "rulesHistory" : [
+          {
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "rules" : {
+              "creditDecayRatePerWeek" : 0.1,
+              "gracePeriod" : 604800,
+              "interestPeriod" : "daily",
+              "interestRate" : 0.1,
+              "maximumCreditBeers" : 3,
+              "milesPerBeer" : 1
+            }
+          }
+        ],
+        "runs" : [
+
+        ],
+        "version" : 1
+      },
+      "name" : "long grace delays the first posting @ 6d",
+      "now" : "2026-09-18T20:00:00Z"
+    },
+    {
+      "expected" : {
+        "balance" : {
+          "creditBeers" : 0,
+          "creditMiles" : 0,
+          "debtMiles" : 1.1,
+          "interestMiles" : 0.1,
+          "principalMiles" : 1,
+          "state" : "debt"
+        },
+        "beers" : [
+          {
+            "costMiles" : 1,
+            "coveredByCreditMiles" : 0,
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000011",
+            "interestAccruedMiles" : 0.1,
+            "interestRemainingMiles" : 0.1,
+            "nextInterestAt" : "2026-09-20T20:00:00Z",
+            "number" : 1,
+            "paidMiles" : 0,
+            "principalMiles" : 1,
+            "principalRemainingMiles" : 1,
+            "writtenOffMiles" : 0
+          }
+        ],
+        "creditExpiringThisWeekMiles" : 0,
+        "nextInterestAt" : "2026-09-20T20:00:00Z",
+        "runs" : [
+
+        ]
+      },
+      "ledger" : {
+        "beers" : [
+          {
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000011"
+          }
+        ],
+        "booksOpenedAt" : "2026-09-12T20:00:00Z",
+        "excludedWorkoutIDs" : [
+
+        ],
+        "rulesHistory" : [
+          {
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "rules" : {
+              "creditDecayRatePerWeek" : 0.1,
+              "gracePeriod" : 604800,
+              "interestPeriod" : "daily",
+              "interestRate" : 0.1,
+              "maximumCreditBeers" : 3,
+              "milesPerBeer" : 1
+            }
+          }
+        ],
+        "runs" : [
+
+        ],
+        "version" : 1
+      },
+      "name" : "long grace delays the first posting @ 7d",
+      "now" : "2026-09-19T20:00:00Z"
+    },
+    {
+      "expected" : {
+        "balance" : {
+          "creditBeers" : 0,
+          "creditMiles" : 0,
+          "debtMiles" : 1.21,
+          "interestMiles" : 0.21000000000000002,
+          "principalMiles" : 1,
+          "state" : "debt"
+        },
+        "beers" : [
+          {
+            "costMiles" : 1,
+            "coveredByCreditMiles" : 0,
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000011",
+            "interestAccruedMiles" : 0.21000000000000002,
+            "interestRemainingMiles" : 0.21000000000000002,
+            "nextInterestAt" : "2026-09-21T20:00:00Z",
+            "number" : 1,
+            "paidMiles" : 0,
+            "principalMiles" : 1,
+            "principalRemainingMiles" : 1,
+            "writtenOffMiles" : 0
+          }
+        ],
+        "creditExpiringThisWeekMiles" : 0,
+        "nextInterestAt" : "2026-09-21T20:00:00Z",
+        "runs" : [
+
+        ]
+      },
+      "ledger" : {
+        "beers" : [
+          {
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000011"
+          }
+        ],
+        "booksOpenedAt" : "2026-09-12T20:00:00Z",
+        "excludedWorkoutIDs" : [
+
+        ],
+        "rulesHistory" : [
+          {
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "rules" : {
+              "creditDecayRatePerWeek" : 0.1,
+              "gracePeriod" : 604800,
+              "interestPeriod" : "daily",
+              "interestRate" : 0.1,
+              "maximumCreditBeers" : 3,
+              "milesPerBeer" : 1
+            }
+          }
+        ],
+        "runs" : [
+
+        ],
+        "version" : 1
+      },
+      "name" : "long grace delays the first posting @ 8d",
+      "now" : "2026-09-20T20:00:00Z"
+    },
+    {
+      "expected" : {
+        "balance" : {
+          "creditBeers" : 0,
+          "creditMiles" : 0,
+          "debtMiles" : 1,
+          "interestMiles" : 0,
+          "principalMiles" : 1,
+          "state" : "debt"
+        },
+        "beers" : [
+          {
+            "costMiles" : 1,
+            "coveredByCreditMiles" : 0,
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000012",
+            "interestAccruedMiles" : 0,
+            "interestRemainingMiles" : 0,
+            "number" : 1,
+            "paidMiles" : 0,
+            "principalMiles" : 1,
+            "principalRemainingMiles" : 1,
+            "writtenOffMiles" : 0
+          }
+        ],
+        "creditExpiringThisWeekMiles" : 0,
+        "runs" : [
+
+        ]
+      },
+      "ledger" : {
+        "beers" : [
+          {
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000012"
+          }
+        ],
+        "booksOpenedAt" : "2026-09-12T20:00:00Z",
+        "excludedWorkoutIDs" : [
+
+        ],
+        "rulesHistory" : [
+          {
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "rules" : {
+              "creditDecayRatePerWeek" : 0.1,
+              "gracePeriod" : 86400,
+              "interestPeriod" : "daily",
+              "interestRate" : 0,
+              "maximumCreditBeers" : 3,
+              "milesPerBeer" : 1
+            }
+          }
+        ],
+        "runs" : [
+
+        ],
+        "version" : 1
+      },
+      "name" : "interest off means no growth",
+      "now" : "2026-10-12T20:00:00Z"
+    },
+    {
+      "expected" : {
+        "balance" : {
+          "creditBeers" : 0,
+          "creditMiles" : 0,
+          "debtMiles" : 0,
+          "interestMiles" : 0,
+          "principalMiles" : 0,
+          "state" : "even"
+        },
+        "beers" : [
+          {
+            "costMiles" : 1,
+            "coveredByCreditMiles" : 0,
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000013",
+            "interestAccruedMiles" : 0,
+            "interestRemainingMiles" : 0,
+            "number" : 1,
+            "paidAt" : "2026-09-12T21:00:00Z",
+            "paidMiles" : 1,
+            "principalMiles" : 1,
+            "principalRemainingMiles" : 0,
+            "writtenOffMiles" : 0
+          }
+        ],
+        "creditExpiringThisWeekMiles" : 0,
+        "runs" : [
+          {
+            "creditEarnedMiles" : 0,
+            "debtPaidMiles" : 1,
+            "discardedMiles" : 0,
+            "id" : "00000000-0000-4000-8000-000000000014",
+            "ignored" : false
+          }
+        ]
+      },
+      "ledger" : {
+        "beers" : [
+          {
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000013"
+          }
+        ],
+        "booksOpenedAt" : "2026-09-12T20:00:00Z",
+        "excludedWorkoutIDs" : [
+
+        ],
+        "rulesHistory" : [
+          {
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "rules" : {
+              "creditDecayRatePerWeek" : 0.1,
+              "gracePeriod" : 86400,
+              "interestPeriod" : "daily",
+              "interestRate" : 0.1,
+              "maximumCreditBeers" : 3,
+              "milesPerBeer" : 1
+            }
+          }
+        ],
+        "runs" : [
+          {
+            "distanceMeters" : 1609.344,
+            "endedAt" : "2026-09-12T21:00:00Z",
+            "healthKitWorkoutID" : "00000000-0000-4000-8000-000000000015",
+            "id" : "00000000-0000-4000-8000-000000000014",
+            "importedAt" : "2026-09-12T21:00:00Z",
+            "sourceName" : "Fixture",
+            "startedAt" : "2026-09-12T20:30:00Z"
+          }
+        ],
+        "version" : 1
+      },
+      "name" : "interest only accrues on unpaid debt",
+      "now" : "2026-09-22T20:00:00Z"
+    },
+    {
+      "expected" : {
+        "balance" : {
+          "creditBeers" : 0,
+          "creditMiles" : 0,
+          "debtMiles" : 0,
+          "interestMiles" : 0,
+          "principalMiles" : 0,
+          "state" : "even"
+        },
+        "beers" : [
+          {
+            "costMiles" : 1,
+            "coveredByCreditMiles" : 0,
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000016",
+            "interestAccruedMiles" : 0,
+            "interestRemainingMiles" : 0,
+            "number" : 1,
+            "paidAt" : "2026-09-12T22:00:00Z",
+            "paidMiles" : 1,
+            "principalMiles" : 1,
+            "principalRemainingMiles" : 0,
+            "writtenOffMiles" : 0
+          }
+        ],
+        "creditExpiringThisWeekMiles" : 0,
+        "runs" : [
+          {
+            "creditEarnedMiles" : 0,
+            "debtPaidMiles" : 1,
+            "discardedMiles" : 0,
+            "id" : "00000000-0000-4000-8000-000000000017",
+            "ignored" : false
+          }
+        ]
+      },
+      "ledger" : {
+        "beers" : [
+          {
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000016"
+          }
+        ],
+        "booksOpenedAt" : "2026-09-12T20:00:00Z",
+        "excludedWorkoutIDs" : [
+
+        ],
+        "rulesHistory" : [
+          {
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "rules" : {
+              "creditDecayRatePerWeek" : 0.1,
+              "gracePeriod" : 86400,
+              "interestPeriod" : "daily",
+              "interestRate" : 0.1,
+              "maximumCreditBeers" : 3,
+              "milesPerBeer" : 1
+            }
+          }
+        ],
+        "runs" : [
+          {
+            "distanceMeters" : 1609.344,
+            "endedAt" : "2026-09-12T22:00:00Z",
+            "healthKitWorkoutID" : "00000000-0000-4000-8000-000000000018",
+            "id" : "00000000-0000-4000-8000-000000000017",
+            "importedAt" : "2026-09-12T22:00:00Z",
+            "sourceName" : "Fixture",
+            "startedAt" : "2026-09-12T21:30:00Z"
+          }
+        ],
+        "version" : 1
+      },
+      "name" : "run pays debt",
+      "now" : "2026-09-12T23:00:00Z"
+    },
+    {
+      "expected" : {
+        "balance" : {
+          "creditBeers" : 0,
+          "creditMiles" : 0,
+          "debtMiles" : 0.6,
+          "interestMiles" : 0,
+          "principalMiles" : 0.6,
+          "state" : "debt"
+        },
+        "beers" : [
+          {
+            "costMiles" : 1,
+            "coveredByCreditMiles" : 0,
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000019",
+            "interestAccruedMiles" : 0,
+            "interestRemainingMiles" : 0,
+            "nextInterestAt" : "2026-09-13T20:00:00Z",
+            "number" : 1,
+            "paidMiles" : 0.4,
+            "principalMiles" : 1,
+            "principalRemainingMiles" : 0.6,
+            "writtenOffMiles" : 0
+          }
+        ],
+        "creditExpiringThisWeekMiles" : 0,
+        "nextInterestAt" : "2026-09-13T20:00:00Z",
+        "runs" : [
+          {
+            "creditEarnedMiles" : 0,
+            "debtPaidMiles" : 0.4,
+            "discardedMiles" : 0,
+            "id" : "00000000-0000-4000-8000-000000000020",
+            "ignored" : false
+          }
+        ]
+      },
+      "ledger" : {
+        "beers" : [
+          {
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000019"
+          }
+        ],
+        "booksOpenedAt" : "2026-09-12T20:00:00Z",
+        "excludedWorkoutIDs" : [
+
+        ],
+        "rulesHistory" : [
+          {
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "rules" : {
+              "creditDecayRatePerWeek" : 0.1,
+              "gracePeriod" : 86400,
+              "interestPeriod" : "daily",
+              "interestRate" : 0.1,
+              "maximumCreditBeers" : 3,
+              "milesPerBeer" : 1
+            }
+          }
+        ],
+        "runs" : [
+          {
+            "distanceMeters" : 643.7376,
+            "endedAt" : "2026-09-12T22:00:00Z",
+            "healthKitWorkoutID" : "00000000-0000-4000-8000-000000000021",
+            "id" : "00000000-0000-4000-8000-000000000020",
+            "importedAt" : "2026-09-12T22:00:00Z",
+            "sourceName" : "Fixture",
+            "startedAt" : "2026-09-12T21:30:00Z"
+          }
+        ],
+        "version" : 1
+      },
+      "name" : "partial repayment",
+      "now" : "2026-09-12T23:00:00Z"
+    },
+    {
+      "expected" : {
+        "balance" : {
+          "creditBeers" : 0,
+          "creditMiles" : 0,
+          "debtMiles" : 1.5,
+          "interestMiles" : 0,
+          "principalMiles" : 1.5,
+          "state" : "debt"
+        },
+        "beers" : [
+          {
+            "costMiles" : 1,
+            "coveredByCreditMiles" : 0,
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000023",
+            "interestAccruedMiles" : 0,
+            "interestRemainingMiles" : 0,
+            "number" : 1,
+            "paidAt" : "2026-09-12T23:00:00Z",
+            "paidMiles" : 1,
+            "principalMiles" : 1,
+            "principalRemainingMiles" : 0,
+            "writtenOffMiles" : 0
+          },
+          {
+            "costMiles" : 1,
+            "coveredByCreditMiles" : 0,
+            "createdAt" : "2026-09-12T21:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000024",
+            "interestAccruedMiles" : 0,
+            "interestRemainingMiles" : 0,
+            "nextInterestAt" : "2026-09-13T21:00:00Z",
+            "number" : 2,
+            "paidMiles" : 0.5,
+            "principalMiles" : 1,
+            "principalRemainingMiles" : 0.5,
+            "writtenOffMiles" : 0
+          },
+          {
+            "costMiles" : 1,
+            "coveredByCreditMiles" : 0,
+            "createdAt" : "2026-09-12T22:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000022",
+            "interestAccruedMiles" : 0,
+            "interestRemainingMiles" : 0,
+            "nextInterestAt" : "2026-09-13T22:00:00Z",
+            "number" : 3,
+            "paidMiles" : 0,
+            "principalMiles" : 1,
+            "principalRemainingMiles" : 1,
+            "writtenOffMiles" : 0
+          }
+        ],
+        "creditExpiringThisWeekMiles" : 0,
+        "nextInterestAt" : "2026-09-13T21:00:00Z",
+        "runs" : [
+          {
+            "creditEarnedMiles" : 0,
+            "debtPaidMiles" : 1.5,
+            "discardedMiles" : 0,
+            "id" : "00000000-0000-4000-8000-000000000025",
+            "ignored" : false
+          }
+        ]
+      },
+      "ledger" : {
+        "beers" : [
+          {
+            "createdAt" : "2026-09-12T22:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000022"
+          },
+          {
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000023"
+          },
+          {
+            "createdAt" : "2026-09-12T21:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000024"
+          }
+        ],
+        "booksOpenedAt" : "2026-09-12T20:00:00Z",
+        "excludedWorkoutIDs" : [
+
+        ],
+        "rulesHistory" : [
+          {
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "rules" : {
+              "creditDecayRatePerWeek" : 0.1,
+              "gracePeriod" : 86400,
+              "interestPeriod" : "daily",
+              "interestRate" : 0.1,
+              "maximumCreditBeers" : 3,
+              "milesPerBeer" : 1
+            }
+          }
+        ],
+        "runs" : [
+          {
+            "distanceMeters" : 2414.016,
+            "endedAt" : "2026-09-12T23:00:00Z",
+            "healthKitWorkoutID" : "00000000-0000-4000-8000-000000000026",
+            "id" : "00000000-0000-4000-8000-000000000025",
+            "importedAt" : "2026-09-12T23:00:00Z",
+            "sourceName" : "Fixture",
+            "startedAt" : "2026-09-12T22:30:00Z"
+          }
+        ],
+        "version" : 1
+      },
+      "name" : "oldest beer is paid first",
+      "now" : "2026-09-13T00:00:00Z"
+    },
+    {
+      "expected" : {
+        "balance" : {
+          "creditBeers" : 0,
+          "creditMiles" : 0,
+          "debtMiles" : 0.6,
+          "interestMiles" : 0,
+          "principalMiles" : 0.6,
+          "state" : "debt"
+        },
+        "beers" : [
+          {
+            "costMiles" : 1,
+            "coveredByCreditMiles" : 0,
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000027",
+            "interestAccruedMiles" : 0.1,
+            "interestRemainingMiles" : 0,
+            "nextInterestAt" : "2026-09-14T20:00:00Z",
+            "number" : 1,
+            "paidMiles" : 0.5,
+            "principalMiles" : 1,
+            "principalRemainingMiles" : 0.6,
+            "writtenOffMiles" : 0
+          }
+        ],
+        "creditExpiringThisWeekMiles" : 0,
+        "nextInterestAt" : "2026-09-14T20:00:00Z",
+        "runs" : [
+          {
+            "creditEarnedMiles" : 0,
+            "debtPaidMiles" : 0.5,
+            "discardedMiles" : 0,
+            "id" : "00000000-0000-4000-8000-000000000028",
+            "ignored" : false
+          }
+        ]
+      },
+      "ledger" : {
+        "beers" : [
+          {
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000027"
+          }
+        ],
+        "booksOpenedAt" : "2026-09-12T20:00:00Z",
+        "excludedWorkoutIDs" : [
+
+        ],
+        "rulesHistory" : [
+          {
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "rules" : {
+              "creditDecayRatePerWeek" : 0.1,
+              "gracePeriod" : 86400,
+              "interestPeriod" : "daily",
+              "interestRate" : 0.1,
+              "maximumCreditBeers" : 3,
+              "milesPerBeer" : 1
+            }
+          }
+        ],
+        "runs" : [
+          {
+            "distanceMeters" : 804.672,
+            "endedAt" : "2026-09-13T21:00:00Z",
+            "healthKitWorkoutID" : "00000000-0000-4000-8000-000000000029",
+            "id" : "00000000-0000-4000-8000-000000000028",
+            "importedAt" : "2026-09-13T21:00:00Z",
+            "sourceName" : "Fixture",
+            "startedAt" : "2026-09-13T20:30:00Z"
+          }
+        ],
+        "version" : 1
+      },
+      "name" : "repayment clears interest before principal @ 1d2h",
+      "now" : "2026-09-13T22:00:00Z"
+    },
+    {
+      "expected" : {
+        "balance" : {
+          "creditBeers" : 0,
+          "creditMiles" : 0,
+          "debtMiles" : 0.6599999999999999,
+          "interestMiles" : 0.06,
+          "principalMiles" : 0.6,
+          "state" : "debt"
+        },
+        "beers" : [
+          {
+            "costMiles" : 1,
+            "coveredByCreditMiles" : 0,
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000027",
+            "interestAccruedMiles" : 0.16,
+            "interestRemainingMiles" : 0.06,
+            "nextInterestAt" : "2026-09-15T20:00:00Z",
+            "number" : 1,
+            "paidMiles" : 0.5,
+            "principalMiles" : 1,
+            "principalRemainingMiles" : 0.6,
+            "writtenOffMiles" : 0
+          }
+        ],
+        "creditExpiringThisWeekMiles" : 0,
+        "nextInterestAt" : "2026-09-15T20:00:00Z",
+        "runs" : [
+          {
+            "creditEarnedMiles" : 0,
+            "debtPaidMiles" : 0.5,
+            "discardedMiles" : 0,
+            "id" : "00000000-0000-4000-8000-000000000028",
+            "ignored" : false
+          }
+        ]
+      },
+      "ledger" : {
+        "beers" : [
+          {
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000027"
+          }
+        ],
+        "booksOpenedAt" : "2026-09-12T20:00:00Z",
+        "excludedWorkoutIDs" : [
+
+        ],
+        "rulesHistory" : [
+          {
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "rules" : {
+              "creditDecayRatePerWeek" : 0.1,
+              "gracePeriod" : 86400,
+              "interestPeriod" : "daily",
+              "interestRate" : 0.1,
+              "maximumCreditBeers" : 3,
+              "milesPerBeer" : 1
+            }
+          }
+        ],
+        "runs" : [
+          {
+            "distanceMeters" : 804.672,
+            "endedAt" : "2026-09-13T21:00:00Z",
+            "healthKitWorkoutID" : "00000000-0000-4000-8000-000000000029",
+            "id" : "00000000-0000-4000-8000-000000000028",
+            "importedAt" : "2026-09-13T21:00:00Z",
+            "sourceName" : "Fixture",
+            "startedAt" : "2026-09-13T20:30:00Z"
+          }
+        ],
+        "version" : 1
+      },
+      "name" : "repayment clears interest before principal @ 2d",
+      "now" : "2026-09-14T20:00:00Z"
+    },
+    {
+      "expected" : {
+        "balance" : {
+          "creditBeers" : 2,
+          "creditMiles" : 2,
+          "debtMiles" : 0,
+          "interestMiles" : 0,
+          "principalMiles" : 0,
+          "state" : "credit"
+        },
+        "beers" : [
+          {
+            "costMiles" : 1,
+            "coveredByCreditMiles" : 0,
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000030",
+            "interestAccruedMiles" : 0,
+            "interestRemainingMiles" : 0,
+            "number" : 1,
+            "paidAt" : "2026-09-12T21:00:00Z",
+            "paidMiles" : 1,
+            "principalMiles" : 1,
+            "principalRemainingMiles" : 0,
+            "writtenOffMiles" : 0
+          }
+        ],
+        "creditExpiringThisWeekMiles" : 0,
+        "runs" : [
+          {
+            "creditEarnedMiles" : 2,
+            "debtPaidMiles" : 1,
+            "discardedMiles" : 0,
+            "id" : "00000000-0000-4000-8000-000000000031",
+            "ignored" : false
+          }
+        ]
+      },
+      "ledger" : {
+        "beers" : [
+          {
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000030"
+          }
+        ],
+        "booksOpenedAt" : "2026-09-12T20:00:00Z",
+        "excludedWorkoutIDs" : [
+
+        ],
+        "rulesHistory" : [
+          {
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "rules" : {
+              "creditDecayRatePerWeek" : 0,
+              "gracePeriod" : 86400,
+              "interestPeriod" : "daily",
+              "interestRate" : 0.1,
+              "maximumCreditBeers" : 3,
+              "milesPerBeer" : 1
+            }
+          }
+        ],
+        "runs" : [
+          {
+            "distanceMeters" : 4828.032,
+            "endedAt" : "2026-09-12T21:00:00Z",
+            "healthKitWorkoutID" : "00000000-0000-4000-8000-000000000032",
+            "id" : "00000000-0000-4000-8000-000000000031",
+            "importedAt" : "2026-09-12T21:00:00Z",
+            "sourceName" : "Fixture",
+            "startedAt" : "2026-09-12T20:30:00Z"
+          }
+        ],
+        "version" : 1
+      },
+      "name" : "excess run becomes credit",
+      "now" : "2026-09-12T22:00:00Z"
+    },
+    {
+      "expected" : {
+        "balance" : {
+          "creditBeers" : 3,
+          "creditMiles" : 3,
+          "debtMiles" : 0,
+          "interestMiles" : 0,
+          "principalMiles" : 0,
+          "state" : "credit"
+        },
+        "beers" : [
+
+        ],
+        "creditExpiringThisWeekMiles" : 0,
+        "runs" : [
+          {
+            "creditEarnedMiles" : 3,
+            "debtPaidMiles" : 0,
+            "discardedMiles" : 2,
+            "id" : "00000000-0000-4000-8000-000000000033",
+            "ignored" : false
+          }
+        ]
+      },
+      "ledger" : {
+        "beers" : [
+
+        ],
+        "booksOpenedAt" : "2026-09-12T20:00:00Z",
+        "excludedWorkoutIDs" : [
+
+        ],
+        "rulesHistory" : [
+          {
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "rules" : {
+              "creditDecayRatePerWeek" : 0,
+              "gracePeriod" : 86400,
+              "interestPeriod" : "daily",
+              "interestRate" : 0.1,
+              "maximumCreditBeers" : 3,
+              "milesPerBeer" : 1
+            }
+          }
+        ],
+        "runs" : [
+          {
+            "distanceMeters" : 8046.72,
+            "endedAt" : "2026-09-12T20:00:00Z",
+            "healthKitWorkoutID" : "00000000-0000-4000-8000-000000000034",
+            "id" : "00000000-0000-4000-8000-000000000033",
+            "importedAt" : "2026-09-12T20:00:00Z",
+            "sourceName" : "Fixture",
+            "startedAt" : "2026-09-12T19:30:00Z"
+          }
+        ],
+        "version" : 1
+      },
+      "name" : "credit is capped",
+      "now" : "2026-09-12T21:00:00Z"
+    },
+    {
+      "expected" : {
+        "balance" : {
+          "creditBeers" : 3,
+          "creditMiles" : 6,
+          "debtMiles" : 0,
+          "interestMiles" : 0,
+          "principalMiles" : 0,
+          "state" : "credit"
+        },
+        "beers" : [
+
+        ],
+        "creditExpiringThisWeekMiles" : 0,
+        "runs" : [
+          {
+            "creditEarnedMiles" : 6,
+            "debtPaidMiles" : 0,
+            "discardedMiles" : 4,
+            "id" : "00000000-0000-4000-8000-000000000035",
+            "ignored" : false
+          }
+        ]
+      },
+      "ledger" : {
+        "beers" : [
+
+        ],
+        "booksOpenedAt" : "2026-09-12T20:00:00Z",
+        "excludedWorkoutIDs" : [
+
+        ],
+        "rulesHistory" : [
+          {
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "rules" : {
+              "creditDecayRatePerWeek" : 0,
+              "gracePeriod" : 86400,
+              "interestPeriod" : "daily",
+              "interestRate" : 0.1,
+              "maximumCreditBeers" : 3,
+              "milesPerBeer" : 2
+            }
+          }
+        ],
+        "runs" : [
+          {
+            "distanceMeters" : 16093.44,
+            "endedAt" : "2026-09-12T20:00:00Z",
+            "healthKitWorkoutID" : "00000000-0000-4000-8000-000000000036",
+            "id" : "00000000-0000-4000-8000-000000000035",
+            "importedAt" : "2026-09-12T20:00:00Z",
+            "sourceName" : "Fixture",
+            "startedAt" : "2026-09-12T19:30:00Z"
+          }
+        ],
+        "version" : 1
+      },
+      "name" : "credit cap is in beers at current miles per beer",
+      "now" : "2026-09-12T21:00:00Z"
+    },
+    {
+      "expected" : {
+        "balance" : {
+          "creditBeers" : 2,
+          "creditMiles" : 2,
+          "debtMiles" : 0,
+          "interestMiles" : 0,
+          "principalMiles" : 0,
+          "state" : "credit"
+        },
+        "beers" : [
+
+        ],
+        "creditExpiringThisWeekMiles" : 0.2,
+        "runs" : [
+          {
+            "creditEarnedMiles" : 2,
+            "debtPaidMiles" : 0,
+            "discardedMiles" : 0,
+            "id" : "00000000-0000-4000-8000-000000000037",
+            "ignored" : false
+          }
+        ]
+      },
+      "ledger" : {
+        "beers" : [
+
+        ],
+        "booksOpenedAt" : "2026-09-12T20:00:00Z",
+        "excludedWorkoutIDs" : [
+
+        ],
+        "rulesHistory" : [
+          {
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "rules" : {
+              "creditDecayRatePerWeek" : 0.1,
+              "gracePeriod" : 86400,
+              "interestPeriod" : "daily",
+              "interestRate" : 0.1,
+              "maximumCreditBeers" : 3,
+              "milesPerBeer" : 1
+            }
+          }
+        ],
+        "runs" : [
+          {
+            "distanceMeters" : 3218.688,
+            "endedAt" : "2026-09-12T20:00:00Z",
+            "healthKitWorkoutID" : "00000000-0000-4000-8000-000000000038",
+            "id" : "00000000-0000-4000-8000-000000000037",
+            "importedAt" : "2026-09-12T20:00:00Z",
+            "sourceName" : "Fixture",
+            "startedAt" : "2026-09-12T19:30:00Z"
+          }
+        ],
+        "version" : 1
+      },
+      "name" : "credit decays ten percent a week @ 0",
+      "now" : "2026-09-12T20:00:00Z"
+    },
+    {
+      "expected" : {
+        "balance" : {
+          "creditBeers" : 1.8,
+          "creditMiles" : 1.8,
+          "debtMiles" : 0,
+          "interestMiles" : 0,
+          "principalMiles" : 0,
+          "state" : "credit"
+        },
+        "beers" : [
+
+        ],
+        "creditExpiringThisWeekMiles" : 0.18000000000000002,
+        "runs" : [
+          {
+            "creditEarnedMiles" : 2,
+            "debtPaidMiles" : 0,
+            "discardedMiles" : 0,
+            "id" : "00000000-0000-4000-8000-000000000037",
+            "ignored" : false
+          }
+        ]
+      },
+      "ledger" : {
+        "beers" : [
+
+        ],
+        "booksOpenedAt" : "2026-09-12T20:00:00Z",
+        "excludedWorkoutIDs" : [
+
+        ],
+        "rulesHistory" : [
+          {
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "rules" : {
+              "creditDecayRatePerWeek" : 0.1,
+              "gracePeriod" : 86400,
+              "interestPeriod" : "daily",
+              "interestRate" : 0.1,
+              "maximumCreditBeers" : 3,
+              "milesPerBeer" : 1
+            }
+          }
+        ],
+        "runs" : [
+          {
+            "distanceMeters" : 3218.688,
+            "endedAt" : "2026-09-12T20:00:00Z",
+            "healthKitWorkoutID" : "00000000-0000-4000-8000-000000000038",
+            "id" : "00000000-0000-4000-8000-000000000037",
+            "importedAt" : "2026-09-12T20:00:00Z",
+            "sourceName" : "Fixture",
+            "startedAt" : "2026-09-12T19:30:00Z"
+          }
+        ],
+        "version" : 1
+      },
+      "name" : "credit decays ten percent a week @ 1w",
+      "now" : "2026-09-19T20:00:00Z"
+    },
+    {
+      "expected" : {
+        "balance" : {
+          "creditBeers" : 1.62,
+          "creditMiles" : 1.62,
+          "debtMiles" : 0,
+          "interestMiles" : 0,
+          "principalMiles" : 0,
+          "state" : "credit"
+        },
+        "beers" : [
+
+        ],
+        "creditExpiringThisWeekMiles" : 0.16200000000000003,
+        "runs" : [
+          {
+            "creditEarnedMiles" : 2,
+            "debtPaidMiles" : 0,
+            "discardedMiles" : 0,
+            "id" : "00000000-0000-4000-8000-000000000037",
+            "ignored" : false
+          }
+        ]
+      },
+      "ledger" : {
+        "beers" : [
+
+        ],
+        "booksOpenedAt" : "2026-09-12T20:00:00Z",
+        "excludedWorkoutIDs" : [
+
+        ],
+        "rulesHistory" : [
+          {
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "rules" : {
+              "creditDecayRatePerWeek" : 0.1,
+              "gracePeriod" : 86400,
+              "interestPeriod" : "daily",
+              "interestRate" : 0.1,
+              "maximumCreditBeers" : 3,
+              "milesPerBeer" : 1
+            }
+          }
+        ],
+        "runs" : [
+          {
+            "distanceMeters" : 3218.688,
+            "endedAt" : "2026-09-12T20:00:00Z",
+            "healthKitWorkoutID" : "00000000-0000-4000-8000-000000000038",
+            "id" : "00000000-0000-4000-8000-000000000037",
+            "importedAt" : "2026-09-12T20:00:00Z",
+            "sourceName" : "Fixture",
+            "startedAt" : "2026-09-12T19:30:00Z"
+          }
+        ],
+        "version" : 1
+      },
+      "name" : "credit decays ten percent a week @ 2w",
+      "now" : "2026-09-26T20:00:00Z"
+    },
+    {
+      "expected" : {
+        "balance" : {
+          "creditBeers" : 2,
+          "creditMiles" : 2,
+          "debtMiles" : 0,
+          "interestMiles" : 0,
+          "principalMiles" : 0,
+          "state" : "credit"
+        },
+        "beers" : [
+
+        ],
+        "creditExpiringThisWeekMiles" : 0,
+        "runs" : [
+          {
+            "creditEarnedMiles" : 2,
+            "debtPaidMiles" : 0,
+            "discardedMiles" : 0,
+            "id" : "00000000-0000-4000-8000-000000000039",
+            "ignored" : false
+          }
+        ]
+      },
+      "ledger" : {
+        "beers" : [
+
+        ],
+        "booksOpenedAt" : "2026-09-12T20:00:00Z",
+        "excludedWorkoutIDs" : [
+
+        ],
+        "rulesHistory" : [
+          {
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "rules" : {
+              "creditDecayRatePerWeek" : 0,
+              "gracePeriod" : 86400,
+              "interestPeriod" : "daily",
+              "interestRate" : 0.1,
+              "maximumCreditBeers" : 3,
+              "milesPerBeer" : 1
+            }
+          }
+        ],
+        "runs" : [
+          {
+            "distanceMeters" : 3218.688,
+            "endedAt" : "2026-09-12T20:00:00Z",
+            "healthKitWorkoutID" : "00000000-0000-4000-8000-000000000040",
+            "id" : "00000000-0000-4000-8000-000000000039",
+            "importedAt" : "2026-09-12T20:00:00Z",
+            "sourceName" : "Fixture",
+            "startedAt" : "2026-09-12T19:30:00Z"
+          }
+        ],
+        "version" : 1
+      },
+      "name" : "credit decay can be turned off",
+      "now" : "2026-11-21T20:00:00Z"
+    },
+    {
+      "expected" : {
+        "balance" : {
+          "creditBeers" : 1,
+          "creditMiles" : 1,
+          "debtMiles" : 0,
+          "interestMiles" : 0,
+          "principalMiles" : 0,
+          "state" : "credit"
+        },
+        "beers" : [
+          {
+            "costMiles" : 1,
+            "coveredByCreditMiles" : 1,
+            "createdAt" : "2026-09-12T21:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000041",
+            "interestAccruedMiles" : 0,
+            "interestRemainingMiles" : 0,
+            "number" : 1,
+            "paidAt" : "2026-09-12T21:00:00Z",
+            "paidMiles" : 0,
+            "principalMiles" : 0,
+            "principalRemainingMiles" : 0,
+            "writtenOffMiles" : 0
+          }
+        ],
+        "creditExpiringThisWeekMiles" : 0,
+        "runs" : [
+          {
+            "creditEarnedMiles" : 2,
+            "debtPaidMiles" : 0,
+            "discardedMiles" : 0,
+            "id" : "00000000-0000-4000-8000-000000000042",
+            "ignored" : false
+          }
+        ]
+      },
+      "ledger" : {
+        "beers" : [
+          {
+            "createdAt" : "2026-09-12T21:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000041"
+          }
+        ],
+        "booksOpenedAt" : "2026-09-12T20:00:00Z",
+        "excludedWorkoutIDs" : [
+
+        ],
+        "rulesHistory" : [
+          {
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "rules" : {
+              "creditDecayRatePerWeek" : 0,
+              "gracePeriod" : 86400,
+              "interestPeriod" : "daily",
+              "interestRate" : 0.1,
+              "maximumCreditBeers" : 3,
+              "milesPerBeer" : 1
+            }
+          }
+        ],
+        "runs" : [
+          {
+            "distanceMeters" : 3218.688,
+            "endedAt" : "2026-09-12T20:00:00Z",
+            "healthKitWorkoutID" : "00000000-0000-4000-8000-000000000043",
+            "id" : "00000000-0000-4000-8000-000000000042",
+            "importedAt" : "2026-09-12T20:00:00Z",
+            "sourceName" : "Fixture",
+            "startedAt" : "2026-09-12T19:30:00Z"
+          }
+        ],
+        "version" : 1
+      },
+      "name" : "beer spends credit first",
+      "now" : "2026-09-12T22:00:00Z"
+    },
+    {
+      "expected" : {
+        "balance" : {
+          "creditBeers" : 0,
+          "creditMiles" : 0,
+          "debtMiles" : 0.6,
+          "interestMiles" : 0,
+          "principalMiles" : 0.6,
+          "state" : "debt"
+        },
+        "beers" : [
+          {
+            "costMiles" : 1,
+            "coveredByCreditMiles" : 0.4,
+            "createdAt" : "2026-09-12T21:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000044",
+            "interestAccruedMiles" : 0,
+            "interestRemainingMiles" : 0,
+            "nextInterestAt" : "2026-09-13T21:00:00Z",
+            "number" : 1,
+            "paidMiles" : 0,
+            "principalMiles" : 0.6,
+            "principalRemainingMiles" : 0.6,
+            "writtenOffMiles" : 0
+          }
+        ],
+        "creditExpiringThisWeekMiles" : 0,
+        "nextInterestAt" : "2026-09-13T21:00:00Z",
+        "runs" : [
+          {
+            "creditEarnedMiles" : 0.4,
+            "debtPaidMiles" : 0,
+            "discardedMiles" : 0,
+            "id" : "00000000-0000-4000-8000-000000000045",
+            "ignored" : false
+          }
+        ]
+      },
+      "ledger" : {
+        "beers" : [
+          {
+            "createdAt" : "2026-09-12T21:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000044"
+          }
+        ],
+        "booksOpenedAt" : "2026-09-12T20:00:00Z",
+        "excludedWorkoutIDs" : [
+
+        ],
+        "rulesHistory" : [
+          {
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "rules" : {
+              "creditDecayRatePerWeek" : 0,
+              "gracePeriod" : 86400,
+              "interestPeriod" : "daily",
+              "interestRate" : 0.1,
+              "maximumCreditBeers" : 3,
+              "milesPerBeer" : 1
+            }
+          }
+        ],
+        "runs" : [
+          {
+            "distanceMeters" : 643.7376,
+            "endedAt" : "2026-09-12T20:00:00Z",
+            "healthKitWorkoutID" : "00000000-0000-4000-8000-000000000046",
+            "id" : "00000000-0000-4000-8000-000000000045",
+            "importedAt" : "2026-09-12T20:00:00Z",
+            "sourceName" : "Fixture",
+            "startedAt" : "2026-09-12T19:30:00Z"
+          }
+        ],
+        "version" : 1
+      },
+      "name" : "partial credit then debt",
+      "now" : "2026-09-12T22:00:00Z"
+    },
+    {
+      "expected" : {
+        "balance" : {
+          "creditBeers" : 1,
+          "creditMiles" : 1,
+          "debtMiles" : 0,
+          "interestMiles" : 0,
+          "principalMiles" : 0,
+          "state" : "credit"
+        },
+        "beers" : [
+
+        ],
+        "creditExpiringThisWeekMiles" : 0,
+        "runs" : [
+          {
+            "creditEarnedMiles" : 1,
+            "debtPaidMiles" : 0,
+            "discardedMiles" : 0,
+            "id" : "00000000-0000-4000-8000-000000000049",
+            "ignored" : false
+          }
+        ]
+      },
+      "ledger" : {
+        "beers" : [
+          {
+            "createdAt" : "2026-09-12T21:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000047"
+          },
+          {
+            "createdAt" : "2026-09-12T22:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000048"
+          }
+        ],
+        "booksOpenedAt" : "2026-09-12T20:00:00Z",
+        "excludedWorkoutIDs" : [
+
+        ],
+        "rulesHistory" : [
+          {
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "rules" : {
+              "creditDecayRatePerWeek" : 0,
+              "gracePeriod" : 86400,
+              "interestPeriod" : "daily",
+              "interestRate" : 0.1,
+              "maximumCreditBeers" : 3,
+              "milesPerBeer" : 1
+            }
+          }
+        ],
+        "runs" : [
+          {
+            "distanceMeters" : 1609.344,
+            "endedAt" : "2026-09-12T20:00:00Z",
+            "healthKitWorkoutID" : "00000000-0000-4000-8000-000000000050",
+            "id" : "00000000-0000-4000-8000-000000000049",
+            "importedAt" : "2026-09-12T20:00:00Z",
+            "sourceName" : "Fixture",
+            "startedAt" : "2026-09-12T19:30:00Z"
+          }
+        ],
+        "version" : 1
+      },
+      "name" : "crossing from credit into debt @ 30m",
+      "now" : "2026-09-12T20:30:00Z"
+    },
+    {
+      "expected" : {
+        "balance" : {
+          "creditBeers" : 0,
+          "creditMiles" : 0,
+          "debtMiles" : 0,
+          "interestMiles" : 0,
+          "principalMiles" : 0,
+          "state" : "even"
+        },
+        "beers" : [
+          {
+            "costMiles" : 1,
+            "coveredByCreditMiles" : 1,
+            "createdAt" : "2026-09-12T21:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000047",
+            "interestAccruedMiles" : 0,
+            "interestRemainingMiles" : 0,
+            "number" : 1,
+            "paidAt" : "2026-09-12T21:00:00Z",
+            "paidMiles" : 0,
+            "principalMiles" : 0,
+            "principalRemainingMiles" : 0,
+            "writtenOffMiles" : 0
+          }
+        ],
+        "creditExpiringThisWeekMiles" : 0,
+        "runs" : [
+          {
+            "creditEarnedMiles" : 1,
+            "debtPaidMiles" : 0,
+            "discardedMiles" : 0,
+            "id" : "00000000-0000-4000-8000-000000000049",
+            "ignored" : false
+          }
+        ]
+      },
+      "ledger" : {
+        "beers" : [
+          {
+            "createdAt" : "2026-09-12T21:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000047"
+          },
+          {
+            "createdAt" : "2026-09-12T22:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000048"
+          }
+        ],
+        "booksOpenedAt" : "2026-09-12T20:00:00Z",
+        "excludedWorkoutIDs" : [
+
+        ],
+        "rulesHistory" : [
+          {
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "rules" : {
+              "creditDecayRatePerWeek" : 0,
+              "gracePeriod" : 86400,
+              "interestPeriod" : "daily",
+              "interestRate" : 0.1,
+              "maximumCreditBeers" : 3,
+              "milesPerBeer" : 1
+            }
+          }
+        ],
+        "runs" : [
+          {
+            "distanceMeters" : 1609.344,
+            "endedAt" : "2026-09-12T20:00:00Z",
+            "healthKitWorkoutID" : "00000000-0000-4000-8000-000000000050",
+            "id" : "00000000-0000-4000-8000-000000000049",
+            "importedAt" : "2026-09-12T20:00:00Z",
+            "sourceName" : "Fixture",
+            "startedAt" : "2026-09-12T19:30:00Z"
+          }
+        ],
+        "version" : 1
+      },
+      "name" : "crossing from credit into debt @ 90m",
+      "now" : "2026-09-12T21:30:00Z"
+    },
+    {
+      "expected" : {
+        "balance" : {
+          "creditBeers" : 0,
+          "creditMiles" : 0,
+          "debtMiles" : 1,
+          "interestMiles" : 0,
+          "principalMiles" : 1,
+          "state" : "debt"
+        },
+        "beers" : [
+          {
+            "costMiles" : 1,
+            "coveredByCreditMiles" : 1,
+            "createdAt" : "2026-09-12T21:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000047",
+            "interestAccruedMiles" : 0,
+            "interestRemainingMiles" : 0,
+            "number" : 1,
+            "paidAt" : "2026-09-12T21:00:00Z",
+            "paidMiles" : 0,
+            "principalMiles" : 0,
+            "principalRemainingMiles" : 0,
+            "writtenOffMiles" : 0
+          },
+          {
+            "costMiles" : 1,
+            "coveredByCreditMiles" : 0,
+            "createdAt" : "2026-09-12T22:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000048",
+            "interestAccruedMiles" : 0,
+            "interestRemainingMiles" : 0,
+            "nextInterestAt" : "2026-09-13T22:00:00Z",
+            "number" : 2,
+            "paidMiles" : 0,
+            "principalMiles" : 1,
+            "principalRemainingMiles" : 1,
+            "writtenOffMiles" : 0
+          }
+        ],
+        "creditExpiringThisWeekMiles" : 0,
+        "nextInterestAt" : "2026-09-13T22:00:00Z",
+        "runs" : [
+          {
+            "creditEarnedMiles" : 1,
+            "debtPaidMiles" : 0,
+            "discardedMiles" : 0,
+            "id" : "00000000-0000-4000-8000-000000000049",
+            "ignored" : false
+          }
+        ]
+      },
+      "ledger" : {
+        "beers" : [
+          {
+            "createdAt" : "2026-09-12T21:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000047"
+          },
+          {
+            "createdAt" : "2026-09-12T22:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000048"
+          }
+        ],
+        "booksOpenedAt" : "2026-09-12T20:00:00Z",
+        "excludedWorkoutIDs" : [
+
+        ],
+        "rulesHistory" : [
+          {
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "rules" : {
+              "creditDecayRatePerWeek" : 0,
+              "gracePeriod" : 86400,
+              "interestPeriod" : "daily",
+              "interestRate" : 0.1,
+              "maximumCreditBeers" : 3,
+              "milesPerBeer" : 1
+            }
+          }
+        ],
+        "runs" : [
+          {
+            "distanceMeters" : 1609.344,
+            "endedAt" : "2026-09-12T20:00:00Z",
+            "healthKitWorkoutID" : "00000000-0000-4000-8000-000000000050",
+            "id" : "00000000-0000-4000-8000-000000000049",
+            "importedAt" : "2026-09-12T20:00:00Z",
+            "sourceName" : "Fixture",
+            "startedAt" : "2026-09-12T19:30:00Z"
+          }
+        ],
+        "version" : 1
+      },
+      "name" : "crossing from credit into debt @ 3h",
+      "now" : "2026-09-12T23:00:00Z"
+    },
+    {
+      "expected" : {
+        "balance" : {
+          "creditBeers" : 0,
+          "creditMiles" : 0,
+          "debtMiles" : 1,
+          "interestMiles" : 0,
+          "principalMiles" : 1,
+          "state" : "debt"
+        },
+        "beers" : [
+          {
+            "costMiles" : 1,
+            "coveredByCreditMiles" : 0,
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000051",
+            "interestAccruedMiles" : 0,
+            "interestRemainingMiles" : 0,
+            "nextInterestAt" : "2026-09-13T20:00:00Z",
+            "number" : 1,
+            "paidMiles" : 0,
+            "principalMiles" : 1,
+            "principalRemainingMiles" : 1,
+            "writtenOffMiles" : 0
+          }
+        ],
+        "creditExpiringThisWeekMiles" : 0,
+        "nextInterestAt" : "2026-09-13T20:00:00Z",
+        "runs" : [
+
+        ]
+      },
+      "ledger" : {
+        "beers" : [
+          {
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000051"
+          }
+        ],
+        "booksOpenedAt" : "2026-09-12T20:00:00Z",
+        "excludedWorkoutIDs" : [
+
+        ],
+        "rulesHistory" : [
+          {
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "rules" : {
+              "creditDecayRatePerWeek" : 0,
+              "gracePeriod" : 86400,
+              "interestPeriod" : "daily",
+              "interestRate" : 0.1,
+              "maximumCreditBeers" : 3,
+              "milesPerBeer" : 1
+            }
+          }
+        ],
+        "runs" : [
+          {
+            "distanceMeters" : 3218.688,
+            "endedAt" : "2026-09-12T21:00:00Z",
+            "healthKitWorkoutID" : "00000000-0000-4000-8000-000000000053",
+            "id" : "00000000-0000-4000-8000-000000000052",
+            "importedAt" : "2026-09-12T21:00:00Z",
+            "sourceName" : "Fixture",
+            "startedAt" : "2026-09-12T20:30:00Z"
+          }
+        ],
+        "version" : 1
+      },
+      "name" : "crossing from debt into credit @ 30m",
+      "now" : "2026-09-12T20:30:00Z"
+    },
+    {
+      "expected" : {
+        "balance" : {
+          "creditBeers" : 1,
+          "creditMiles" : 1,
+          "debtMiles" : 0,
+          "interestMiles" : 0,
+          "principalMiles" : 0,
+          "state" : "credit"
+        },
+        "beers" : [
+          {
+            "costMiles" : 1,
+            "coveredByCreditMiles" : 0,
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000051",
+            "interestAccruedMiles" : 0,
+            "interestRemainingMiles" : 0,
+            "number" : 1,
+            "paidAt" : "2026-09-12T21:00:00Z",
+            "paidMiles" : 1,
+            "principalMiles" : 1,
+            "principalRemainingMiles" : 0,
+            "writtenOffMiles" : 0
+          }
+        ],
+        "creditExpiringThisWeekMiles" : 0,
+        "runs" : [
+          {
+            "creditEarnedMiles" : 1,
+            "debtPaidMiles" : 1,
+            "discardedMiles" : 0,
+            "id" : "00000000-0000-4000-8000-000000000052",
+            "ignored" : false
+          }
+        ]
+      },
+      "ledger" : {
+        "beers" : [
+          {
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000051"
+          }
+        ],
+        "booksOpenedAt" : "2026-09-12T20:00:00Z",
+        "excludedWorkoutIDs" : [
+
+        ],
+        "rulesHistory" : [
+          {
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "rules" : {
+              "creditDecayRatePerWeek" : 0,
+              "gracePeriod" : 86400,
+              "interestPeriod" : "daily",
+              "interestRate" : 0.1,
+              "maximumCreditBeers" : 3,
+              "milesPerBeer" : 1
+            }
+          }
+        ],
+        "runs" : [
+          {
+            "distanceMeters" : 3218.688,
+            "endedAt" : "2026-09-12T21:00:00Z",
+            "healthKitWorkoutID" : "00000000-0000-4000-8000-000000000053",
+            "id" : "00000000-0000-4000-8000-000000000052",
+            "importedAt" : "2026-09-12T21:00:00Z",
+            "sourceName" : "Fixture",
+            "startedAt" : "2026-09-12T20:30:00Z"
+          }
+        ],
+        "version" : 1
+      },
+      "name" : "crossing from debt into credit @ 2h",
+      "now" : "2026-09-12T22:00:00Z"
+    },
+    {
+      "expected" : {
+        "balance" : {
+          "creditBeers" : 0.04,
+          "creditMiles" : 0.04,
+          "debtMiles" : 0,
+          "interestMiles" : 0,
+          "principalMiles" : 0,
+          "state" : "even"
+        },
+        "beers" : [
+
+        ],
+        "creditExpiringThisWeekMiles" : 0,
+        "runs" : [
+          {
+            "creditEarnedMiles" : 0.04,
+            "debtPaidMiles" : 0,
+            "discardedMiles" : 0,
+            "id" : "00000000-0000-4000-8000-000000000054",
+            "ignored" : false
+          }
+        ]
+      },
+      "ledger" : {
+        "beers" : [
+
+        ],
+        "booksOpenedAt" : "2026-09-12T20:00:00Z",
+        "excludedWorkoutIDs" : [
+
+        ],
+        "rulesHistory" : [
+          {
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "rules" : {
+              "creditDecayRatePerWeek" : 0,
+              "gracePeriod" : 86400,
+              "interestPeriod" : "daily",
+              "interestRate" : 0.1,
+              "maximumCreditBeers" : 3,
+              "milesPerBeer" : 1
+            }
+          }
+        ],
+        "runs" : [
+          {
+            "distanceMeters" : 64.37376,
+            "endedAt" : "2026-09-12T20:00:00Z",
+            "healthKitWorkoutID" : "00000000-0000-4000-8000-000000000055",
+            "id" : "00000000-0000-4000-8000-000000000054",
+            "importedAt" : "2026-09-12T20:00:00Z",
+            "sourceName" : "Fixture",
+            "startedAt" : "2026-09-12T19:30:00Z"
+          }
+        ],
+        "version" : 1
+      },
+      "name" : "tiny credit reads as even",
+      "now" : "2026-09-12T21:00:00Z"
+    },
+    {
+      "expected" : {
+        "balance" : {
+          "creditBeers" : 0,
+          "creditMiles" : 0,
+          "debtMiles" : 0,
+          "interestMiles" : 0,
+          "principalMiles" : 0,
+          "state" : "even"
+        },
+        "beers" : [
+          {
+            "costMiles" : 1,
+            "coveredByCreditMiles" : 0,
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000056",
+            "interestAccruedMiles" : 0,
+            "interestRemainingMiles" : 0,
+            "number" : 1,
+            "paidAt" : "2026-09-12T21:00:00Z",
+            "paidMiles" : 0.97,
+            "principalMiles" : 1,
+            "principalRemainingMiles" : 0,
+            "writtenOffMiles" : 0.030000000000000027
+          }
+        ],
+        "creditExpiringThisWeekMiles" : 0,
+        "runs" : [
+          {
+            "creditEarnedMiles" : 0,
+            "debtPaidMiles" : 0.97,
+            "discardedMiles" : 0,
+            "id" : "00000000-0000-4000-8000-000000000057",
+            "ignored" : false
+          }
+        ]
+      },
+      "ledger" : {
+        "beers" : [
+          {
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000056"
+          }
+        ],
+        "booksOpenedAt" : "2026-09-12T20:00:00Z",
+        "excludedWorkoutIDs" : [
+
+        ],
+        "rulesHistory" : [
+          {
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "rules" : {
+              "creditDecayRatePerWeek" : 0.1,
+              "gracePeriod" : 86400,
+              "interestPeriod" : "daily",
+              "interestRate" : 0.1,
+              "maximumCreditBeers" : 3,
+              "milesPerBeer" : 1
+            }
+          }
+        ],
+        "runs" : [
+          {
+            "distanceMeters" : 1561.06368,
+            "endedAt" : "2026-09-12T21:00:00Z",
+            "healthKitWorkoutID" : "00000000-0000-4000-8000-000000000058",
+            "id" : "00000000-0000-4000-8000-000000000057",
+            "importedAt" : "2026-09-12T21:00:00Z",
+            "sourceName" : "Fixture",
+            "startedAt" : "2026-09-12T20:30:00Z"
+          }
+        ],
+        "version" : 1
+      },
+      "name" : "remnant under 0.05 written off by run",
+      "now" : "2026-09-12T22:00:00Z"
+    },
+    {
+      "expected" : {
+        "balance" : {
+          "creditBeers" : 0,
+          "creditMiles" : 0,
+          "debtMiles" : 0,
+          "interestMiles" : 0,
+          "principalMiles" : 0,
+          "state" : "even"
+        },
+        "beers" : [
+          {
+            "costMiles" : 1,
+            "coveredByCreditMiles" : 0.97,
+            "createdAt" : "2026-09-12T21:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000059",
+            "interestAccruedMiles" : 0,
+            "interestRemainingMiles" : 0,
+            "number" : 1,
+            "paidAt" : "2026-09-12T21:00:00Z",
+            "paidMiles" : 0,
+            "principalMiles" : 0.030000000000000027,
+            "principalRemainingMiles" : 0,
+            "writtenOffMiles" : 0.030000000000000027
+          }
+        ],
+        "creditExpiringThisWeekMiles" : 0,
+        "runs" : [
+          {
+            "creditEarnedMiles" : 0.97,
+            "debtPaidMiles" : 0,
+            "discardedMiles" : 0,
+            "id" : "00000000-0000-4000-8000-000000000060",
+            "ignored" : false
+          }
+        ]
+      },
+      "ledger" : {
+        "beers" : [
+          {
+            "createdAt" : "2026-09-12T21:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000059"
+          }
+        ],
+        "booksOpenedAt" : "2026-09-12T20:00:00Z",
+        "excludedWorkoutIDs" : [
+
+        ],
+        "rulesHistory" : [
+          {
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "rules" : {
+              "creditDecayRatePerWeek" : 0,
+              "gracePeriod" : 86400,
+              "interestPeriod" : "daily",
+              "interestRate" : 0.1,
+              "maximumCreditBeers" : 3,
+              "milesPerBeer" : 1
+            }
+          }
+        ],
+        "runs" : [
+          {
+            "distanceMeters" : 1561.06368,
+            "endedAt" : "2026-09-12T20:00:00Z",
+            "healthKitWorkoutID" : "00000000-0000-4000-8000-000000000061",
+            "id" : "00000000-0000-4000-8000-000000000060",
+            "importedAt" : "2026-09-12T20:00:00Z",
+            "sourceName" : "Fixture",
+            "startedAt" : "2026-09-12T19:30:00Z"
+          }
+        ],
+        "version" : 1
+      },
+      "name" : "remnant under 0.05 written off by credit",
+      "now" : "2026-09-12T22:00:00Z"
+    },
+    {
+      "expected" : {
+        "balance" : {
+          "creditBeers" : 0,
+          "creditMiles" : 0,
+          "debtMiles" : 0.09999999999999987,
+          "interestMiles" : 0,
+          "principalMiles" : 0.09999999999999987,
+          "state" : "debt"
+        },
+        "beers" : [
+          {
+            "costMiles" : 1,
+            "coveredByCreditMiles" : 0,
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000062",
+            "interestAccruedMiles" : 0,
+            "interestRemainingMiles" : 0,
+            "nextInterestAt" : "2026-09-13T20:00:00Z",
+            "number" : 1,
+            "paidMiles" : 0.9000000000000001,
+            "principalMiles" : 1,
+            "principalRemainingMiles" : 0.09999999999999987,
+            "writtenOffMiles" : 0
+          }
+        ],
+        "creditExpiringThisWeekMiles" : 0,
+        "nextInterestAt" : "2026-09-13T20:00:00Z",
+        "runs" : [
+          {
+            "creditEarnedMiles" : 0,
+            "debtPaidMiles" : 0.9000000000000001,
+            "discardedMiles" : 0,
+            "id" : "00000000-0000-4000-8000-000000000063",
+            "ignored" : false
+          }
+        ]
+      },
+      "ledger" : {
+        "beers" : [
+          {
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000062"
+          }
+        ],
+        "booksOpenedAt" : "2026-09-12T20:00:00Z",
+        "excludedWorkoutIDs" : [
+
+        ],
+        "rulesHistory" : [
+          {
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "rules" : {
+              "creditDecayRatePerWeek" : 0.1,
+              "gracePeriod" : 86400,
+              "interestPeriod" : "daily",
+              "interestRate" : 0.1,
+              "maximumCreditBeers" : 3,
+              "milesPerBeer" : 1
+            }
+          }
+        ],
+        "runs" : [
+          {
+            "distanceMeters" : 1448.4096000000002,
+            "endedAt" : "2026-09-12T21:00:00Z",
+            "healthKitWorkoutID" : "00000000-0000-4000-8000-000000000064",
+            "id" : "00000000-0000-4000-8000-000000000063",
+            "importedAt" : "2026-09-12T21:00:00Z",
+            "sourceName" : "Fixture",
+            "startedAt" : "2026-09-12T20:30:00Z"
+          }
+        ],
+        "version" : 1
+      },
+      "name" : "remnant over 0.05 is real debt",
+      "now" : "2026-09-12T22:00:00Z"
+    },
+    {
+      "expected" : {
+        "balance" : {
+          "creditBeers" : 0,
+          "creditMiles" : 0,
+          "debtMiles" : 3,
+          "interestMiles" : 0,
+          "principalMiles" : 3,
+          "state" : "debt"
+        },
+        "beers" : [
+          {
+            "costMiles" : 1,
+            "coveredByCreditMiles" : 0,
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000065",
+            "interestAccruedMiles" : 0,
+            "interestRemainingMiles" : 0,
+            "nextInterestAt" : "2026-09-13T20:00:00Z",
+            "number" : 1,
+            "paidMiles" : 0,
+            "principalMiles" : 1,
+            "principalRemainingMiles" : 1,
+            "writtenOffMiles" : 0
+          },
+          {
+            "costMiles" : 2,
+            "coveredByCreditMiles" : 0,
+            "createdAt" : "2026-09-12T22:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000066",
+            "interestAccruedMiles" : 0,
+            "interestRemainingMiles" : 0,
+            "nextInterestAt" : "2026-09-13T22:00:00Z",
+            "number" : 2,
+            "paidMiles" : 0,
+            "principalMiles" : 2,
+            "principalRemainingMiles" : 2,
+            "writtenOffMiles" : 0
+          }
+        ],
+        "creditExpiringThisWeekMiles" : 0,
+        "nextInterestAt" : "2026-09-13T20:00:00Z",
+        "runs" : [
+
+        ]
+      },
+      "ledger" : {
+        "beers" : [
+          {
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000065"
+          },
+          {
+            "createdAt" : "2026-09-12T22:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000066"
+          }
+        ],
+        "booksOpenedAt" : "2026-09-12T20:00:00Z",
+        "excludedWorkoutIDs" : [
+
+        ],
+        "rulesHistory" : [
+          {
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "rules" : {
+              "creditDecayRatePerWeek" : 0.1,
+              "gracePeriod" : 86400,
+              "interestPeriod" : "daily",
+              "interestRate" : 0.1,
+              "maximumCreditBeers" : 3,
+              "milesPerBeer" : 1
+            }
+          },
+          {
+            "effectiveAt" : "2026-09-12T21:00:00Z",
+            "rules" : {
+              "creditDecayRatePerWeek" : 0.1,
+              "gracePeriod" : 86400,
+              "interestPeriod" : "daily",
+              "interestRate" : 0.1,
+              "maximumCreditBeers" : 3,
+              "milesPerBeer" : 2
+            }
+          }
+        ],
+        "runs" : [
+
+        ],
+        "version" : 1
+      },
+      "name" : "changing miles per beer does not reprice old beers",
+      "now" : "2026-09-12T23:00:00Z"
+    },
+    {
+      "expected" : {
+        "balance" : {
+          "creditBeers" : 0,
+          "creditMiles" : 0,
+          "debtMiles" : 1.21,
+          "interestMiles" : 0.21000000000000002,
+          "principalMiles" : 1,
+          "state" : "debt"
+        },
+        "beers" : [
+          {
+            "costMiles" : 1,
+            "coveredByCreditMiles" : 0,
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000067",
+            "interestAccruedMiles" : 0.21000000000000002,
+            "interestRemainingMiles" : 0.21000000000000002,
+            "nextInterestAt" : "2026-09-15T20:00:00Z",
+            "number" : 1,
+            "paidMiles" : 0,
+            "principalMiles" : 1,
+            "principalRemainingMiles" : 1,
+            "writtenOffMiles" : 0
+          }
+        ],
+        "creditExpiringThisWeekMiles" : 0,
+        "nextInterestAt" : "2026-09-15T20:00:00Z",
+        "runs" : [
+
+        ]
+      },
+      "ledger" : {
+        "beers" : [
+          {
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000067"
+          }
+        ],
+        "booksOpenedAt" : "2026-09-12T20:00:00Z",
+        "excludedWorkoutIDs" : [
+
+        ],
+        "rulesHistory" : [
+          {
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "rules" : {
+              "creditDecayRatePerWeek" : 0.1,
+              "gracePeriod" : 86400,
+              "interestPeriod" : "daily",
+              "interestRate" : 0.1,
+              "maximumCreditBeers" : 3,
+              "milesPerBeer" : 1
+            }
+          },
+          {
+            "effectiveAt" : "2026-09-14T21:00:00Z",
+            "rules" : {
+              "creditDecayRatePerWeek" : 0.1,
+              "gracePeriod" : 86400,
+              "interestPeriod" : "daily",
+              "interestRate" : 0,
+              "maximumCreditBeers" : 3,
+              "milesPerBeer" : 1
+            }
+          }
+        ],
+        "runs" : [
+
+        ],
+        "version" : 1
+      },
+      "name" : "turning interest off keeps past interest @ 2d",
+      "now" : "2026-09-14T20:00:00Z"
+    },
+    {
+      "expected" : {
+        "balance" : {
+          "creditBeers" : 0,
+          "creditMiles" : 0,
+          "debtMiles" : 1.21,
+          "interestMiles" : 0.21000000000000002,
+          "principalMiles" : 1,
+          "state" : "debt"
+        },
+        "beers" : [
+          {
+            "costMiles" : 1,
+            "coveredByCreditMiles" : 0,
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000067",
+            "interestAccruedMiles" : 0.21000000000000002,
+            "interestRemainingMiles" : 0.21000000000000002,
+            "number" : 1,
+            "paidMiles" : 0,
+            "principalMiles" : 1,
+            "principalRemainingMiles" : 1,
+            "writtenOffMiles" : 0
+          }
+        ],
+        "creditExpiringThisWeekMiles" : 0,
+        "runs" : [
+
+        ]
+      },
+      "ledger" : {
+        "beers" : [
+          {
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000067"
+          }
+        ],
+        "booksOpenedAt" : "2026-09-12T20:00:00Z",
+        "excludedWorkoutIDs" : [
+
+        ],
+        "rulesHistory" : [
+          {
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "rules" : {
+              "creditDecayRatePerWeek" : 0.1,
+              "gracePeriod" : 86400,
+              "interestPeriod" : "daily",
+              "interestRate" : 0.1,
+              "maximumCreditBeers" : 3,
+              "milesPerBeer" : 1
+            }
+          },
+          {
+            "effectiveAt" : "2026-09-14T21:00:00Z",
+            "rules" : {
+              "creditDecayRatePerWeek" : 0.1,
+              "gracePeriod" : 86400,
+              "interestPeriod" : "daily",
+              "interestRate" : 0,
+              "maximumCreditBeers" : 3,
+              "milesPerBeer" : 1
+            }
+          }
+        ],
+        "runs" : [
+
+        ],
+        "version" : 1
+      },
+      "name" : "turning interest off keeps past interest @ 30d",
+      "now" : "2026-10-12T20:00:00Z"
+    },
+    {
+      "expected" : {
+        "balance" : {
+          "creditBeers" : 0,
+          "creditMiles" : 0,
+          "debtMiles" : 1,
+          "interestMiles" : 0,
+          "principalMiles" : 1,
+          "state" : "debt"
+        },
+        "beers" : [
+          {
+            "costMiles" : 1,
+            "coveredByCreditMiles" : 0,
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000068",
+            "interestAccruedMiles" : 0,
+            "interestRemainingMiles" : 0,
+            "nextInterestAt" : "2026-09-15T20:00:00Z",
+            "number" : 1,
+            "paidMiles" : 0,
+            "principalMiles" : 1,
+            "principalRemainingMiles" : 1,
+            "writtenOffMiles" : 0
+          }
+        ],
+        "creditExpiringThisWeekMiles" : 0,
+        "nextInterestAt" : "2026-09-15T20:00:00Z",
+        "runs" : [
+
+        ]
+      },
+      "ledger" : {
+        "beers" : [
+          {
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000068"
+          }
+        ],
+        "booksOpenedAt" : "2026-09-12T20:00:00Z",
+        "excludedWorkoutIDs" : [
+
+        ],
+        "rulesHistory" : [
+          {
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "rules" : {
+              "creditDecayRatePerWeek" : 0.1,
+              "gracePeriod" : 86400,
+              "interestPeriod" : "daily",
+              "interestRate" : 0,
+              "maximumCreditBeers" : 3,
+              "milesPerBeer" : 1
+            }
+          },
+          {
+            "effectiveAt" : "2026-09-14T21:00:00Z",
+            "rules" : {
+              "creditDecayRatePerWeek" : 0.1,
+              "gracePeriod" : 86400,
+              "interestPeriod" : "daily",
+              "interestRate" : 0.1,
+              "maximumCreditBeers" : 3,
+              "milesPerBeer" : 1
+            }
+          }
+        ],
+        "runs" : [
+
+        ],
+        "version" : 1
+      },
+      "name" : "turning interest on accrues from then @ 2d2h",
+      "now" : "2026-09-14T22:00:00Z"
+    },
+    {
+      "expected" : {
+        "balance" : {
+          "creditBeers" : 0,
+          "creditMiles" : 0,
+          "debtMiles" : 1.1,
+          "interestMiles" : 0.1,
+          "principalMiles" : 1,
+          "state" : "debt"
+        },
+        "beers" : [
+          {
+            "costMiles" : 1,
+            "coveredByCreditMiles" : 0,
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000068",
+            "interestAccruedMiles" : 0.1,
+            "interestRemainingMiles" : 0.1,
+            "nextInterestAt" : "2026-09-16T20:00:00Z",
+            "number" : 1,
+            "paidMiles" : 0,
+            "principalMiles" : 1,
+            "principalRemainingMiles" : 1,
+            "writtenOffMiles" : 0
+          }
+        ],
+        "creditExpiringThisWeekMiles" : 0,
+        "nextInterestAt" : "2026-09-16T20:00:00Z",
+        "runs" : [
+
+        ]
+      },
+      "ledger" : {
+        "beers" : [
+          {
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000068"
+          }
+        ],
+        "booksOpenedAt" : "2026-09-12T20:00:00Z",
+        "excludedWorkoutIDs" : [
+
+        ],
+        "rulesHistory" : [
+          {
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "rules" : {
+              "creditDecayRatePerWeek" : 0.1,
+              "gracePeriod" : 86400,
+              "interestPeriod" : "daily",
+              "interestRate" : 0,
+              "maximumCreditBeers" : 3,
+              "milesPerBeer" : 1
+            }
+          },
+          {
+            "effectiveAt" : "2026-09-14T21:00:00Z",
+            "rules" : {
+              "creditDecayRatePerWeek" : 0.1,
+              "gracePeriod" : 86400,
+              "interestPeriod" : "daily",
+              "interestRate" : 0.1,
+              "maximumCreditBeers" : 3,
+              "milesPerBeer" : 1
+            }
+          }
+        ],
+        "runs" : [
+
+        ],
+        "version" : 1
+      },
+      "name" : "turning interest on accrues from then @ 3d",
+      "now" : "2026-09-15T20:00:00Z"
+    },
+    {
+      "expected" : {
+        "balance" : {
+          "creditBeers" : 0,
+          "creditMiles" : 0,
+          "debtMiles" : 1.1,
+          "interestMiles" : 0.1,
+          "principalMiles" : 1,
+          "state" : "debt"
+        },
+        "beers" : [
+          {
+            "costMiles" : 1,
+            "coveredByCreditMiles" : 0,
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000069",
+            "interestAccruedMiles" : 0.1,
+            "interestRemainingMiles" : 0.1,
+            "nextInterestAt" : "2026-09-14T20:00:00Z",
+            "number" : 1,
+            "paidMiles" : 0,
+            "principalMiles" : 1,
+            "principalRemainingMiles" : 1,
+            "writtenOffMiles" : 0
+          }
+        ],
+        "creditExpiringThisWeekMiles" : 0,
+        "nextInterestAt" : "2026-09-14T20:00:00Z",
+        "runs" : [
+
+        ]
+      },
+      "ledger" : {
+        "beers" : [
+          {
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000069"
+          }
+        ],
+        "booksOpenedAt" : "2026-09-12T20:00:00Z",
+        "excludedWorkoutIDs" : [
+
+        ],
+        "rulesHistory" : [
+          {
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "rules" : {
+              "creditDecayRatePerWeek" : 0.1,
+              "gracePeriod" : 86400,
+              "interestPeriod" : "daily",
+              "interestRate" : 0.1,
+              "maximumCreditBeers" : 3,
+              "milesPerBeer" : 1
+            }
+          },
+          {
+            "effectiveAt" : "2026-09-13T21:00:00Z",
+            "rules" : {
+              "creditDecayRatePerWeek" : 0.1,
+              "gracePeriod" : 86400,
+              "interestPeriod" : "daily",
+              "interestRate" : 0.2,
+              "maximumCreditBeers" : 3,
+              "milesPerBeer" : 1
+            }
+          }
+        ],
+        "runs" : [
+
+        ],
+        "version" : 1
+      },
+      "name" : "changing rate applies to future postings only @ 1d1h",
+      "now" : "2026-09-13T21:00:00Z"
+    },
+    {
+      "expected" : {
+        "balance" : {
+          "creditBeers" : 0,
+          "creditMiles" : 0,
+          "debtMiles" : 1.32,
+          "interestMiles" : 0.32000000000000006,
+          "principalMiles" : 1,
+          "state" : "debt"
+        },
+        "beers" : [
+          {
+            "costMiles" : 1,
+            "coveredByCreditMiles" : 0,
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000069",
+            "interestAccruedMiles" : 0.32000000000000006,
+            "interestRemainingMiles" : 0.32000000000000006,
+            "nextInterestAt" : "2026-09-15T20:00:00Z",
+            "number" : 1,
+            "paidMiles" : 0,
+            "principalMiles" : 1,
+            "principalRemainingMiles" : 1,
+            "writtenOffMiles" : 0
+          }
+        ],
+        "creditExpiringThisWeekMiles" : 0,
+        "nextInterestAt" : "2026-09-15T20:00:00Z",
+        "runs" : [
+
+        ]
+      },
+      "ledger" : {
+        "beers" : [
+          {
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000069"
+          }
+        ],
+        "booksOpenedAt" : "2026-09-12T20:00:00Z",
+        "excludedWorkoutIDs" : [
+
+        ],
+        "rulesHistory" : [
+          {
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "rules" : {
+              "creditDecayRatePerWeek" : 0.1,
+              "gracePeriod" : 86400,
+              "interestPeriod" : "daily",
+              "interestRate" : 0.1,
+              "maximumCreditBeers" : 3,
+              "milesPerBeer" : 1
+            }
+          },
+          {
+            "effectiveAt" : "2026-09-13T21:00:00Z",
+            "rules" : {
+              "creditDecayRatePerWeek" : 0.1,
+              "gracePeriod" : 86400,
+              "interestPeriod" : "daily",
+              "interestRate" : 0.2,
+              "maximumCreditBeers" : 3,
+              "milesPerBeer" : 1
+            }
+          }
+        ],
+        "runs" : [
+
+        ],
+        "version" : 1
+      },
+      "name" : "changing rate applies to future postings only @ 2d",
+      "now" : "2026-09-14T20:00:00Z"
+    },
+    {
+      "expected" : {
+        "balance" : {
+          "creditBeers" : 0,
+          "creditMiles" : 0,
+          "debtMiles" : 1.21,
+          "interestMiles" : 0.21000000000000002,
+          "principalMiles" : 1,
+          "state" : "debt"
+        },
+        "beers" : [
+          {
+            "costMiles" : 1,
+            "coveredByCreditMiles" : 0,
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000070",
+            "interestAccruedMiles" : 0.21000000000000002,
+            "interestRemainingMiles" : 0.21000000000000002,
+            "nextInterestAt" : "2026-09-21T20:00:00Z",
+            "number" : 1,
+            "paidMiles" : 0,
+            "principalMiles" : 1,
+            "principalRemainingMiles" : 1,
+            "writtenOffMiles" : 0
+          }
+        ],
+        "creditExpiringThisWeekMiles" : 0,
+        "nextInterestAt" : "2026-09-21T20:00:00Z",
+        "runs" : [
+
+        ]
+      },
+      "ledger" : {
+        "beers" : [
+          {
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000070"
+          }
+        ],
+        "booksOpenedAt" : "2026-09-12T20:00:00Z",
+        "excludedWorkoutIDs" : [
+
+        ],
+        "rulesHistory" : [
+          {
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "rules" : {
+              "creditDecayRatePerWeek" : 0.1,
+              "gracePeriod" : 86400,
+              "interestPeriod" : "daily",
+              "interestRate" : 0.1,
+              "maximumCreditBeers" : 3,
+              "milesPerBeer" : 1
+            }
+          },
+          {
+            "effectiveAt" : "2026-09-14T21:00:00Z",
+            "rules" : {
+              "creditDecayRatePerWeek" : 0.1,
+              "gracePeriod" : 86400,
+              "interestPeriod" : "weekly",
+              "interestRate" : 0.1,
+              "maximumCreditBeers" : 3,
+              "milesPerBeer" : 1
+            }
+          }
+        ],
+        "runs" : [
+
+        ],
+        "version" : 1
+      },
+      "name" : "changing period reschedules from the last posting @ 8d",
+      "now" : "2026-09-20T20:00:00Z"
+    },
+    {
+      "expected" : {
+        "balance" : {
+          "creditBeers" : 0,
+          "creditMiles" : 0,
+          "debtMiles" : 1.331,
+          "interestMiles" : 0.331,
+          "principalMiles" : 1,
+          "state" : "debt"
+        },
+        "beers" : [
+          {
+            "costMiles" : 1,
+            "coveredByCreditMiles" : 0,
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000070",
+            "interestAccruedMiles" : 0.331,
+            "interestRemainingMiles" : 0.331,
+            "nextInterestAt" : "2026-09-28T20:00:00Z",
+            "number" : 1,
+            "paidMiles" : 0,
+            "principalMiles" : 1,
+            "principalRemainingMiles" : 1,
+            "writtenOffMiles" : 0
+          }
+        ],
+        "creditExpiringThisWeekMiles" : 0,
+        "nextInterestAt" : "2026-09-28T20:00:00Z",
+        "runs" : [
+
+        ]
+      },
+      "ledger" : {
+        "beers" : [
+          {
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000070"
+          }
+        ],
+        "booksOpenedAt" : "2026-09-12T20:00:00Z",
+        "excludedWorkoutIDs" : [
+
+        ],
+        "rulesHistory" : [
+          {
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "rules" : {
+              "creditDecayRatePerWeek" : 0.1,
+              "gracePeriod" : 86400,
+              "interestPeriod" : "daily",
+              "interestRate" : 0.1,
+              "maximumCreditBeers" : 3,
+              "milesPerBeer" : 1
+            }
+          },
+          {
+            "effectiveAt" : "2026-09-14T21:00:00Z",
+            "rules" : {
+              "creditDecayRatePerWeek" : 0.1,
+              "gracePeriod" : 86400,
+              "interestPeriod" : "weekly",
+              "interestRate" : 0.1,
+              "maximumCreditBeers" : 3,
+              "milesPerBeer" : 1
+            }
+          }
+        ],
+        "runs" : [
+
+        ],
+        "version" : 1
+      },
+      "name" : "changing period reschedules from the last posting @ 9d",
+      "now" : "2026-09-21T20:00:00Z"
+    },
+    {
+      "expected" : {
+        "balance" : {
+          "creditBeers" : 0,
+          "creditMiles" : 0,
+          "debtMiles" : 1,
+          "interestMiles" : 0,
+          "principalMiles" : 1,
+          "state" : "debt"
+        },
+        "beers" : [
+          {
+            "costMiles" : 1,
+            "coveredByCreditMiles" : 0,
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000071",
+            "interestAccruedMiles" : 0,
+            "interestRemainingMiles" : 0,
+            "nextInterestAt" : "2026-09-19T20:00:00Z",
+            "number" : 1,
+            "paidMiles" : 0,
+            "principalMiles" : 1,
+            "principalRemainingMiles" : 1,
+            "writtenOffMiles" : 0
+          }
+        ],
+        "creditExpiringThisWeekMiles" : 0,
+        "nextInterestAt" : "2026-09-19T20:00:00Z",
+        "runs" : [
+
+        ]
+      },
+      "ledger" : {
+        "beers" : [
+          {
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000071"
+          }
+        ],
+        "booksOpenedAt" : "2026-09-12T20:00:00Z",
+        "excludedWorkoutIDs" : [
+
+        ],
+        "rulesHistory" : [
+          {
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "rules" : {
+              "creditDecayRatePerWeek" : 0.1,
+              "gracePeriod" : 604800,
+              "interestPeriod" : "daily",
+              "interestRate" : 0.1,
+              "maximumCreditBeers" : 3,
+              "milesPerBeer" : 1
+            }
+          },
+          {
+            "effectiveAt" : "2026-09-15T20:00:00Z",
+            "rules" : {
+              "creditDecayRatePerWeek" : 0.1,
+              "gracePeriod" : 86400,
+              "interestPeriod" : "daily",
+              "interestRate" : 0.1,
+              "maximumCreditBeers" : 3,
+              "milesPerBeer" : 1
+            }
+          }
+        ],
+        "runs" : [
+
+        ],
+        "version" : 1
+      },
+      "name" : "shortening grace posts at the change not before @ 3d-1s",
+      "now" : "2026-09-15T19:59:59Z"
+    },
+    {
+      "expected" : {
+        "balance" : {
+          "creditBeers" : 0,
+          "creditMiles" : 0,
+          "debtMiles" : 1.1,
+          "interestMiles" : 0.1,
+          "principalMiles" : 1,
+          "state" : "debt"
+        },
+        "beers" : [
+          {
+            "costMiles" : 1,
+            "coveredByCreditMiles" : 0,
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000071",
+            "interestAccruedMiles" : 0.1,
+            "interestRemainingMiles" : 0.1,
+            "nextInterestAt" : "2026-09-16T20:00:00Z",
+            "number" : 1,
+            "paidMiles" : 0,
+            "principalMiles" : 1,
+            "principalRemainingMiles" : 1,
+            "writtenOffMiles" : 0
+          }
+        ],
+        "creditExpiringThisWeekMiles" : 0,
+        "nextInterestAt" : "2026-09-16T20:00:00Z",
+        "runs" : [
+
+        ]
+      },
+      "ledger" : {
+        "beers" : [
+          {
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000071"
+          }
+        ],
+        "booksOpenedAt" : "2026-09-12T20:00:00Z",
+        "excludedWorkoutIDs" : [
+
+        ],
+        "rulesHistory" : [
+          {
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "rules" : {
+              "creditDecayRatePerWeek" : 0.1,
+              "gracePeriod" : 604800,
+              "interestPeriod" : "daily",
+              "interestRate" : 0.1,
+              "maximumCreditBeers" : 3,
+              "milesPerBeer" : 1
+            }
+          },
+          {
+            "effectiveAt" : "2026-09-15T20:00:00Z",
+            "rules" : {
+              "creditDecayRatePerWeek" : 0.1,
+              "gracePeriod" : 86400,
+              "interestPeriod" : "daily",
+              "interestRate" : 0.1,
+              "maximumCreditBeers" : 3,
+              "milesPerBeer" : 1
+            }
+          }
+        ],
+        "runs" : [
+
+        ],
+        "version" : 1
+      },
+      "name" : "shortening grace posts at the change not before @ 3d",
+      "now" : "2026-09-15T20:00:00Z"
+    },
+    {
+      "expected" : {
+        "balance" : {
+          "creditBeers" : 0,
+          "creditMiles" : 0,
+          "debtMiles" : 1.21,
+          "interestMiles" : 0.21000000000000002,
+          "principalMiles" : 1,
+          "state" : "debt"
+        },
+        "beers" : [
+          {
+            "costMiles" : 1,
+            "coveredByCreditMiles" : 0,
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000071",
+            "interestAccruedMiles" : 0.21000000000000002,
+            "interestRemainingMiles" : 0.21000000000000002,
+            "nextInterestAt" : "2026-09-17T20:00:00Z",
+            "number" : 1,
+            "paidMiles" : 0,
+            "principalMiles" : 1,
+            "principalRemainingMiles" : 1,
+            "writtenOffMiles" : 0
+          }
+        ],
+        "creditExpiringThisWeekMiles" : 0,
+        "nextInterestAt" : "2026-09-17T20:00:00Z",
+        "runs" : [
+
+        ]
+      },
+      "ledger" : {
+        "beers" : [
+          {
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000071"
+          }
+        ],
+        "booksOpenedAt" : "2026-09-12T20:00:00Z",
+        "excludedWorkoutIDs" : [
+
+        ],
+        "rulesHistory" : [
+          {
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "rules" : {
+              "creditDecayRatePerWeek" : 0.1,
+              "gracePeriod" : 604800,
+              "interestPeriod" : "daily",
+              "interestRate" : 0.1,
+              "maximumCreditBeers" : 3,
+              "milesPerBeer" : 1
+            }
+          },
+          {
+            "effectiveAt" : "2026-09-15T20:00:00Z",
+            "rules" : {
+              "creditDecayRatePerWeek" : 0.1,
+              "gracePeriod" : 86400,
+              "interestPeriod" : "daily",
+              "interestRate" : 0.1,
+              "maximumCreditBeers" : 3,
+              "milesPerBeer" : 1
+            }
+          }
+        ],
+        "runs" : [
+
+        ],
+        "version" : 1
+      },
+      "name" : "shortening grace posts at the change not before @ 4d",
+      "now" : "2026-09-16T20:00:00Z"
+    },
+    {
+      "expected" : {
+        "balance" : {
+          "creditBeers" : 5,
+          "creditMiles" : 5,
+          "debtMiles" : 0,
+          "interestMiles" : 0,
+          "principalMiles" : 0,
+          "state" : "credit"
+        },
+        "beers" : [
+
+        ],
+        "creditExpiringThisWeekMiles" : 0,
+        "runs" : [
+          {
+            "creditEarnedMiles" : 3,
+            "debtPaidMiles" : 0,
+            "discardedMiles" : 2,
+            "id" : "00000000-0000-4000-8000-000000000072",
+            "ignored" : false
+          },
+          {
+            "creditEarnedMiles" : 2,
+            "debtPaidMiles" : 0,
+            "discardedMiles" : 3,
+            "id" : "00000000-0000-4000-8000-000000000074",
+            "ignored" : false
+          }
+        ]
+      },
+      "ledger" : {
+        "beers" : [
+
+        ],
+        "booksOpenedAt" : "2026-09-12T20:00:00Z",
+        "excludedWorkoutIDs" : [
+
+        ],
+        "rulesHistory" : [
+          {
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "rules" : {
+              "creditDecayRatePerWeek" : 0,
+              "gracePeriod" : 86400,
+              "interestPeriod" : "daily",
+              "interestRate" : 0.1,
+              "maximumCreditBeers" : 3,
+              "milesPerBeer" : 1
+            }
+          },
+          {
+            "effectiveAt" : "2026-09-12T21:00:00Z",
+            "rules" : {
+              "creditDecayRatePerWeek" : 0,
+              "gracePeriod" : 86400,
+              "interestPeriod" : "daily",
+              "interestRate" : 0.1,
+              "maximumCreditBeers" : 5,
+              "milesPerBeer" : 1
+            }
+          }
+        ],
+        "runs" : [
+          {
+            "distanceMeters" : 8046.72,
+            "endedAt" : "2026-09-12T20:00:00Z",
+            "healthKitWorkoutID" : "00000000-0000-4000-8000-000000000073",
+            "id" : "00000000-0000-4000-8000-000000000072",
+            "importedAt" : "2026-09-12T20:00:00Z",
+            "sourceName" : "Fixture",
+            "startedAt" : "2026-09-12T19:30:00Z"
+          },
+          {
+            "distanceMeters" : 8046.72,
+            "endedAt" : "2026-09-12T22:00:00Z",
+            "healthKitWorkoutID" : "00000000-0000-4000-8000-000000000075",
+            "id" : "00000000-0000-4000-8000-000000000074",
+            "importedAt" : "2026-09-12T22:00:00Z",
+            "sourceName" : "Fixture",
+            "startedAt" : "2026-09-12T21:30:00Z"
+          }
+        ],
+        "version" : 1
+      },
+      "name" : "credit cap change applies forward",
+      "now" : "2026-09-12T23:00:00Z"
+    },
+    {
+      "expected" : {
+        "balance" : {
+          "creditBeers" : 0,
+          "creditMiles" : 0,
+          "debtMiles" : 0,
+          "interestMiles" : 0,
+          "principalMiles" : 0,
+          "state" : "even"
+        },
+        "beers" : [
+
+        ],
+        "creditExpiringThisWeekMiles" : 0,
+        "runs" : [
+          {
+            "creditEarnedMiles" : 0,
+            "debtPaidMiles" : 0,
+            "discardedMiles" : 0,
+            "id" : "00000000-0000-4000-8000-000000000076",
+            "ignored" : true
+          }
+        ]
+      },
+      "ledger" : {
+        "beers" : [
+
+        ],
+        "booksOpenedAt" : "2026-09-12T20:00:00Z",
+        "excludedWorkoutIDs" : [
+
+        ],
+        "rulesHistory" : [
+          {
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "rules" : {
+              "creditDecayRatePerWeek" : 0.1,
+              "gracePeriod" : 86400,
+              "interestPeriod" : "daily",
+              "interestRate" : 0.1,
+              "maximumCreditBeers" : 3,
+              "milesPerBeer" : 1
+            }
+          }
+        ],
+        "runs" : [
+          {
+            "distanceMeters" : 8046.72,
+            "endedAt" : "2026-09-12T19:00:00Z",
+            "healthKitWorkoutID" : "00000000-0000-4000-8000-000000000077",
+            "id" : "00000000-0000-4000-8000-000000000076",
+            "importedAt" : "2026-09-12T19:00:00Z",
+            "sourceName" : "Fixture",
+            "startedAt" : "2026-09-12T18:30:00Z"
+          }
+        ],
+        "version" : 1
+      },
+      "name" : "runs before the books opened are ignored",
+      "now" : "2026-09-12T21:00:00Z"
+    },
+    {
+      "expected" : {
+        "balance" : {
+          "creditBeers" : 0,
+          "creditMiles" : 0,
+          "debtMiles" : 0,
+          "interestMiles" : 0,
+          "principalMiles" : 0,
+          "state" : "even"
+        },
+        "beers" : [
+          {
+            "costMiles" : 1,
+            "coveredByCreditMiles" : 0,
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000078",
+            "interestAccruedMiles" : 0,
+            "interestRemainingMiles" : 0,
+            "number" : 1,
+            "paidAt" : "2026-09-12T21:00:00Z",
+            "paidMiles" : 1,
+            "principalMiles" : 1,
+            "principalRemainingMiles" : 0,
+            "writtenOffMiles" : 0
+          }
+        ],
+        "creditExpiringThisWeekMiles" : 0,
+        "runs" : [
+          {
+            "creditEarnedMiles" : 0,
+            "debtPaidMiles" : 1,
+            "discardedMiles" : 0,
+            "id" : "00000000-0000-4000-8000-000000000079",
+            "ignored" : false
+          }
+        ]
+      },
+      "ledger" : {
+        "beers" : [
+          {
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000078"
+          }
+        ],
+        "booksOpenedAt" : "2026-09-12T20:00:00Z",
+        "excludedWorkoutIDs" : [
+
+        ],
+        "rulesHistory" : [
+          {
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "rules" : {
+              "creditDecayRatePerWeek" : 0.1,
+              "gracePeriod" : 86400,
+              "interestPeriod" : "daily",
+              "interestRate" : 0.1,
+              "maximumCreditBeers" : 3,
+              "milesPerBeer" : 1
+            }
+          }
+        ],
+        "runs" : [
+          {
+            "distanceMeters" : 1609.344,
+            "endedAt" : "2026-09-12T21:00:00Z",
+            "healthKitWorkoutID" : "00000000-0000-4000-8000-000000000080",
+            "id" : "00000000-0000-4000-8000-000000000079",
+            "importedAt" : "2026-09-17T20:00:00Z",
+            "sourceName" : "Fixture",
+            "startedAt" : "2026-09-12T20:30:00Z"
+          }
+        ],
+        "version" : 1
+      },
+      "name" : "late imported run lands at its own time",
+      "now" : "2026-09-18T20:00:00Z"
+    },
+    {
+      "expected" : {
+        "balance" : {
+          "creditBeers" : 0.8999999999999999,
+          "creditMiles" : 0.8999999999999999,
+          "debtMiles" : 0,
+          "interestMiles" : 0,
+          "principalMiles" : 0,
+          "state" : "credit"
+        },
+        "beers" : [
+          {
+            "costMiles" : 1,
+            "coveredByCreditMiles" : 0,
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000081",
+            "interestAccruedMiles" : 0.1,
+            "interestRemainingMiles" : 0,
+            "number" : 1,
+            "paidAt" : "2026-09-13T20:00:00Z",
+            "paidMiles" : 1.1,
+            "principalMiles" : 1,
+            "principalRemainingMiles" : 0,
+            "writtenOffMiles" : 0
+          }
+        ],
+        "creditExpiringThisWeekMiles" : 0,
+        "runs" : [
+          {
+            "creditEarnedMiles" : 0.8999999999999999,
+            "debtPaidMiles" : 1.1,
+            "discardedMiles" : 0,
+            "id" : "00000000-0000-4000-8000-000000000082",
+            "ignored" : false
+          }
+        ]
+      },
+      "ledger" : {
+        "beers" : [
+          {
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000081",
+            "recordedAt" : "2026-09-14T20:00:00Z"
+          }
+        ],
+        "booksOpenedAt" : "2026-09-12T20:00:00Z",
+        "excludedWorkoutIDs" : [
+
+        ],
+        "rulesHistory" : [
+          {
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "rules" : {
+              "creditDecayRatePerWeek" : 0,
+              "gracePeriod" : 86400,
+              "interestPeriod" : "daily",
+              "interestRate" : 0.1,
+              "maximumCreditBeers" : 3,
+              "milesPerBeer" : 1
+            }
+          }
+        ],
+        "runs" : [
+          {
+            "distanceMeters" : 3218.688,
+            "endedAt" : "2026-09-13T20:00:00Z",
+            "healthKitWorkoutID" : "00000000-0000-4000-8000-000000000083",
+            "id" : "00000000-0000-4000-8000-000000000082",
+            "importedAt" : "2026-09-13T20:00:00Z",
+            "sourceName" : "Fixture",
+            "startedAt" : "2026-09-13T19:30:00Z"
+          }
+        ],
+        "version" : 1
+      },
+      "name" : "a backdated beer is paid by the run that followed it",
+      "now" : "2026-09-14T20:00:00Z"
+    },
+    {
+      "expected" : {
+        "balance" : {
+          "creditBeers" : 0,
+          "creditMiles" : 0,
+          "debtMiles" : 1.21,
+          "interestMiles" : 0.21000000000000002,
+          "principalMiles" : 1,
+          "state" : "debt"
+        },
+        "beers" : [
+          {
+            "costMiles" : 1,
+            "coveredByCreditMiles" : 0,
+            "createdAt" : "2026-09-10T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000084",
+            "interestAccruedMiles" : 0.21000000000000002,
+            "interestRemainingMiles" : 0.21000000000000002,
+            "nextInterestAt" : "2026-09-13T20:00:00Z",
+            "number" : 1,
+            "paidMiles" : 0,
+            "principalMiles" : 1,
+            "principalRemainingMiles" : 1,
+            "writtenOffMiles" : 0
+          }
+        ],
+        "creditExpiringThisWeekMiles" : 0,
+        "nextInterestAt" : "2026-09-13T20:00:00Z",
+        "runs" : [
+
+        ]
+      },
+      "ledger" : {
+        "beers" : [
+          {
+            "createdAt" : "2026-09-10T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000084"
+          }
+        ],
+        "booksOpenedAt" : "2026-09-12T20:00:00Z",
+        "excludedWorkoutIDs" : [
+
+        ],
+        "rulesHistory" : [
+          {
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "rules" : {
+              "creditDecayRatePerWeek" : 0,
+              "gracePeriod" : 86400,
+              "interestPeriod" : "daily",
+              "interestRate" : 0.1,
+              "maximumCreditBeers" : 3,
+              "milesPerBeer" : 1
+            }
+          }
+        ],
+        "runs" : [
+          {
+            "distanceMeters" : 4828.032,
+            "endedAt" : "2026-09-12T21:00:00Z",
+            "healthKitWorkoutID" : "00000000-0000-4000-8000-000000000086",
+            "id" : "00000000-0000-4000-8000-000000000085",
+            "importedAt" : "2026-09-12T21:00:00Z",
+            "sourceName" : "Fixture",
+            "startedAt" : "2026-09-12T20:30:00Z"
+          }
+        ],
+        "version" : 1
+      },
+      "name" : "a beer from before the books opened still counts @ 0",
+      "now" : "2026-09-12T20:00:00Z"
+    },
+    {
+      "expected" : {
+        "balance" : {
+          "creditBeers" : 1.79,
+          "creditMiles" : 1.79,
+          "debtMiles" : 0,
+          "interestMiles" : 0,
+          "principalMiles" : 0,
+          "state" : "credit"
+        },
+        "beers" : [
+          {
+            "costMiles" : 1,
+            "coveredByCreditMiles" : 0,
+            "createdAt" : "2026-09-10T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000084",
+            "interestAccruedMiles" : 0.21000000000000002,
+            "interestRemainingMiles" : 0,
+            "number" : 1,
+            "paidAt" : "2026-09-12T21:00:00Z",
+            "paidMiles" : 1.21,
+            "principalMiles" : 1,
+            "principalRemainingMiles" : 0,
+            "writtenOffMiles" : 0
+          }
+        ],
+        "creditExpiringThisWeekMiles" : 0,
+        "runs" : [
+          {
+            "creditEarnedMiles" : 1.79,
+            "debtPaidMiles" : 1.21,
+            "discardedMiles" : 0,
+            "id" : "00000000-0000-4000-8000-000000000085",
+            "ignored" : false
+          }
+        ]
+      },
+      "ledger" : {
+        "beers" : [
+          {
+            "createdAt" : "2026-09-10T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000084"
+          }
+        ],
+        "booksOpenedAt" : "2026-09-12T20:00:00Z",
+        "excludedWorkoutIDs" : [
+
+        ],
+        "rulesHistory" : [
+          {
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "rules" : {
+              "creditDecayRatePerWeek" : 0,
+              "gracePeriod" : 86400,
+              "interestPeriod" : "daily",
+              "interestRate" : 0.1,
+              "maximumCreditBeers" : 3,
+              "milesPerBeer" : 1
+            }
+          }
+        ],
+        "runs" : [
+          {
+            "distanceMeters" : 4828.032,
+            "endedAt" : "2026-09-12T21:00:00Z",
+            "healthKitWorkoutID" : "00000000-0000-4000-8000-000000000086",
+            "id" : "00000000-0000-4000-8000-000000000085",
+            "importedAt" : "2026-09-12T21:00:00Z",
+            "sourceName" : "Fixture",
+            "startedAt" : "2026-09-12T20:30:00Z"
+          }
+        ],
+        "version" : 1
+      },
+      "name" : "a beer from before the books opened still counts @ 2h",
+      "now" : "2026-09-12T22:00:00Z"
+    },
+    {
+      "expected" : {
+        "balance" : {
+          "creditBeers" : 0,
+          "creditMiles" : 0,
+          "debtMiles" : 1,
+          "interestMiles" : 0,
+          "principalMiles" : 1,
+          "state" : "debt"
+        },
+        "beers" : [
+          {
+            "costMiles" : 1,
+            "coveredByCreditMiles" : 0,
+            "createdAt" : "2026-10-31T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000087",
+            "interestAccruedMiles" : 0,
+            "interestRemainingMiles" : 0,
+            "nextInterestAt" : "2026-11-01T20:00:00Z",
+            "number" : 1,
+            "paidMiles" : 0,
+            "principalMiles" : 1,
+            "principalRemainingMiles" : 1,
+            "writtenOffMiles" : 0
+          }
+        ],
+        "creditExpiringThisWeekMiles" : 0,
+        "nextInterestAt" : "2026-11-01T20:00:00Z",
+        "runs" : [
+
+        ]
+      },
+      "ledger" : {
+        "beers" : [
+          {
+            "createdAt" : "2026-10-31T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000087"
+          }
+        ],
+        "booksOpenedAt" : "2026-10-31T20:00:00Z",
+        "excludedWorkoutIDs" : [
+
+        ],
+        "rulesHistory" : [
+          {
+            "effectiveAt" : "2026-10-31T20:00:00Z",
+            "rules" : {
+              "creditDecayRatePerWeek" : 0.1,
+              "gracePeriod" : 86400,
+              "interestPeriod" : "daily",
+              "interestRate" : 0.1,
+              "maximumCreditBeers" : 3,
+              "milesPerBeer" : 1
+            }
+          }
+        ],
+        "runs" : [
+
+        ],
+        "version" : 1
+      },
+      "name" : "a day is always 86400 seconds @ +1d-1s",
+      "now" : "2026-11-01T19:59:59Z"
+    },
+    {
+      "expected" : {
+        "balance" : {
+          "creditBeers" : 0,
+          "creditMiles" : 0,
+          "debtMiles" : 1.1,
+          "interestMiles" : 0.1,
+          "principalMiles" : 1,
+          "state" : "debt"
+        },
+        "beers" : [
+          {
+            "costMiles" : 1,
+            "coveredByCreditMiles" : 0,
+            "createdAt" : "2026-10-31T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000087",
+            "interestAccruedMiles" : 0.1,
+            "interestRemainingMiles" : 0.1,
+            "nextInterestAt" : "2026-11-02T20:00:00Z",
+            "number" : 1,
+            "paidMiles" : 0,
+            "principalMiles" : 1,
+            "principalRemainingMiles" : 1,
+            "writtenOffMiles" : 0
+          }
+        ],
+        "creditExpiringThisWeekMiles" : 0,
+        "nextInterestAt" : "2026-11-02T20:00:00Z",
+        "runs" : [
+
+        ]
+      },
+      "ledger" : {
+        "beers" : [
+          {
+            "createdAt" : "2026-10-31T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000087"
+          }
+        ],
+        "booksOpenedAt" : "2026-10-31T20:00:00Z",
+        "excludedWorkoutIDs" : [
+
+        ],
+        "rulesHistory" : [
+          {
+            "effectiveAt" : "2026-10-31T20:00:00Z",
+            "rules" : {
+              "creditDecayRatePerWeek" : 0.1,
+              "gracePeriod" : 86400,
+              "interestPeriod" : "daily",
+              "interestRate" : 0.1,
+              "maximumCreditBeers" : 3,
+              "milesPerBeer" : 1
+            }
+          }
+        ],
+        "runs" : [
+
+        ],
+        "version" : 1
+      },
+      "name" : "a day is always 86400 seconds @ +1d",
+      "now" : "2026-11-01T20:00:00Z"
+    },
+    {
+      "expected" : {
+        "balance" : {
+          "creditBeers" : 1.0274188372750837,
+          "creditMiles" : 1.0274188372750837,
+          "debtMiles" : 0,
+          "interestMiles" : 0,
+          "principalMiles" : 0,
+          "state" : "credit"
+        },
+        "beers" : [
+          {
+            "costMiles" : 1,
+            "coveredByCreditMiles" : 0,
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000088",
+            "interestAccruedMiles" : 0.1,
+            "interestRemainingMiles" : 0,
+            "number" : 1,
+            "paidAt" : "2026-09-14T04:00:00Z",
+            "paidMiles" : 1.1,
+            "principalMiles" : 1,
+            "principalRemainingMiles" : 0,
+            "writtenOffMiles" : 0
+          },
+          {
+            "costMiles" : 1,
+            "coveredByCreditMiles" : 0,
+            "createdAt" : "2026-09-12T22:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000089",
+            "interestAccruedMiles" : 0.24700000000000003,
+            "interestRemainingMiles" : 0,
+            "number" : 2,
+            "paidAt" : "2026-09-16T20:00:00Z",
+            "paidMiles" : 1.2469999999999999,
+            "principalMiles" : 1,
+            "principalRemainingMiles" : 0,
+            "writtenOffMiles" : 0
+          },
+          {
+            "costMiles" : 1,
+            "coveredByCreditMiles" : 0,
+            "createdAt" : "2026-09-13T23:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000090",
+            "interestAccruedMiles" : 0.21000000000000002,
+            "interestRemainingMiles" : 0,
+            "number" : 3,
+            "paidAt" : "2026-09-16T20:00:00Z",
+            "paidMiles" : 1.21,
+            "principalMiles" : 1,
+            "principalRemainingMiles" : 0,
+            "writtenOffMiles" : 0
+          },
+          {
+            "costMiles" : 1,
+            "coveredByCreditMiles" : 0,
+            "createdAt" : "2026-09-15T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000091",
+            "interestAccruedMiles" : 0.1,
+            "interestRemainingMiles" : 0,
+            "number" : 4,
+            "paidAt" : "2026-09-16T20:00:00Z",
+            "paidMiles" : 1.1,
+            "principalMiles" : 1,
+            "principalRemainingMiles" : 0,
+            "writtenOffMiles" : 0
+          }
+        ],
+        "creditExpiringThisWeekMiles" : 0.10274188372750837,
+        "runs" : [
+          {
+            "creditEarnedMiles" : 0,
+            "debtPaidMiles" : 1.5,
+            "discardedMiles" : 0,
+            "id" : "00000000-0000-4000-8000-000000000094",
+            "ignored" : false
+          },
+          {
+            "creditEarnedMiles" : 1.0430000000000001,
+            "debtPaidMiles" : 3.157,
+            "discardedMiles" : 0,
+            "id" : "00000000-0000-4000-8000-000000000096",
+            "ignored" : false
+          }
+        ]
+      },
+      "ledger" : {
+        "beers" : [
+          {
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000088"
+          },
+          {
+            "createdAt" : "2026-09-12T22:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000089"
+          },
+          {
+            "createdAt" : "2026-09-13T23:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000090"
+          },
+          {
+            "createdAt" : "2026-09-15T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000091"
+          },
+          {
+            "createdAt" : "2026-09-19T01:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000092"
+          },
+          {
+            "createdAt" : "2026-09-21T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000093"
+          }
+        ],
+        "booksOpenedAt" : "2026-09-12T20:00:00Z",
+        "excludedWorkoutIDs" : [
+
+        ],
+        "rulesHistory" : [
+          {
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "rules" : {
+              "creditDecayRatePerWeek" : 0.1,
+              "gracePeriod" : 86400,
+              "interestPeriod" : "daily",
+              "interestRate" : 0.1,
+              "maximumCreditBeers" : 3,
+              "milesPerBeer" : 1
+            }
+          }
+        ],
+        "runs" : [
+          {
+            "distanceMeters" : 2414.016,
+            "endedAt" : "2026-09-14T04:00:00Z",
+            "healthKitWorkoutID" : "00000000-0000-4000-8000-000000000095",
+            "id" : "00000000-0000-4000-8000-000000000094",
+            "importedAt" : "2026-09-14T04:00:00Z",
+            "sourceName" : "Fixture",
+            "startedAt" : "2026-09-14T03:30:00Z"
+          },
+          {
+            "distanceMeters" : 6759.2448,
+            "endedAt" : "2026-09-16T20:00:00Z",
+            "healthKitWorkoutID" : "00000000-0000-4000-8000-000000000097",
+            "id" : "00000000-0000-4000-8000-000000000096",
+            "importedAt" : "2026-09-16T20:00:00Z",
+            "sourceName" : "Fixture",
+            "startedAt" : "2026-09-16T19:30:00Z"
+          },
+          {
+            "distanceMeters" : 1287.4752,
+            "endedAt" : "2026-09-21T02:00:00Z",
+            "healthKitWorkoutID" : "00000000-0000-4000-8000-000000000099",
+            "id" : "00000000-0000-4000-8000-000000000098",
+            "importedAt" : "2026-09-21T02:00:00Z",
+            "sourceName" : "Fixture",
+            "startedAt" : "2026-09-21T01:30:00Z"
+          },
+          {
+            "distanceMeters" : 9656.064,
+            "endedAt" : "2026-09-23T20:00:00Z",
+            "healthKitWorkoutID" : "00000000-0000-4000-8000-000000000101",
+            "id" : "00000000-0000-4000-8000-000000000100",
+            "importedAt" : "2026-09-23T20:00:00Z",
+            "sourceName" : "Fixture",
+            "startedAt" : "2026-09-23T19:30:00Z"
+          }
+        ],
+        "version" : 1
+      },
+      "name" : "a busy fortnight @ 5d",
+      "now" : "2026-09-17T20:00:00Z"
+    },
+    {
+      "expected" : {
+        "balance" : {
+          "creditBeers" : 0,
+          "creditMiles" : 0,
+          "debtMiles" : 0.2204890426517691,
+          "interestMiles" : 0.0200444584228881,
+          "principalMiles" : 0.200444584228881,
+          "state" : "debt"
+        },
+        "beers" : [
+          {
+            "costMiles" : 1,
+            "coveredByCreditMiles" : 0,
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000088",
+            "interestAccruedMiles" : 0.1,
+            "interestRemainingMiles" : 0,
+            "number" : 1,
+            "paidAt" : "2026-09-14T04:00:00Z",
+            "paidMiles" : 1.1,
+            "principalMiles" : 1,
+            "principalRemainingMiles" : 0,
+            "writtenOffMiles" : 0
+          },
+          {
+            "costMiles" : 1,
+            "coveredByCreditMiles" : 0,
+            "createdAt" : "2026-09-12T22:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000089",
+            "interestAccruedMiles" : 0.24700000000000003,
+            "interestRemainingMiles" : 0,
+            "number" : 2,
+            "paidAt" : "2026-09-16T20:00:00Z",
+            "paidMiles" : 1.2469999999999999,
+            "principalMiles" : 1,
+            "principalRemainingMiles" : 0,
+            "writtenOffMiles" : 0
+          },
+          {
+            "costMiles" : 1,
+            "coveredByCreditMiles" : 0,
+            "createdAt" : "2026-09-13T23:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000090",
+            "interestAccruedMiles" : 0.21000000000000002,
+            "interestRemainingMiles" : 0,
+            "number" : 3,
+            "paidAt" : "2026-09-16T20:00:00Z",
+            "paidMiles" : 1.21,
+            "principalMiles" : 1,
+            "principalRemainingMiles" : 0,
+            "writtenOffMiles" : 0
+          },
+          {
+            "costMiles" : 1,
+            "coveredByCreditMiles" : 0,
+            "createdAt" : "2026-09-15T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000091",
+            "interestAccruedMiles" : 0.1,
+            "interestRemainingMiles" : 0,
+            "number" : 4,
+            "paidAt" : "2026-09-16T20:00:00Z",
+            "paidMiles" : 1.1,
+            "principalMiles" : 1,
+            "principalRemainingMiles" : 0,
+            "writtenOffMiles" : 0
+          },
+          {
+            "costMiles" : 1,
+            "coveredByCreditMiles" : 1,
+            "createdAt" : "2026-09-19T01:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000092",
+            "interestAccruedMiles" : 0,
+            "interestRemainingMiles" : 0,
+            "number" : 5,
+            "paidAt" : "2026-09-19T01:00:00Z",
+            "paidMiles" : 0,
+            "principalMiles" : 0,
+            "principalRemainingMiles" : 0,
+            "writtenOffMiles" : 0
+          },
+          {
+            "costMiles" : 1,
+            "coveredByCreditMiles" : 0.799555415771119,
+            "createdAt" : "2026-09-21T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000093",
+            "interestAccruedMiles" : 0.0200444584228881,
+            "interestRemainingMiles" : 0.0200444584228881,
+            "nextInterestAt" : "2026-09-23T20:00:00Z",
+            "number" : 6,
+            "paidMiles" : 0,
+            "principalMiles" : 0.200444584228881,
+            "principalRemainingMiles" : 0.200444584228881,
+            "writtenOffMiles" : 0
+          }
+        ],
+        "creditExpiringThisWeekMiles" : 0,
+        "nextInterestAt" : "2026-09-23T20:00:00Z",
+        "runs" : [
+          {
+            "creditEarnedMiles" : 0,
+            "debtPaidMiles" : 1.5,
+            "discardedMiles" : 0,
+            "id" : "00000000-0000-4000-8000-000000000094",
+            "ignored" : false
+          },
+          {
+            "creditEarnedMiles" : 1.0430000000000001,
+            "debtPaidMiles" : 3.157,
+            "discardedMiles" : 0,
+            "id" : "00000000-0000-4000-8000-000000000096",
+            "ignored" : false
+          },
+          {
+            "creditEarnedMiles" : 0.8,
+            "debtPaidMiles" : 0,
+            "discardedMiles" : 0,
+            "id" : "00000000-0000-4000-8000-000000000098",
+            "ignored" : false
+          }
+        ]
+      },
+      "ledger" : {
+        "beers" : [
+          {
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000088"
+          },
+          {
+            "createdAt" : "2026-09-12T22:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000089"
+          },
+          {
+            "createdAt" : "2026-09-13T23:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000090"
+          },
+          {
+            "createdAt" : "2026-09-15T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000091"
+          },
+          {
+            "createdAt" : "2026-09-19T01:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000092"
+          },
+          {
+            "createdAt" : "2026-09-21T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000093"
+          }
+        ],
+        "booksOpenedAt" : "2026-09-12T20:00:00Z",
+        "excludedWorkoutIDs" : [
+
+        ],
+        "rulesHistory" : [
+          {
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "rules" : {
+              "creditDecayRatePerWeek" : 0.1,
+              "gracePeriod" : 86400,
+              "interestPeriod" : "daily",
+              "interestRate" : 0.1,
+              "maximumCreditBeers" : 3,
+              "milesPerBeer" : 1
+            }
+          }
+        ],
+        "runs" : [
+          {
+            "distanceMeters" : 2414.016,
+            "endedAt" : "2026-09-14T04:00:00Z",
+            "healthKitWorkoutID" : "00000000-0000-4000-8000-000000000095",
+            "id" : "00000000-0000-4000-8000-000000000094",
+            "importedAt" : "2026-09-14T04:00:00Z",
+            "sourceName" : "Fixture",
+            "startedAt" : "2026-09-14T03:30:00Z"
+          },
+          {
+            "distanceMeters" : 6759.2448,
+            "endedAt" : "2026-09-16T20:00:00Z",
+            "healthKitWorkoutID" : "00000000-0000-4000-8000-000000000097",
+            "id" : "00000000-0000-4000-8000-000000000096",
+            "importedAt" : "2026-09-16T20:00:00Z",
+            "sourceName" : "Fixture",
+            "startedAt" : "2026-09-16T19:30:00Z"
+          },
+          {
+            "distanceMeters" : 1287.4752,
+            "endedAt" : "2026-09-21T02:00:00Z",
+            "healthKitWorkoutID" : "00000000-0000-4000-8000-000000000099",
+            "id" : "00000000-0000-4000-8000-000000000098",
+            "importedAt" : "2026-09-21T02:00:00Z",
+            "sourceName" : "Fixture",
+            "startedAt" : "2026-09-21T01:30:00Z"
+          },
+          {
+            "distanceMeters" : 9656.064,
+            "endedAt" : "2026-09-23T20:00:00Z",
+            "healthKitWorkoutID" : "00000000-0000-4000-8000-000000000101",
+            "id" : "00000000-0000-4000-8000-000000000100",
+            "importedAt" : "2026-09-23T20:00:00Z",
+            "sourceName" : "Fixture",
+            "startedAt" : "2026-09-23T19:30:00Z"
+          }
+        ],
+        "version" : 1
+      },
+      "name" : "a busy fortnight @ 10d",
+      "now" : "2026-09-22T20:00:00Z"
+    },
+    {
+      "expected" : {
+        "balance" : {
+          "creditBeers" : 2.8675493556518745,
+          "creditMiles" : 2.8675493556518745,
+          "debtMiles" : 0,
+          "interestMiles" : 0,
+          "principalMiles" : 0,
+          "state" : "credit"
+        },
+        "beers" : [
+          {
+            "costMiles" : 1,
+            "coveredByCreditMiles" : 0,
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000088",
+            "interestAccruedMiles" : 0.1,
+            "interestRemainingMiles" : 0,
+            "number" : 1,
+            "paidAt" : "2026-09-14T04:00:00Z",
+            "paidMiles" : 1.1,
+            "principalMiles" : 1,
+            "principalRemainingMiles" : 0,
+            "writtenOffMiles" : 0
+          },
+          {
+            "costMiles" : 1,
+            "coveredByCreditMiles" : 0,
+            "createdAt" : "2026-09-12T22:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000089",
+            "interestAccruedMiles" : 0.24700000000000003,
+            "interestRemainingMiles" : 0,
+            "number" : 2,
+            "paidAt" : "2026-09-16T20:00:00Z",
+            "paidMiles" : 1.2469999999999999,
+            "principalMiles" : 1,
+            "principalRemainingMiles" : 0,
+            "writtenOffMiles" : 0
+          },
+          {
+            "costMiles" : 1,
+            "coveredByCreditMiles" : 0,
+            "createdAt" : "2026-09-13T23:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000090",
+            "interestAccruedMiles" : 0.21000000000000002,
+            "interestRemainingMiles" : 0,
+            "number" : 3,
+            "paidAt" : "2026-09-16T20:00:00Z",
+            "paidMiles" : 1.21,
+            "principalMiles" : 1,
+            "principalRemainingMiles" : 0,
+            "writtenOffMiles" : 0
+          },
+          {
+            "costMiles" : 1,
+            "coveredByCreditMiles" : 0,
+            "createdAt" : "2026-09-15T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000091",
+            "interestAccruedMiles" : 0.1,
+            "interestRemainingMiles" : 0,
+            "number" : 4,
+            "paidAt" : "2026-09-16T20:00:00Z",
+            "paidMiles" : 1.1,
+            "principalMiles" : 1,
+            "principalRemainingMiles" : 0,
+            "writtenOffMiles" : 0
+          },
+          {
+            "costMiles" : 1,
+            "coveredByCreditMiles" : 1,
+            "createdAt" : "2026-09-19T01:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000092",
+            "interestAccruedMiles" : 0,
+            "interestRemainingMiles" : 0,
+            "number" : 5,
+            "paidAt" : "2026-09-19T01:00:00Z",
+            "paidMiles" : 0,
+            "principalMiles" : 0,
+            "principalRemainingMiles" : 0,
+            "writtenOffMiles" : 0
+          },
+          {
+            "costMiles" : 1,
+            "coveredByCreditMiles" : 0.799555415771119,
+            "createdAt" : "2026-09-21T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000093",
+            "interestAccruedMiles" : 0.04209336268806502,
+            "interestRemainingMiles" : 0,
+            "number" : 6,
+            "paidAt" : "2026-09-23T20:00:00Z",
+            "paidMiles" : 0.24253794691694602,
+            "principalMiles" : 0.200444584228881,
+            "principalRemainingMiles" : 0,
+            "writtenOffMiles" : 0
+          }
+        ],
+        "creditExpiringThisWeekMiles" : 0.28675493556518744,
+        "runs" : [
+          {
+            "creditEarnedMiles" : 0,
+            "debtPaidMiles" : 1.5,
+            "discardedMiles" : 0,
+            "id" : "00000000-0000-4000-8000-000000000094",
+            "ignored" : false
+          },
+          {
+            "creditEarnedMiles" : 1.0430000000000001,
+            "debtPaidMiles" : 3.157,
+            "discardedMiles" : 0,
+            "id" : "00000000-0000-4000-8000-000000000096",
+            "ignored" : false
+          },
+          {
+            "creditEarnedMiles" : 0.8,
+            "debtPaidMiles" : 0,
+            "discardedMiles" : 0,
+            "id" : "00000000-0000-4000-8000-000000000098",
+            "ignored" : false
+          },
+          {
+            "creditEarnedMiles" : 3,
+            "debtPaidMiles" : 0.24253794691694602,
+            "discardedMiles" : 2.757462053083054,
+            "id" : "00000000-0000-4000-8000-000000000100",
+            "ignored" : false
+          }
+        ]
+      },
+      "ledger" : {
+        "beers" : [
+          {
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000088"
+          },
+          {
+            "createdAt" : "2026-09-12T22:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000089"
+          },
+          {
+            "createdAt" : "2026-09-13T23:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000090"
+          },
+          {
+            "createdAt" : "2026-09-15T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000091"
+          },
+          {
+            "createdAt" : "2026-09-19T01:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000092"
+          },
+          {
+            "createdAt" : "2026-09-21T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000093"
+          }
+        ],
+        "booksOpenedAt" : "2026-09-12T20:00:00Z",
+        "excludedWorkoutIDs" : [
+
+        ],
+        "rulesHistory" : [
+          {
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "rules" : {
+              "creditDecayRatePerWeek" : 0.1,
+              "gracePeriod" : 86400,
+              "interestPeriod" : "daily",
+              "interestRate" : 0.1,
+              "maximumCreditBeers" : 3,
+              "milesPerBeer" : 1
+            }
+          }
+        ],
+        "runs" : [
+          {
+            "distanceMeters" : 2414.016,
+            "endedAt" : "2026-09-14T04:00:00Z",
+            "healthKitWorkoutID" : "00000000-0000-4000-8000-000000000095",
+            "id" : "00000000-0000-4000-8000-000000000094",
+            "importedAt" : "2026-09-14T04:00:00Z",
+            "sourceName" : "Fixture",
+            "startedAt" : "2026-09-14T03:30:00Z"
+          },
+          {
+            "distanceMeters" : 6759.2448,
+            "endedAt" : "2026-09-16T20:00:00Z",
+            "healthKitWorkoutID" : "00000000-0000-4000-8000-000000000097",
+            "id" : "00000000-0000-4000-8000-000000000096",
+            "importedAt" : "2026-09-16T20:00:00Z",
+            "sourceName" : "Fixture",
+            "startedAt" : "2026-09-16T19:30:00Z"
+          },
+          {
+            "distanceMeters" : 1287.4752,
+            "endedAt" : "2026-09-21T02:00:00Z",
+            "healthKitWorkoutID" : "00000000-0000-4000-8000-000000000099",
+            "id" : "00000000-0000-4000-8000-000000000098",
+            "importedAt" : "2026-09-21T02:00:00Z",
+            "sourceName" : "Fixture",
+            "startedAt" : "2026-09-21T01:30:00Z"
+          },
+          {
+            "distanceMeters" : 9656.064,
+            "endedAt" : "2026-09-23T20:00:00Z",
+            "healthKitWorkoutID" : "00000000-0000-4000-8000-000000000101",
+            "id" : "00000000-0000-4000-8000-000000000100",
+            "importedAt" : "2026-09-23T20:00:00Z",
+            "sourceName" : "Fixture",
+            "startedAt" : "2026-09-23T19:30:00Z"
+          }
+        ],
+        "version" : 1
+      },
+      "name" : "a busy fortnight @ 14d",
+      "now" : "2026-09-26T20:00:00Z"
+    }
+  ],
+  "note" : "Generated by beer-debt-ios\/scripts\/fixtures.sh from the Swift BalanceEngine. Ledger JSON is the app's on-disk format. Compare doubles with |a-b| <= tolerance; dates are ISO 8601 UTC whole seconds.",
+  "tolerance" : 1e-06,
+  "version" : 1
+}
