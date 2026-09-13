@@ -21,16 +21,20 @@ same shape as pourcraft-android. The iOS pipeline is documented in
 Listing copy, screenshots, and the graphics live in `docs/play/` (see
 `docs/play/listing.md`).
 
-**State on 2026-09-12 (night):** release run #3 uploaded versionCode 3
-(1.0, streaks + reopen books) to the internal track and it is live there.
-A production release with the same bundle is saved as a draft, all
-countries selected, release notes filled. The store listing has eight
-screenshots and the streak line. The Health apps declaration includes the
-per-permission explanations for `READ_EXERCISE` and `READ_DISTANCE` that
-Play asks for once a bundle with those permissions exists. What remains is
-the **Send app for review** button in Publishing overview, which starts
-Play's review (including the Health Connect declaration) and, on approval,
-the production rollout. That click is Colin's.
+**State on 2026-09-13 (early):** the first internal build a tester ran
+(versionCode 3) crashed at launch: R8 stripped WorkManager's Room database
+constructor (fixed in `app/proguard-rules.pro`, verified with
+`scripts/release-smoke.sh`; run 4 carried the fix, run 5 added Sentry).
+**versionCode 5 (1.0) is live on the internal track.** The production
+release that referenced the crashing bundle was pulled out of review and
+recreated as "5 (1.0)" with the same notes and all countries; it sits in
+Publishing overview as one of 12 changes not yet sent for review, next to
+the updated Data safety form (crash logs, diagnostics, device IDs:
+collected, not shared, encrypted, auto-deleted). What remains is the
+**Submit changes for review** button in Publishing overview, which starts
+Play's review (including the Health Connect declaration) and, since
+managed publishing is off, the production rollout on approval. That click
+is Colin's, after the internal build has been checked on a real phone.
 
 ## Signing
 
