@@ -52,4 +52,4 @@ checklist, and `docs/play/` holds the listing copy and graphics.
 - Kotlin 2.4, Jetpack Compose (BOM 2026.09), Material 3, forced dark theme to match iOS
 - kotlinx.serialization for the ledger file (same JSON as iOS)
 - Health Connect (`connect-client`) for running exercise sessions, read-only
-- No backend, no accounts, no analytics
+- No backend, no accounts, no analytics. Crash reports go to Sentry (crashes and sync errors only, nothing identifying)

@@ -8,6 +8,8 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
 }
 
+val SENTRY_DSN = "https://35ee3d92a59402f6aeecfc05c0413fd3@o4508774188711936.ingest.us.sentry.io/4512076313853952"
+
 // Upload-key signing, loaded from keystore.properties at the repo root
 // (gitignored; CI writes it from secrets). Absent → release builds are unsigned.
 val keystoreProps = Properties().apply {
@@ -28,6 +30,11 @@ android {
         // Matches MARKETING_VERSION in beer-debt-ios per shipped feature.
         versionName = "1.0"
         vectorDrawables { useSupportLibrary = true }
+        // Sentry (org pawfect-edit, project beer-debt-android). The DSN is not a
+        // secret; it only lets the app send events. Blank disables Sentry.
+        buildConfigField("String", "SENTRY_DSN", "\"${project.findProperty("sentryDsn") ?: SENTRY_DSN}\"")
+        // Set by the release workflow so the uploaded R8 mapping matches this build.
+        manifestPlaceholders["sentryProguardUuid"] = (project.findProperty("sentryProguardUuid") as String?) ?: ""
     }
 
     signingConfigs {
@@ -61,6 +68,7 @@ android {
 
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 
@@ -87,6 +95,7 @@ dependencies {
     implementation(libs.androidx.health.connect)
     implementation(libs.androidx.work.runtime)
     implementation(libs.androidx.glance.appwidget)
+    implementation(libs.sentry.android)
 
     testImplementation(libs.junit)
 }

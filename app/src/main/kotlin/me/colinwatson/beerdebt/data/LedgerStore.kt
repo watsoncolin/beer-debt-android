@@ -42,6 +42,7 @@ class LedgerStore(private val directory: File, now: Instant = Instant.now()) {
             val aside = File(directory, "ledger-unreadable-${now.epochSecond}.json")
             file.renameTo(aside)
             loadError = "Couldn't read the ledger, so the books were reopened. The old file was kept as ${aside.name}."
+            loadFailure = error
             Ledger.open(now.floored()).also { write(it) }
         }
     }
@@ -144,6 +145,9 @@ class LedgerStore(private val directory: File, now: Instant = Instant.now()) {
 
     /** Hook for widget refresh etc. */
     var onChange: (() -> Unit)? = null
+    /** The exception behind [loadError], for the app to report. */
+    var loadFailure: Throwable? = null
+        private set
 
     companion object {
         const val BACKDATING_WINDOW_SECONDS = 30L * 24 * 60 * 60

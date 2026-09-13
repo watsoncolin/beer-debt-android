@@ -4,6 +4,7 @@ import android.app.Application
 import me.colinwatson.beerdebt.data.LedgerStore
 import me.colinwatson.beerdebt.health.HealthSync
 import me.colinwatson.beerdebt.notify.RunNotifier
+import me.colinwatson.beerdebt.telemetry.Telemetry
 import me.colinwatson.beerdebt.widget.BalanceWidget
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -22,7 +23,9 @@ class BeerDebtApp : Application() {
     override fun onCreate() {
         super.onCreate()
         instance = this
+        Telemetry.configure(this)
         store = LedgerStore(filesDir.resolve("BeerDebt"))
+        store.loadFailure?.let { Telemetry.report(it, context = "store", values = mapOf("action" to "load")) }
         notifier = RunNotifier(this)
         sync = HealthSync(this, store, notifier)
         sync.scheduleBackgroundSync()

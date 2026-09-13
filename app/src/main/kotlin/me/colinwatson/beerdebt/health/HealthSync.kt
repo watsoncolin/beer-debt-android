@@ -13,6 +13,7 @@ import me.colinwatson.beerdebt.data.LedgerStore
 import me.colinwatson.beerdebt.engine.BalanceState
 import me.colinwatson.beerdebt.notify.RunNotifier
 import me.colinwatson.beerdebt.notify.WeeklySummary
+import me.colinwatson.beerdebt.telemetry.Telemetry
 import java.time.Instant
 import java.util.concurrent.TimeUnit
 import kotlinx.serialization.Serializable
@@ -139,6 +140,7 @@ class HealthSync(context: Context, private val store: LedgerStore, private val n
             }
         } catch (e: Exception) {
             _state.update { it.copy(lastError = e.message ?: e.toString()) }
+            Telemetry.report(e, context = "health", values = mapOf("action" to "sync", "hasToken" to (prefs.getString(KEY_TOKEN, null) != null)))
         } finally {
             _state.update { it.copy(isSyncing = false) }
         }

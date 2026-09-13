@@ -63,6 +63,16 @@ printf 'upload'  | gh secret set UPLOAD_KEY_ALIAS
 printf '%s' "$PW" | gh secret set UPLOAD_KEY_PASSWORD
 ```
 
+## Sentry
+
+Project `beer-debt-android` in the `pawfect-edit` org (created 2026-09-12).
+The app sends crashes, ANRs, and hand-reported sync/store errors; nothing
+that identifies the user. For readable stack traces the release workflow
+uploads the R8 mapping with `sentry-cli` when the `SENTRY_AUTH_TOKEN`
+repository secret exists (an org auth token with `project:releases` and
+`project:write`, from Sentry → Settings → Auth Tokens). Without it the
+build still ships.
+
 ## Workflows
 
 - **`ci.yml`** on every push and pull request: engine fixture tests, debug

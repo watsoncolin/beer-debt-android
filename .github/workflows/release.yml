@@ -74,8 +74,24 @@ jobs:
         id: vc
         run: echo "code=${{ github.run_number }}" >> "$GITHUB_OUTPUT"
 
+      - name: Sentry mapping id
+        id: sentry
+        run: echo "uuid=$(uuidgen | tr 'A-Z' 'a-z')" >> "$GITHUB_OUTPUT"
+
       - name: Build signed AAB
-        run: ./gradlew :app:bundleRelease -PversionCode=${{ steps.vc.outputs.code }} --stacktrace
+        run: ./gradlew :app:bundleRelease -PversionCode=${{ steps.vc.outputs.code }} -PsentryProguardUuid=${{ steps.sentry.outputs.uuid }} --stacktrace
+
+      # Deobfuscated stack traces in Sentry. Skipped without the token; the
+      # build still ships, just with obfuscated traces.
+      - name: Upload R8 mapping to Sentry
+        if: env.SENTRY_AUTH_TOKEN != ''
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_ORG: pawfect-edit
+          SENTRY_PROJECT: beer-debt-android
+        run: |
+          curl -sL https://sentry.io/get-cli/ | SENTRY_CLI_VERSION=2.46.0 bash
+          sentry-cli upload-proguard --uuid ${{ steps.sentry.outputs.uuid }} app/build/outputs/mapping/release/mapping.txt
 
       - name: Verify AAB signature
         run: jarsigner -verify app/build/outputs/bundle/release/app-release.aab

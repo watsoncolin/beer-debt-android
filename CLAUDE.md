@@ -124,7 +124,15 @@ copy and graphics. `versionName` tracks iOS `MARKETING_VERSION`;
 
 - Kotlin, Compose, Material 3, forced dark (forest palette from iOS `Theme`).
 - Version catalog in `gradle/libs.versions.toml`; Gradle Kotlin DSL.
-- No third-party dependencies beyond AndroidX, Kotlin, and Health Connect.
+- No third-party dependencies beyond AndroidX, Kotlin, Health Connect, and
+  Sentry (crash reporting only; `telemetry/Telemetry.kt` is the one door,
+  the Pourcraft convention: no user identification, no session replay, no
+  tracing, hand-reported errors carry a context block). DSN is in
+  `app/build.gradle.kts` (public; org `pawfect-edit`, project
+  `beer-debt-android`). The release workflow uploads the R8 mapping with
+  `sentry-cli` when `SENTRY_AUTH_TOKEN` is set; without it, traces are
+  obfuscated but nothing fails. Play Data safety declares crash logs and
+  diagnostics because of this.
 - Health Connect is read-only, running sessions only. Don't add data types
   without updating the manifest permissions, the Privacy screen, and the
   privacy page in the iOS repo (it is shared and Play reads it).

@@ -18,6 +18,10 @@
         android:name=".BeerDebtApp"
         android:theme="@style/Theme.BeerDebt">
 
+        <!-- Sentry is started in BeerDebtApp.onCreate so environment and release follow the build. -->
+        <meta-data android:name="io.sentry.auto-init" android:value="false" />
+        <meta-data android:name="io.sentry.proguard-uuid" android:value="${sentryProguardUuid}" />
+
         <activity
             android:name=".MainActivity"
             android:exported="true"
