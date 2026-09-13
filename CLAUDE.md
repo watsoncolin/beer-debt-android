@@ -45,6 +45,15 @@ compiler, and serialization plugins (no `kotlin.android`). `compileSdk` 37
 is required by Compose 2026.09. AGP auto-downloaded the SDK into
 `~/Library/Android/sdk` once the license hashes were present.
 
+## Before a release: smoke-test the shrunk build
+
+`scripts/release-smoke.sh` builds `assembleRelease` (R8 on), installs it on
+the running AVD, launches it, and fails on a dead process or a fatal
+exception. The first release build ever shipped crashed on every phone
+because R8 stripped WorkManager's Room database constructor; the debug
+builds the emulator scripts use never run R8. `app/proguard-rules.pro`
+carries the keep rules. Run this before `Release to Play`.
+
 ## Screenshots / manual testing on the emulator
 
 `scripts/screenshots.sh [outdir]` boots the `beerdebt` AVD headless (create it
