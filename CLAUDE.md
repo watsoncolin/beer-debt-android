@@ -65,7 +65,15 @@ carries the keep rules. Run this before `Release to Play`.
 once with `scripts/emulator-bootstrap.sh`, or Android Studio's device
 manager), installs the debug APK, seeds demo ledgers (debt and credit states)
 straight into `files/BeerDebt/ledger.json` via `run-as`, marks onboarding
-complete, and screenshots every screen into `docs/screenshots/`. It relies on
+complete, and screenshots every screen into `docs/screenshots/`. It pins
+`ANDROID_SERIAL` to a single emulator and refuses anything else, because it
+runs `pm clear`: a paired handset must never be a candidate target. Set
+`ANDROID_SERIAL` yourself to choose between two emulators. Every capture is
+checked for having the app's dark green on at least `FLOOR` percent (5) of it,
+since a launcher mid-animation or a screen that never drew still writes a
+valid PNG; doubtful ones are named at the end and the script exits non-zero.
+Re-running rewrites all fifteen, but most differ only by the clock and the
+seeded dates — commit the ones your change actually touched. It relies on
 the debug-only intent extra `--es debugScreen debt|runs|settings|beerAdded|
 beerDetail|debtFree` handled by `DebugLaunch` in `MainActivity` (the iOS
 `-debugScreen` equivalent). Keep the seed shapes in that script in sync with
