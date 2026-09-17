@@ -177,4 +177,60 @@ class LedgerStoreTest {
         assertEquals(true, store.currentRules.streakProtection)
         assertEquals(at(DAY), store.current.rulesHistory[1].effectiveAt)
     }
+    // --- the write path (iOS PR #7: a failed write is remembered, not swallowed) ---
+
+    @Test fun aFailedWriteIsRememberedAndRetried() {
+        val dir = tempDir()
+        val store = LedgerStore(dir, now = t0)
+        assertTrue(store.isPersisted)
+
+        // Make the directory unwritable so the temp file cannot be created.
+        val ledgerFile = File(dir, "ledger.json")
+        val before = ledgerFile.readText()
+        assertTrue(dir.setWritable(false))
+        try {
+            store.addBeer(at(HOUR))
+            assertFalse("a write that failed must not claim to be persisted", store.isPersisted)
+            // The beer is in memory, so the user sees it...
+            assertEquals(1, store.current.beers.size)
+            // ...and the file still holds the last good state rather than nothing.
+            assertEquals(before, ledgerFile.readText())
+            assertFalse(store.persist())
+        } finally {
+            assertTrue(dir.setWritable(true))
+        }
+
+        // persist() is the retry point, and it succeeds once the disk lets it.
+        assertTrue(store.persist())
+        assertTrue(store.isPersisted)
+        assertEquals(store.current.beers, LedgerStore(dir, now = at(DAY)).current.beers)
+    }
+
+    @Test fun persistIsANoOpWhenNothingIsOutstanding() {
+        val dir = tempDir()
+        val store = LedgerStore(dir, now = t0)
+        store.addBeer(at(HOUR))
+        val file = File(dir, "ledger.json")
+        val contents = file.readText()
+        // Nothing outstanding, so it reports success without touching the file.
+        assertTrue(store.persist())
+        assertTrue(store.isPersisted)
+        assertEquals(contents, file.readText())
+    }
+
+    @Test fun theLedgerSurvivesAWriteThatCannotBeRenamed() {
+        // The bug this replaced: on a failed rename the old code ran
+        // file.delete() and then tried again, so a second failure left no
+        // ledger at all. Whatever happens, the file must never end up missing.
+        val dir = tempDir()
+        val store = LedgerStore(dir, now = t0)
+        store.addBeer(at(HOUR))
+        val file = File(dir, "ledger.json")
+        assertTrue(file.exists())
+        repeat(3) { store.addBeer(at(HOUR)) }
+        assertTrue("the ledger file must never be deleted", file.exists())
+        assertTrue(file.readText().isNotEmpty())
+        assertEquals(4, LedgerStore(dir, now = at(DAY)).current.beers.size)
+    }
+
 }

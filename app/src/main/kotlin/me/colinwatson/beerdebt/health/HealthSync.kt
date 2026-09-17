@@ -14,6 +14,7 @@ import me.colinwatson.beerdebt.engine.BalanceState
 import me.colinwatson.beerdebt.notify.RunNotifier
 import me.colinwatson.beerdebt.notify.WeeklySummary
 import me.colinwatson.beerdebt.telemetry.Telemetry
+import me.colinwatson.beerdebt.widget.BalanceWidget
 import java.time.Instant
 import java.util.concurrent.TimeUnit
 import kotlinx.serialization.Serializable
@@ -64,7 +65,16 @@ class HealthSync(context: Context, private val store: LedgerStore, private val n
     suspend fun connected() {
         val ok = health.hasPermissions()
         prefs.edit().putBoolean(KEY_CONNECTED, ok).apply()
-        _state.update { it.copy(isConnected = ok, lastError = if (ok) null else "Health Connect access wasn't granted.") }
+        // Not granted is the user's answer, not a failure to report. Name the
+        // provider conditions though, since "access wasn't granted" is
+        // misleading when the provider is missing or too old to ask.
+        val why = when {
+            ok -> null
+            health.needsInstall -> HealthFailure.PROVIDER_NEEDS_INSTALL.message("")
+            !health.isAvailable -> HealthFailure.PROVIDER_UNAVAILABLE.message("")
+            else -> "Health Connect access wasn't granted."
+        }
+        _state.update { it.copy(isConnected = ok, lastError = why) }
         if (ok) { scheduleBackgroundSync(); sync() }
     }
 
@@ -102,6 +112,9 @@ class HealthSync(context: Context, private val store: LedgerStore, private val n
 
     suspend fun syncIfConnected() { if (_state.value.isConnected) sync() }
 
+    /** Mirrors iOS `LedgerStore.refreshWidgets()`; the store's onChange covers writes. */
+    private suspend fun refreshWidgets() = BalanceWidget.refresh(app)
+
     suspend fun sync() {
         if (!_state.value.isConnected || _state.value.isSyncing) return
         _state.update { it.copy(isSyncing = true) }
@@ -111,8 +124,28 @@ class HealthSync(context: Context, private val store: LedgerStore, private val n
             val eligible = result.runs.filter { it.endedAt >= store.current.booksOpenedAt }
             val added = store.importRuns(eligible)
             val removed = store.removeRuns(result.deletedWorkoutIDs.toSet())
+            // The changes token is the only record of which workouts have been
+            // read, so move it only once the runs it covers are on disk. If the
+            // write failed, the in-memory books are ahead of the file: the next
+            // launch would read a ledger without the run, and Health Connect,
+            // asked from the advanced token, would never offer it again.
+            // Leaving the token where it is costs a re-read and nothing else,
+            // since the store dedups on workout id. This also makes every sync
+            // a retry point for any earlier write that failed.
+            if (!store.persist()) {
+                _state.update { it.copy(
+                    lastSyncAt = Instant.now(),
+                    lastError = "Couldn't write the books to this phone. Your runs are safe in Health Connect and will be read again next sync.",
+                ) }
+                return
+            }
             prefs.edit().putString(KEY_TOKEN, result.token).apply()
             _state.update { it.copy(lastSyncAt = Instant.now(), lastError = null) }
+            // Even when nothing changed. A reload asked for on a background
+            // wake can be dropped, and the sync that would ask again imports
+            // nothing the second time, so it never writes; this is what repairs
+            // a face left showing yesterday's number.
+            refreshWidgets()
 
             if (added.isEmpty() && removed == 0) return
             val after = store.report()
@@ -139,8 +172,18 @@ class HealthSync(context: Context, private val store: LedgerStore, private val n
                 RunNotifier.message(change)?.let(notifier::post)
             }
         } catch (e: Exception) {
-            _state.update { it.copy(lastError = e.message ?: e.toString()) }
-            Telemetry.report(e, context = "health", values = mapOf("action" to "sync", "hasToken" to (prefs.getString(KEY_TOKEN, null) != null)))
+            // Classify before reporting. A revoked permission or a provider
+            // that went away is the environment, not a defect here, and a
+            // background sync runs hourly whatever the phone is doing -- so
+            // reporting those would page on every wake and bury anything real.
+            // Only UNKNOWN reaches Sentry; everything named gets copy with a
+            // remedy in it instead of the exception's own message, which for
+            // some of these is null.
+            val failure = HealthFailure.of(e, available = health.isAvailable, needsInstall = health.needsInstall)
+            _state.update { it.copy(lastError = failure.message(e.message ?: e.toString())) }
+            if (failure.isReportable) {
+                Telemetry.report(e, context = "health", values = mapOf("action" to "sync", "hasToken" to (prefs.getString(KEY_TOKEN, null) != null)))
+            }
         } finally {
             _state.update { it.copy(isSyncing = false) }
         }
