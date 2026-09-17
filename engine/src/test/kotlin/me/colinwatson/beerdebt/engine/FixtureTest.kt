@@ -47,7 +47,7 @@ class FixtureTest {
     @Serializable
     private data class ExpectedBalance(
         val state: String, val debtMiles: Double, val principalMiles: Double,
-        val interestMiles: Double, val creditMiles: Double, val creditBeers: Double,
+        val interestMiles: Double, val interestPerPeriodMiles: Double, val creditMiles: Double, val creditBeers: Double,
     )
 
     @Serializable
@@ -95,6 +95,7 @@ class FixtureTest {
         near("balance.debtMiles", report.balance.debtMiles, e.balance.debtMiles)
         near("balance.principalMiles", report.balance.principalMiles, e.balance.principalMiles)
         near("balance.interestMiles", report.balance.interestMiles, e.balance.interestMiles)
+        near("balance.interestPerPeriodMiles", report.balance.interestPerPeriodMiles, e.balance.interestPerPeriodMiles)
         near("balance.creditMiles", report.balance.creditMiles, e.balance.creditMiles)
         near("balance.creditBeers", report.balance.creditBeers, e.balance.creditBeers)
         same("nextInterestAt", report.nextInterestAt, e.nextInterestAt)

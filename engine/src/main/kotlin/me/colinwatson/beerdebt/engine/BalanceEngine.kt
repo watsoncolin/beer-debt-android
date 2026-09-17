@@ -216,7 +216,10 @@ private class Replay(private val ledger: Ledger, private val now: Double, zone: 
         }
         return Report(
             at = now.toInstant(),
-            balance = Balance(state, debt, principal, interest, credit, creditBeers),
+            // Each open debt posts once a period, so the whole tab's per-period
+            // charge is just the rate on what's outstanding. Gross: a protected
+            // day skips the posting, and the UI says so.
+            balance = Balance(state, debt, principal, interest, debt * rules.interestRate, credit, creditBeers),
             beers = statements,
             runs = runStatements.sortedBy { it.run.endedAt.seconds },
             rules = rules,

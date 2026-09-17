@@ -29,6 +29,6 @@ fun run(miles: Double, endedAt: Instant, workoutID: UUID = UUID.randomUUID()): R
     RunEntry(UUID.randomUUID(), workoutID, endedAt.minusSeconds(30 * 60), endedAt, miles * RunEntry.METERS_PER_MILE, endedAt, "Test")
 
 fun balance(state: BalanceState, debt: Double = 0.0, credit: Double = 0.0): Balance =
-    Balance(state, debt, debt, 0.0, credit, credit)
+    Balance(state, debt, debt, 0.0, debt * Rules().interestRate, credit, credit)
 
 fun close(a: Double, b: Double, tolerance: Double = 1e-6): Boolean = abs(a - b) <= tolerance

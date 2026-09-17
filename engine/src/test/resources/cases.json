@@ -7,6 +7,7 @@
           "creditMiles" : 0,
           "debtMiles" : 0,
           "interestMiles" : 0,
+          "interestPerPeriodMiles" : 0,
           "principalMiles" : 0,
           "state" : "even"
         },
@@ -67,6 +68,7 @@
           "creditMiles" : 0,
           "debtMiles" : 1,
           "interestMiles" : 0,
+          "interestPerPeriodMiles" : 0.1,
           "principalMiles" : 1,
           "state" : "debt"
         },
@@ -144,6 +146,7 @@
           "creditMiles" : 0,
           "debtMiles" : 3,
           "interestMiles" : 0,
+          "interestPerPeriodMiles" : 0.30000000000000004,
           "principalMiles" : 3,
           "state" : "debt"
         },
@@ -257,6 +260,7 @@
           "creditMiles" : 0,
           "debtMiles" : 2,
           "interestMiles" : 0,
+          "interestPerPeriodMiles" : 0.2,
           "principalMiles" : 2,
           "state" : "debt"
         },
@@ -334,6 +338,7 @@
           "creditMiles" : 0,
           "debtMiles" : 0,
           "interestMiles" : 0,
+          "interestPerPeriodMiles" : 0,
           "principalMiles" : 0,
           "state" : "even"
         },
@@ -397,6 +402,7 @@
           "creditMiles" : 0,
           "debtMiles" : 1,
           "interestMiles" : 0,
+          "interestPerPeriodMiles" : 0.1,
           "principalMiles" : 1,
           "state" : "debt"
         },
@@ -474,6 +480,7 @@
           "creditMiles" : 0,
           "debtMiles" : 1.1,
           "interestMiles" : 0.1,
+          "interestPerPeriodMiles" : 0.11000000000000001,
           "principalMiles" : 1,
           "state" : "debt"
         },
@@ -551,6 +558,7 @@
           "creditMiles" : 0,
           "debtMiles" : 1.21,
           "interestMiles" : 0.21000000000000002,
+          "interestPerPeriodMiles" : 0.121,
           "principalMiles" : 1,
           "state" : "debt"
         },
@@ -628,6 +636,7 @@
           "creditMiles" : 0,
           "debtMiles" : 1.61051,
           "interestMiles" : 0.61051,
+          "interestPerPeriodMiles" : 0.16105100000000003,
           "principalMiles" : 1,
           "state" : "debt"
         },
@@ -705,6 +714,7 @@
           "creditMiles" : 0,
           "debtMiles" : 1,
           "interestMiles" : 0,
+          "interestPerPeriodMiles" : 0.1,
           "principalMiles" : 1,
           "state" : "debt"
         },
@@ -782,6 +792,7 @@
           "creditMiles" : 0,
           "debtMiles" : 1.1,
           "interestMiles" : 0.1,
+          "interestPerPeriodMiles" : 0.11000000000000001,
           "principalMiles" : 1,
           "state" : "debt"
         },
@@ -859,6 +870,7 @@
           "creditMiles" : 0,
           "debtMiles" : 1,
           "interestMiles" : 0,
+          "interestPerPeriodMiles" : 0.1,
           "principalMiles" : 1,
           "state" : "debt"
         },
@@ -936,6 +948,7 @@
           "creditMiles" : 0,
           "debtMiles" : 1.1,
           "interestMiles" : 0.1,
+          "interestPerPeriodMiles" : 0.11000000000000001,
           "principalMiles" : 1,
           "state" : "debt"
         },
@@ -1013,6 +1026,7 @@
           "creditMiles" : 0,
           "debtMiles" : 1,
           "interestMiles" : 0,
+          "interestPerPeriodMiles" : 0.1,
           "principalMiles" : 1,
           "state" : "debt"
         },
@@ -1090,6 +1104,7 @@
           "creditMiles" : 0,
           "debtMiles" : 1.1,
           "interestMiles" : 0.1,
+          "interestPerPeriodMiles" : 0.11000000000000001,
           "principalMiles" : 1,
           "state" : "debt"
         },
@@ -1167,6 +1182,7 @@
           "creditMiles" : 0,
           "debtMiles" : 1.21,
           "interestMiles" : 0.21000000000000002,
+          "interestPerPeriodMiles" : 0.121,
           "principalMiles" : 1,
           "state" : "debt"
         },
@@ -1244,6 +1260,7 @@
           "creditMiles" : 0,
           "debtMiles" : 1,
           "interestMiles" : 0,
+          "interestPerPeriodMiles" : 0,
           "principalMiles" : 1,
           "state" : "debt"
         },
@@ -1319,6 +1336,7 @@
           "creditMiles" : 0,
           "debtMiles" : 0,
           "interestMiles" : 0,
+          "interestPerPeriodMiles" : 0,
           "principalMiles" : 0,
           "state" : "even"
         },
@@ -1485,6 +1503,7 @@
           "creditMiles" : 0,
           "debtMiles" : 0,
           "interestMiles" : 0,
+          "interestPerPeriodMiles" : 0,
           "principalMiles" : 0,
           "state" : "even"
         },
@@ -1581,6 +1600,7 @@
           "creditMiles" : 0,
           "debtMiles" : 0.6,
           "interestMiles" : 0,
+          "interestPerPeriodMiles" : 0.06,
           "principalMiles" : 0.6,
           "state" : "debt"
         },
@@ -1678,6 +1698,7 @@
           "creditMiles" : 0,
           "debtMiles" : 1.5,
           "interestMiles" : 0,
+          "interestPerPeriodMiles" : 0.15000000000000002,
           "principalMiles" : 1.5,
           "state" : "debt"
         },
@@ -1818,6 +1839,7 @@
           "creditMiles" : 0,
           "debtMiles" : 0.6,
           "interestMiles" : 0,
+          "interestPerPeriodMiles" : 0.06,
           "principalMiles" : 0.6,
           "state" : "debt"
         },
@@ -1915,6 +1937,7 @@
           "creditMiles" : 0,
           "debtMiles" : 0.6599999999999999,
           "interestMiles" : 0.06,
+          "interestPerPeriodMiles" : 0.06599999999999999,
           "principalMiles" : 0.6,
           "state" : "debt"
         },
@@ -2019,6 +2042,7 @@
           "creditMiles" : 2,
           "debtMiles" : 0,
           "interestMiles" : 0,
+          "interestPerPeriodMiles" : 0,
           "principalMiles" : 0,
           "state" : "credit"
         },
@@ -2115,6 +2139,7 @@
           "creditMiles" : 3,
           "debtMiles" : 0,
           "interestMiles" : 0,
+          "interestPerPeriodMiles" : 0,
           "principalMiles" : 0,
           "state" : "credit"
         },
@@ -2195,6 +2220,7 @@
           "creditMiles" : 6,
           "debtMiles" : 0,
           "interestMiles" : 0,
+          "interestPerPeriodMiles" : 0,
           "principalMiles" : 0,
           "state" : "credit"
         },
@@ -2275,6 +2301,7 @@
           "creditMiles" : 2,
           "debtMiles" : 0,
           "interestMiles" : 0,
+          "interestPerPeriodMiles" : 0,
           "principalMiles" : 0,
           "state" : "credit"
         },
@@ -2355,6 +2382,7 @@
           "creditMiles" : 1.8,
           "debtMiles" : 0,
           "interestMiles" : 0,
+          "interestPerPeriodMiles" : 0,
           "principalMiles" : 0,
           "state" : "credit"
         },
@@ -2484,6 +2512,7 @@
           "creditMiles" : 1.62,
           "debtMiles" : 0,
           "interestMiles" : 0,
+          "interestPerPeriodMiles" : 0,
           "principalMiles" : 0,
           "state" : "credit"
         },
@@ -2662,6 +2691,7 @@
           "creditMiles" : 2,
           "debtMiles" : 0,
           "interestMiles" : 0,
+          "interestPerPeriodMiles" : 0,
           "principalMiles" : 0,
           "state" : "credit"
         },
@@ -3232,6 +3262,7 @@
           "creditMiles" : 1,
           "debtMiles" : 0,
           "interestMiles" : 0,
+          "interestPerPeriodMiles" : 0,
           "principalMiles" : 0,
           "state" : "credit"
         },
@@ -3328,6 +3359,7 @@
           "creditMiles" : 0,
           "debtMiles" : 0.6,
           "interestMiles" : 0,
+          "interestPerPeriodMiles" : 0.06,
           "principalMiles" : 0.6,
           "state" : "debt"
         },
@@ -3425,6 +3457,7 @@
           "creditMiles" : 1,
           "debtMiles" : 0,
           "interestMiles" : 0,
+          "interestPerPeriodMiles" : 0,
           "principalMiles" : 0,
           "state" : "credit"
         },
@@ -3512,6 +3545,7 @@
           "creditMiles" : 0,
           "debtMiles" : 0,
           "interestMiles" : 0,
+          "interestPerPeriodMiles" : 0,
           "principalMiles" : 0,
           "state" : "even"
         },
@@ -3612,6 +3646,7 @@
           "creditMiles" : 0,
           "debtMiles" : 1,
           "interestMiles" : 0,
+          "interestPerPeriodMiles" : 0.1,
           "principalMiles" : 1,
           "state" : "debt"
         },
@@ -3727,6 +3762,7 @@
           "creditMiles" : 0,
           "debtMiles" : 1,
           "interestMiles" : 0,
+          "interestPerPeriodMiles" : 0.1,
           "principalMiles" : 1,
           "state" : "debt"
         },
@@ -3812,6 +3848,7 @@
           "creditMiles" : 1,
           "debtMiles" : 0,
           "interestMiles" : 0,
+          "interestPerPeriodMiles" : 0,
           "principalMiles" : 0,
           "state" : "credit"
         },
@@ -3908,6 +3945,7 @@
           "creditMiles" : 0.04,
           "debtMiles" : 0,
           "interestMiles" : 0,
+          "interestPerPeriodMiles" : 0,
           "principalMiles" : 0,
           "state" : "even"
         },
@@ -3988,6 +4026,7 @@
           "creditMiles" : 0,
           "debtMiles" : 0,
           "interestMiles" : 0,
+          "interestPerPeriodMiles" : 0,
           "principalMiles" : 0,
           "state" : "even"
         },
@@ -4084,6 +4123,7 @@
           "creditMiles" : 0,
           "debtMiles" : 0,
           "interestMiles" : 0,
+          "interestPerPeriodMiles" : 0,
           "principalMiles" : 0,
           "state" : "even"
         },
@@ -4180,6 +4220,7 @@
           "creditMiles" : 0,
           "debtMiles" : 0.09999999999999987,
           "interestMiles" : 0,
+          "interestPerPeriodMiles" : 0.009999999999999988,
           "principalMiles" : 0.09999999999999987,
           "state" : "debt"
         },
@@ -4277,6 +4318,7 @@
           "creditMiles" : 0,
           "debtMiles" : 3,
           "interestMiles" : 0,
+          "interestPerPeriodMiles" : 0.30000000000000004,
           "principalMiles" : 3,
           "state" : "debt"
         },
@@ -4384,6 +4426,7 @@
           "creditMiles" : 0,
           "debtMiles" : 1.21,
           "interestMiles" : 0.21000000000000002,
+          "interestPerPeriodMiles" : 0.121,
           "principalMiles" : 1,
           "state" : "debt"
         },
@@ -4473,6 +4516,7 @@
           "creditMiles" : 0,
           "debtMiles" : 1.21,
           "interestMiles" : 0.21000000000000002,
+          "interestPerPeriodMiles" : 0,
           "principalMiles" : 1,
           "state" : "debt"
         },
@@ -4560,6 +4604,7 @@
           "creditMiles" : 0,
           "debtMiles" : 1,
           "interestMiles" : 0,
+          "interestPerPeriodMiles" : 0.1,
           "principalMiles" : 1,
           "state" : "debt"
         },
@@ -4649,6 +4694,7 @@
           "creditMiles" : 0,
           "debtMiles" : 1.1,
           "interestMiles" : 0.1,
+          "interestPerPeriodMiles" : 0.11000000000000001,
           "principalMiles" : 1,
           "state" : "debt"
         },
@@ -4738,6 +4784,7 @@
           "creditMiles" : 0,
           "debtMiles" : 1.1,
           "interestMiles" : 0.1,
+          "interestPerPeriodMiles" : 0.22000000000000003,
           "principalMiles" : 1,
           "state" : "debt"
         },
@@ -4827,6 +4874,7 @@
           "creditMiles" : 0,
           "debtMiles" : 1.32,
           "interestMiles" : 0.32000000000000006,
+          "interestPerPeriodMiles" : 0.264,
           "principalMiles" : 1,
           "state" : "debt"
         },
@@ -4916,6 +4964,7 @@
           "creditMiles" : 0,
           "debtMiles" : 1.21,
           "interestMiles" : 0.21000000000000002,
+          "interestPerPeriodMiles" : 0.121,
           "principalMiles" : 1,
           "state" : "debt"
         },
@@ -5005,6 +5054,7 @@
           "creditMiles" : 0,
           "debtMiles" : 1.331,
           "interestMiles" : 0.331,
+          "interestPerPeriodMiles" : 0.1331,
           "principalMiles" : 1,
           "state" : "debt"
         },
@@ -5094,6 +5144,7 @@
           "creditMiles" : 0,
           "debtMiles" : 1,
           "interestMiles" : 0,
+          "interestPerPeriodMiles" : 0.1,
           "principalMiles" : 1,
           "state" : "debt"
         },
@@ -5183,6 +5234,7 @@
           "creditMiles" : 0,
           "debtMiles" : 1.1,
           "interestMiles" : 0.1,
+          "interestPerPeriodMiles" : 0.11000000000000001,
           "principalMiles" : 1,
           "state" : "debt"
         },
@@ -5272,6 +5324,7 @@
           "creditMiles" : 0,
           "debtMiles" : 1.21,
           "interestMiles" : 0.21000000000000002,
+          "interestPerPeriodMiles" : 0.121,
           "principalMiles" : 1,
           "state" : "debt"
         },
@@ -5361,6 +5414,7 @@
           "creditMiles" : 5,
           "debtMiles" : 0,
           "interestMiles" : 0,
+          "interestPerPeriodMiles" : 0,
           "principalMiles" : 0,
           "state" : "credit"
         },
@@ -5469,6 +5523,7 @@
           "creditMiles" : 0,
           "debtMiles" : 0,
           "interestMiles" : 0,
+          "interestPerPeriodMiles" : 0,
           "principalMiles" : 0,
           "state" : "even"
         },
@@ -5543,6 +5598,7 @@
           "creditMiles" : 0,
           "debtMiles" : 0,
           "interestMiles" : 0,
+          "interestPerPeriodMiles" : 0,
           "principalMiles" : 0,
           "state" : "even"
         },
@@ -5681,6 +5737,7 @@
           "creditMiles" : 0.8999999999999999,
           "debtMiles" : 0,
           "interestMiles" : 0,
+          "interestPerPeriodMiles" : 0,
           "principalMiles" : 0,
           "state" : "credit"
         },
@@ -5785,6 +5842,7 @@
           "creditMiles" : 0,
           "debtMiles" : 1.21,
           "interestMiles" : 0.21000000000000002,
+          "interestPerPeriodMiles" : 0.121,
           "principalMiles" : 1,
           "state" : "debt"
         },
@@ -5870,6 +5928,7 @@
           "creditMiles" : 1.79,
           "debtMiles" : 0,
           "interestMiles" : 0,
+          "interestPerPeriodMiles" : 0,
           "principalMiles" : 0,
           "state" : "credit"
         },
@@ -5966,6 +6025,7 @@
           "creditMiles" : 0,
           "debtMiles" : 1,
           "interestMiles" : 0,
+          "interestPerPeriodMiles" : 0.1,
           "principalMiles" : 1,
           "state" : "debt"
         },
@@ -6043,6 +6103,7 @@
           "creditMiles" : 0,
           "debtMiles" : 1.1,
           "interestMiles" : 0.1,
+          "interestPerPeriodMiles" : 0.11000000000000001,
           "principalMiles" : 1,
           "state" : "debt"
         },
@@ -6120,6 +6181,7 @@
           "creditMiles" : 1.0274188372750837,
           "debtMiles" : 0,
           "interestMiles" : 0,
+          "interestPerPeriodMiles" : 0,
           "principalMiles" : 0,
           "state" : "credit"
         },
@@ -6333,6 +6395,7 @@
           "creditMiles" : 0,
           "debtMiles" : 0.2204890426517691,
           "interestMiles" : 0.0200444584228881,
+          "interestPerPeriodMiles" : 0.022048904265176913,
           "principalMiles" : 0.200444584228881,
           "state" : "debt"
         },
@@ -6617,6 +6680,7 @@
           "creditMiles" : 2.8675493556518745,
           "debtMiles" : 0,
           "interestMiles" : 0,
+          "interestPerPeriodMiles" : 0,
           "principalMiles" : 0,
           "state" : "credit"
         },
@@ -6935,6 +6999,7 @@
           "creditMiles" : 0,
           "debtMiles" : 4.18,
           "interestMiles" : 0.38,
+          "interestPerPeriodMiles" : 0.418,
           "principalMiles" : 3.8,
           "state" : "debt"
         },
@@ -7113,6 +7178,7 @@
           "creditMiles" : 0,
           "debtMiles" : 2.9800000000000004,
           "interestMiles" : 0.2,
+          "interestPerPeriodMiles" : 0.29800000000000004,
           "principalMiles" : 2.7800000000000002,
           "state" : "debt"
         },
@@ -7307,6 +7373,7 @@
           "creditMiles" : 0,
           "debtMiles" : 3.278,
           "interestMiles" : 0.49800000000000005,
+          "interestPerPeriodMiles" : 0.32780000000000004,
           "principalMiles" : 2.7800000000000002,
           "state" : "debt"
         },
@@ -7508,6 +7575,7 @@
           "creditMiles" : 0,
           "debtMiles" : 3.278,
           "interestMiles" : 0.49800000000000005,
+          "interestPerPeriodMiles" : 0.32780000000000004,
           "principalMiles" : 2.7800000000000002,
           "state" : "debt"
         },
@@ -7702,6 +7770,7 @@
           "creditMiles" : 0,
           "debtMiles" : 2.9800000000000004,
           "interestMiles" : 0.2,
+          "interestPerPeriodMiles" : 0.29800000000000004,
           "principalMiles" : 2.7800000000000002,
           "state" : "debt"
         },
@@ -7908,6 +7977,7 @@
           "creditMiles" : 0,
           "debtMiles" : 1,
           "interestMiles" : 0,
+          "interestPerPeriodMiles" : 0.1,
           "principalMiles" : 1,
           "state" : "debt"
         },
@@ -8066,6 +8136,7 @@
           "creditMiles" : 2.97377516713591,
           "debtMiles" : 0,
           "interestMiles" : 0,
+          "interestPerPeriodMiles" : 0,
           "principalMiles" : 0,
           "state" : "credit"
         },
@@ -8293,6 +8364,7 @@
           "creditMiles" : 2.8876178868533473,
           "debtMiles" : 0,
           "interestMiles" : 0,
+          "interestPerPeriodMiles" : 0,
           "principalMiles" : 0,
           "state" : "credit"
         },
@@ -8429,6 +8501,7 @@
           "creditMiles" : 2.844480356477085,
           "debtMiles" : 0,
           "interestMiles" : 0,
+          "interestPerPeriodMiles" : 0,
           "principalMiles" : 0,
           "state" : "credit"
         },
@@ -8572,6 +8645,7 @@
           "creditMiles" : 1.0958746451830466,
           "debtMiles" : 0,
           "interestMiles" : 0,
+          "interestPerPeriodMiles" : 0,
           "principalMiles" : 0,
           "state" : "credit"
         },
@@ -8668,6 +8742,7 @@
           "creditMiles" : 0.9908883674361265,
           "debtMiles" : 0,
           "interestMiles" : 0,
+          "interestPerPeriodMiles" : 0,
           "principalMiles" : 0,
           "state" : "credit"
         },
@@ -8748,6 +8823,7 @@
           "creditMiles" : 1.9449069288533056,
           "debtMiles" : 0,
           "interestMiles" : 0,
+          "interestPerPeriodMiles" : 0,
           "principalMiles" : 0,
           "state" : "credit"
         },

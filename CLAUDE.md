@@ -25,6 +25,11 @@ as off when absent; `Rules.OPENING` (on) is what new ledgers use, and
 from `~/beer-debt-ios/scripts/fixtures.sh`; `FixtureTest` replays all cases
 and compares every field to 1e-6. **Never change engine behaviour here
 first**: change it on iOS, regenerate the fixtures, copy them over, then port.
+Its decoder sets `ignoreUnknownKeys`, so a field iOS adds is silently dropped
+until it is named in `FixtureTest`'s `Expected*` classes and asserted: a copied
+`cases.json` passing is not by itself proof the port is complete. Declare each
+one non-optional, so the reverse — fixtures that predate a field the engine has
+— fails the decode loudly instead.
 
 The ledger JSON is shared byte-for-byte in meaning: `Ledger`, `BeerEntry`,
 `RunEntry`, `RulesChange`, `Rules`, ISO 8601 UTC whole-second instants, UUID

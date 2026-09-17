@@ -25,6 +25,13 @@ enum class CompoundingPeriod {
             DAILY -> 24 * 60 * 60.0
             WEEKLY -> 7 * 24 * 60 * 60.0
         }
+
+    /** "10% a day" — the words the per-period interest figure carries. */
+    val perLabel: String
+        get() = when (this) {
+            DAILY -> "a day"
+            WEEKLY -> "a week"
+        }
 }
 
 @Serializable
