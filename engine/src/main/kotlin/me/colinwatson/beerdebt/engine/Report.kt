@@ -11,11 +11,22 @@ data class Balance(
     val debtMiles: Double,
     val principalMiles: Double,
     val interestMiles: Double,
+    /**
+     * What one compounding period adds to the open tab at the rate in force.
+     * Every open debt posts exactly once per period, so this is the rate on
+     * what is outstanding: exact, not a projection. The rate Home leads with,
+     * since a total that barely moves says less than what standing still
+     * costs. Struck through when [Report.streak].todayProtected says today's
+     * postings are skipped, so the number doubles as what the streak is saving.
+     * Reported gross: a protected day would otherwise report zero, which
+     * leaves nothing to strike through and nothing to lose by stopping.
+     */
+    val interestPerPeriodMiles: Double,
     val creditMiles: Double,
     val creditBeers: Double,
 ) {
     companion object {
-        val EVEN = Balance(BalanceState.EVEN, 0.0, 0.0, 0.0, 0.0, 0.0)
+        val EVEN = Balance(BalanceState.EVEN, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
     }
 }
 

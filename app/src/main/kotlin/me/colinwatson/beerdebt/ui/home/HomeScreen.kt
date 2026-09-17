@@ -45,6 +45,7 @@ import me.colinwatson.beerdebt.engine.BeerEntry
 import me.colinwatson.beerdebt.engine.Report
 import me.colinwatson.beerdebt.ui.Format
 import me.colinwatson.beerdebt.ui.components.GoldButton
+import me.colinwatson.beerdebt.ui.components.InterestRateStat
 import me.colinwatson.beerdebt.ui.milesRunInWeekOf
 import me.colinwatson.beerdebt.ui.streak.StreakCard
 import me.colinwatson.beerdebt.ui.theme.Backdrop
@@ -77,7 +78,7 @@ fun HomeScreen(onOpenDebt: () -> Unit, onOpenRuns: () -> Unit, onOpenSettings: (
             }
             Spacer(Modifier.weight(1f))
             Column(Modifier.fillMaxWidth().clickable(onClick = onOpenDebt), horizontalAlignment = Alignment.CenterHorizontally) {
-                BalanceHero(report.balance)
+                BalanceHero(report)
                 Spacer(Modifier.height(14.dp))
                 Text("Your tab ›", color = Palette.gold.copy(alpha = 0.9f), fontSize = 13.sp, fontWeight = FontWeight.SemiBold)
             }
@@ -99,7 +100,8 @@ fun HomeScreen(onOpenDebt: () -> Unit, onOpenRuns: () -> Unit, onOpenSettings: (
 }
 
 @Composable
-private fun BalanceHero(balance: Balance) {
+private fun BalanceHero(report: Report) {
+    val balance = report.balance
     when (balance.state) {
         BalanceState.DEBT -> {
             BigNumber(Format.number(balance.debtMiles))
@@ -108,7 +110,7 @@ private fun BalanceHero(balance: Balance) {
             Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
                 Stat(Format.number(balance.principalMiles), "principal", Modifier.weight(1f))
                 Box(Modifier.width(1.dp).height(36.dp).background(Palette.cream.copy(alpha = 0.25f)))
-                Stat(Format.number(balance.interestMiles), "interest", Modifier.weight(1f))
+                InterestRateStat(report, Modifier.weight(1f))
             }
         }
         BalanceState.CREDIT -> {
