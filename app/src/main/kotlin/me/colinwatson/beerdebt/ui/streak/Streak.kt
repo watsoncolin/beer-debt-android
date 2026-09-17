@@ -37,6 +37,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLocale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -56,7 +57,6 @@ import java.time.Instant
 import java.time.LocalDate
 import java.time.format.TextStyle
 import java.time.temporal.WeekFields
-import java.util.Locale
 
 /** The streak mark: the painted flame, lit or out. */
 @Composable
@@ -168,7 +168,10 @@ fun StreakScreen(onBack: () -> Unit) {
 private fun WeekRow(streak: StreakStatus, now: Instant) {
     val zone = streak.zone
     val today = now.atZone(zone).toLocalDate()
-    val locale = Locale.getDefault()
+    // Read through the CompositionLocal, not Locale.getDefault(): the latter is
+    // not observable state, so the week would keep its old first day and day
+    // names until something else happened to recompose. Lint enforces this.
+    val locale = LocalLocale.current.platformLocale
     val first = today.with(WeekFields.of(locale).dayOfWeek(), 1)
     Row(Modifier.fillMaxWidth()) {
         (0 until 7).forEach { i ->
