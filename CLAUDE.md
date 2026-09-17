@@ -86,12 +86,31 @@ beerDetail|debtFree` handled by `DebugLaunch` in `MainActivity` (the iOS
   `filesDir/BeerDebt/ledger.json`, the same shape as iOS; `addBeer`,
   `updateBeerDate` (30-day window), `removeBeer`, `importRuns` (dedup +
   excluded set), `removeRuns`, `deleteRun`, `updateRules` (forward-only).
+  A failed write is remembered, not swallowed: `isPersisted` goes false and
+  `persist()` retries it. Before discarding the only means of rebuilding
+  what was written, call `persist()` first — `HealthSync.sync()` is the live
+  case, holding the changes token until the runs it covers are on disk. The
+  write never deletes the file it still has; on a failed rename it copies
+  into place instead, so a second failure cannot leave the user with no
+  ledger at all.
 - `health/HealthConnectService` — read-only Health Connect; running
   sessions via the Changes API (token persisted; full re-read on expiry),
   distance aggregated per session; workout ids are UUIDs derived from the
   record id. `HealthSync` mirrors iOS `HealthSync` (foreground sync on
   resume, hourly `SyncWorker`, deletions, debt-free celebration, run
   notifications through `RunNotifier`, whose copy is identical to iOS).
+  **Report only what we can't explain:** `HealthFailure` classifies a thrown
+  Health Connect error, and a named condition (permission revoked, provider
+  missing or stale, provider process gone, transient IO) gets real copy for
+  the user and no Sentry event. Only `UNKNOWN` is reported. The hourly
+  background sync would otherwise page on every wake. Add a case rather than
+  widening what gets reported. It keys off exception types and the SDK status
+  `HealthConnectService` already reads, never off message text.
+  Widget faces go stale unless something asks for a reload:
+  `BalanceWidget.refresh` runs on every store write via `onChange`, and on
+  **every** successful sync including one that imports nothing. Don't make
+  that last call conditional on the ledger changing; a declined reload is
+  otherwise permanent.
 - `notify/` — `RunNotifier` (channels `runs` and `weekly`, the pure run
   copy) and `WeeklySummary` (prefs `weekly`; iOS numbering 1 = Sunday; the
   pure `message`/`nextFireDates`; schedules one `WeeklySummaryWorker` via

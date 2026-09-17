@@ -12,6 +12,7 @@ import me.colinwatson.beerdebt.engine.Report
 import me.colinwatson.beerdebt.engine.Rules
 import me.colinwatson.beerdebt.engine.RulesChange
 import me.colinwatson.beerdebt.engine.RunEntry
+import me.colinwatson.beerdebt.telemetry.Telemetry
 import java.io.File
 import java.time.Instant
 import java.util.UUID
@@ -136,10 +137,52 @@ class LedgerStore(private val directory: File, now: Instant = Instant.now()) {
         write(_ledger.value)
     }
 
+    /**
+     * False when the file no longer matches memory, i.e. the last write
+     * failed. Mirrors iOS `LedgerStore.isPersisted`.
+     */
+    var isPersisted: Boolean = true
+        private set
+
+    /**
+     * Retries a failed write and reports whether the file now matches memory.
+     * A no-op when nothing is outstanding, so it is cheap to call often.
+     *
+     * Call it before throwing away the only record of how to rebuild what was
+     * written, the way the Health Connect changes token is the only record of
+     * which workouts have been read. A disk write can fail for reasons the app
+     * does not control, and the failure is silent: the books look right until
+     * the next launch reads the file back.
+     */
+    fun persist(): Boolean {
+        if (!isPersisted) write(_ledger.value)
+        return isPersisted
+    }
+
     private fun write(ledger: Ledger) {
         val tmp = File(directory, "ledger.json.tmp")
-        tmp.writeText(json.encodeToString(ledger))
-        if (!tmp.renameTo(file)) { file.delete(); tmp.renameTo(file) }
+        try {
+            tmp.writeText(json.encodeToString(ledger))
+            // Never delete the file we still have. The previous version of
+            // this did `file.delete(); tmp.renameTo(file)` as a fallback, so a
+            // second failed rename left no ledger at all -- the whole history
+            // gone, silently. A rename onto an existing path is atomic on the
+            // app's own filesystem anyway; if it fails, copy into place and
+            // keep the old bytes until the new ones are written.
+            if (!tmp.renameTo(file)) {
+                tmp.copyTo(file, overwrite = true)
+                tmp.delete()
+            }
+            isPersisted = true
+        } catch (e: Exception) {
+            // Not a crash: a full or read-only filesystem is the environment
+            // misbehaving, not a bug here. It is recorded, retried by
+            // [persist], and surfaced to callers that would otherwise lose data.
+            isPersisted = false
+            Telemetry.report(e, context = "store", values = mapOf(
+                "op" to "write", "beers" to ledger.beers.size, "runs" to ledger.runs.size,
+            ))
+        }
         onChange?.invoke()
     }
 
