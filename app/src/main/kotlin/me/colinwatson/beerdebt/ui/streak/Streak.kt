@@ -19,6 +19,8 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Check
@@ -224,7 +226,10 @@ private fun Rule(text: String) {
 @Composable
 fun StreakActivatedSheet(celebration: StreakCelebration, onDismiss: () -> Unit) {
     ModalBottomSheet(onDismissRequest = onDismiss, sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true), containerColor = Palette.forestDeep) {
-        Column(Modifier.fillMaxWidth().padding(24.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+        Column(
+            Modifier.fillMaxWidth().verticalScroll(rememberScrollState()).padding(24.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
             Image(painterResource(R.drawable.streak_activated), contentDescription = null, modifier = Modifier.size(170.dp))
             Text("${celebration.days} day streak", color = Palette.gold, fontSize = 40.sp, fontWeight = FontWeight.ExtraBold)
             Text("0% APR — earned.", color = Palette.cream, fontSize = 20.sp, fontWeight = FontWeight.SemiBold)
