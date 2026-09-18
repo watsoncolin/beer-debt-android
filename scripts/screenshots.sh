@@ -148,6 +148,7 @@ seed debt
 launch; shoot home-debt
 launch beerAdded; shoot beer-added
 launch debt; shoot debt
+launch paid; shoot paid
 launch beerDetail; shoot beer-detail
 launch runs; shoot runs
 launch settings; shoot settings

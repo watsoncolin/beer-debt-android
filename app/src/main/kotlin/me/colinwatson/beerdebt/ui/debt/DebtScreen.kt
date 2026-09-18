@@ -44,6 +44,7 @@ import me.colinwatson.beerdebt.engine.BalanceState
 import me.colinwatson.beerdebt.engine.BeerStatement
 import me.colinwatson.beerdebt.engine.Report
 import me.colinwatson.beerdebt.ui.Format
+import me.colinwatson.beerdebt.ui.PaidSeverity
 import me.colinwatson.beerdebt.ui.components.Card
 import me.colinwatson.beerdebt.ui.components.ForestTopBar
 import me.colinwatson.beerdebt.ui.components.InterestRateStat
@@ -59,12 +60,14 @@ private enum class Filter(val label: String) { ACTIVE("Active"), PAID("Paid") }
 
 /** Your Debt: active beers with what they cost now, paid beers behind a tab. */
 @Composable
-fun DebtScreen(onBack: () -> Unit, openFirstBeer: Boolean = false) {
+fun DebtScreen(onBack: () -> Unit, openFirstBeer: Boolean = false, showPaid: Boolean = false) {
     val app = LocalContext.current.applicationContext as BeerDebtApp
     val ledger by app.store.ledger.collectAsState()
     val now = Instant.now()
     val report = remember(ledger) { app.store.report(now) }
-    var filter by remember { mutableStateOf(Filter.ACTIVE) }
+    // `--es debugScreen paid` opens straight onto the paid list, which is the
+    // only way to screenshot it.
+    var filter by remember { mutableStateOf(if (showPaid) Filter.PAID else Filter.ACTIVE) }
     var selected by remember { mutableStateOf<UUID?>(if (openFirstBeer) report.beers.firstOrNull { !it.isPaid }?.id else null) }
     var toDelete by remember { mutableStateOf<BeerStatement?>(null) }
     val active = report.beers.filter { !it.isPaid }.reversed()
@@ -186,7 +189,20 @@ fun BeerRow(statement: BeerStatement, now: Instant) {
         Column(horizontalAlignment = Alignment.End) {
             if (statement.isPaid) {
                 Pill("PAID")
-                Text(Format.miles(statement.costMiles, 2), color = Palette.cream.copy(alpha = 0.65f), fontSize = 15.sp)
+                // What it actually took to run off, not what it cost at the
+                // bar: a beer left alone accrues interest, so 1.00 is only ever
+                // the opening price.
+                val severity = PaidSeverity.of(statement.paidMiles)
+                Text(
+                    Format.miles(statement.paidMiles, 2),
+                    color = when (severity) {
+                        PaidSeverity.STEEP -> Palette.debt
+                        PaidSeverity.DEAR -> Palette.caution
+                        PaidSeverity.ORDINARY -> Palette.cream.copy(alpha = 0.65f)
+                    },
+                    fontWeight = if (severity == PaidSeverity.ORDINARY) FontWeight.Normal else FontWeight.SemiBold,
+                    fontSize = 15.sp,
+                )
                 Text(if (statement.settledByCredit) "from credit" else "paid ${Format.day(statement.paidAt!!)}", color = Palette.cream.copy(alpha = 0.5f), fontSize = 12.sp)
             } else {
                 Text(Format.miles(statement.outstandingMiles, 2), color = Palette.debt, fontWeight = FontWeight.SemiBold, fontSize = 17.sp)
