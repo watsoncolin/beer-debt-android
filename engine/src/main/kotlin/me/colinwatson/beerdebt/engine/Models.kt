@@ -6,6 +6,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.UseSerializers
 import java.time.Instant
+import java.time.ZoneId
 import java.util.UUID
 
 /**
@@ -98,6 +99,44 @@ data class RunEntry(
 @Serializable
 data class RulesChange(val effectiveAt: Instant, val rules: Rules)
 
+/**
+ * The user's decision to spend a streak freeze on one calendar day
+ * (spec §25.1, APPS-6). Append-only and immutable like every other event.
+ *
+ * This is the *only* freeze state on disk. How many freezes have been earned,
+ * which applications were honoured, and which were refunded are all derived
+ * from the runs by [StreakEngine] every replay -- because all three change
+ * when the runs do. A late Health Connect import that brings a frozen day to a
+ * mile makes that day qualify on its own, so its application is simply ignored
+ * and the freeze is back in inventory: the refund needs no event and no
+ * reconciliation pass.
+ */
+@Serializable
+data class FreezeApplication(
+    val id: UUID,
+    /**
+     * An instant inside the frozen local day -- midday, not midnight.
+     *
+     * The engine re-buckets this through whatever zone it is replaying with,
+     * exactly as it buckets a run by `endedAt`. Midnight would sit on a day
+     * boundary, so a user who crossed a time zone between the tap and the
+     * replay would see the freeze slide onto the day before.
+     */
+    val day: Instant,
+    /** When the user tapped; the engine keys off [day]. */
+    val appliedAt: Instant,
+) {
+    companion object {
+        /** The application for the local day containing [instant], keyed to midday. */
+        fun forDay(containing: Instant, zone: ZoneId, appliedAt: Instant, id: UUID = UUID.randomUUID()) =
+            FreezeApplication(
+                id = id,
+                day = containing.atZone(zone).toLocalDate().atTime(12, 0).atZone(zone).toInstant().floored(),
+                appliedAt = appliedAt.floored(),
+            )
+    }
+}
+
 @Serializable
 data class Ledger(
     val version: Int = 1,
@@ -109,6 +148,12 @@ data class Ledger(
     val runs: List<RunEntry> = emptyList(),
     /** Workouts the user took off the books in the app; never re-imported. */
     val excludedWorkoutIDs: Set<UUID> = emptySet(),
+    /**
+     * Days the user spent a streak freeze on (spec §25.1). The only freeze
+     * state stored; everything else about freezes is derived from the runs.
+     * Absent in every ledger written before freezes existed.
+     */
+    val freezeApplications: List<FreezeApplication> = emptyList(),
 ) {
     val currentRules: Rules get() = rulesHistory.lastOrNull()?.rules ?: Rules()
 
@@ -117,3 +162,6 @@ data class Ledger(
             Ledger(booksOpenedAt = at, rulesHistory = listOf(RulesChange(at, rules)))
     }
 }
+
+/** Event timestamps are whole seconds so the JSON round-trips exactly. */
+fun Instant.floored(): Instant = Instant.ofEpochSecond(epochSecond)

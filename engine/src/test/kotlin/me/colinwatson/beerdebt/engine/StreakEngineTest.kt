@@ -20,7 +20,7 @@ class StreakEngineTest {
     private fun morning(n: Int) = at(n * day - 13 * hour)   // 07:00 UTC that day
     private fun run(miles: Double, endedAt: Instant) =
         RunEntry(UUID.randomUUID(), UUID.randomUUID(), endedAt.minusSeconds(1800), endedAt, miles * RunEntry.METERS_PER_MILE, endedAt, "Test")
-    private fun streak(runs: List<RunEntry>, at: Instant) = StreakEngine.calculate(runs, at, utc)
+    private fun streak(runs: List<RunEntry>, at: Instant) = StreakEngine.calculate(runs, at = at, zone = utc)
     private fun close(a: Double, b: Double) = abs(a - b) <= 1e-6
 
     @Test fun exactlyOneMileQualifiesAndJustUnderDoesNot() {
@@ -60,8 +60,8 @@ class StreakEngineTest {
 
     @Test fun daysFollowTheCalendarNotTheClock() {
         val runs = listOf(run(1.0, at(-2 * hour)), run(1.0, at(5 * hour)))   // Sat 18:00 UTC, Sun 01:00 UTC
-        assertEquals(2, StreakEngine.calculate(runs, at(6 * hour), utc).currentStreakDays)
-        assertEquals(1, StreakEngine.calculate(runs, at(6 * hour), ZoneId.of("America/New_York")).currentStreakDays)
+        assertEquals(2, StreakEngine.calculate(runs, at = at(6 * hour), zone = utc).currentStreakDays)
+        assertEquals(1, StreakEngine.calculate(runs, at = at(6 * hour), zone = ZoneId.of("America/New_York")).currentStreakDays)
     }
 
     @Test fun runsAreNumberedOnlyOnceAStreakReachesTwoDays() {

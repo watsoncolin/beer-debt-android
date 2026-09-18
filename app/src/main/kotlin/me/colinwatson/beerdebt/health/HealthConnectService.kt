@@ -13,7 +13,7 @@ import androidx.health.connect.client.request.AggregateRequest
 import androidx.health.connect.client.request.ChangesTokenRequest
 import androidx.health.connect.client.request.ReadRecordsRequest
 import androidx.health.connect.client.time.TimeRangeFilter
-import me.colinwatson.beerdebt.data.floored
+import me.colinwatson.beerdebt.engine.floored
 import me.colinwatson.beerdebt.engine.RunEntry
 import java.time.Instant
 import java.util.UUID

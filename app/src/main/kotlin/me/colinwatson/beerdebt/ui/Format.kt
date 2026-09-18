@@ -52,6 +52,23 @@ object Format {
         return when (d) { today -> "Today"; today.minusDays(1) -> "Yesterday"; else -> dayHeaderFmt.format(d) }
     }
 
+    /**
+     * "yesterday", "Tuesday", "Sep 9" — the day named mid-sentence, so it stays
+     * lowercase where [dayHeader] is capitalised for a header.
+     */
+    fun dayPhrase(instant: Instant, now: Instant = Instant.now()): String {
+        val d = instant.atZone(zone).toLocalDate()
+        val today = now.atZone(zone).toLocalDate()
+        return when {
+            d == today -> "today"
+            d == today.minusDays(1) -> "yesterday"
+            // Within the last week a weekday is clearer than a date.
+            !d.isBefore(today.minusDays(6)) ->
+                d.dayOfWeek.getDisplayName(java.time.format.TextStyle.FULL, Locale.getDefault())
+            else -> day(instant)
+        }
+    }
+
     fun relative(instant: Instant, now: Instant = Instant.now()): String {
         val d = instant.atZone(zone).toLocalDate(); val today = now.atZone(zone).toLocalDate()
         val clock = time(instant)

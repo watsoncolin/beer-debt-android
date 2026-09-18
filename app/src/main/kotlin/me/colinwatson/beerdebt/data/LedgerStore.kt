@@ -7,14 +7,17 @@ import kotlinx.coroutines.flow.update
 import kotlinx.serialization.json.Json
 import me.colinwatson.beerdebt.engine.BalanceEngine
 import me.colinwatson.beerdebt.engine.BeerEntry
+import me.colinwatson.beerdebt.engine.FreezeApplication
 import me.colinwatson.beerdebt.engine.Ledger
 import me.colinwatson.beerdebt.engine.Report
 import me.colinwatson.beerdebt.engine.Rules
 import me.colinwatson.beerdebt.engine.RulesChange
 import me.colinwatson.beerdebt.engine.RunEntry
+import me.colinwatson.beerdebt.engine.floored
 import me.colinwatson.beerdebt.telemetry.Telemetry
 import java.io.File
 import java.time.Instant
+import java.time.ZoneId
 import java.util.UUID
 
 /**
@@ -105,6 +108,34 @@ class LedgerStore(private val directory: File, now: Instant = Instant.now()) {
         mutate { it.copy(runs = it.runs.filterNot { r -> r.id == id }, excludedWorkoutIDs = it.excludedWorkoutIDs + run.healthKitWorkoutID) }
         return true
     }
+
+    /**
+     * Spends a streak freeze on a day (spec §25.1). Never automatic: the user
+     * taps, here or on the streak screen.
+     *
+     * Only two days can be chosen, which is the MVP guard against arbitrary
+     * history editing: today, and the single missed day that broke the streak
+     * ([StreakStatus.repairableDay]). Anything else is refused. Whether a
+     * freeze was actually in hand is the engine's business -- an application it
+     * cannot honour is ignored on replay rather than trusted here.
+     *
+     * Returns false when there is no freeze to spend, the day is not one of the
+     * two, or that day is already frozen.
+     */
+    fun applyFreeze(on: Instant, now: Instant = Instant.now(), zone: ZoneId = ZoneId.systemDefault()): Boolean {
+        val streak = BalanceEngine.report(current, now, zone).streak
+        if (streak.freezesHeld <= 0) return false
+        val target = on.atZone(zone).toLocalDate()
+        val allowed = listOfNotNull(now.atZone(zone).toLocalDate(), streak.repairableDay)
+        if (target !in allowed) return false
+        if (streak.isFrozen(on)) return false
+        mutate { it.copy(freezeApplications = it.freezeApplications + FreezeApplication.forDay(on, zone, now)) }
+        return true
+    }
+
+    /** Spends a freeze on today, the common case behind "Use Freeze Today". */
+    fun freezeToday(now: Instant = Instant.now(), zone: ZoneId = ZoneId.systemDefault()): Boolean =
+        applyFreeze(now, now, zone)
 
     /**
      * Moves the opening of the books earlier so runs from the newly covered
@@ -199,5 +230,3 @@ class LedgerStore(private val directory: File, now: Instant = Instant.now()) {
     }
 }
 
-/** Event timestamps are whole seconds so the JSON round-trips exactly. */
-fun Instant.floored(): Instant = Instant.ofEpochSecond(epochSecond)

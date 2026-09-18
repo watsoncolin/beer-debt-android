@@ -36,12 +36,17 @@ class FixtureTest {
     )
 
     @Serializable
-    private data class ExpectedStreakDay(val day: Instant, val miles: Double, val qualifies: Boolean, val streakNumber: Int, val interestProtected: Boolean)
+    private data class ExpectedStreakDay(
+        val day: Instant, val miles: Double, val qualifies: Boolean, val streakNumber: Int,
+        val interestProtected: Boolean, val frozen: Boolean,
+    )
 
     @Serializable
     private data class ExpectedStreak(
         val currentStreakDays: Int, val longestStreakDays: Int, val totalQualifyingDays: Int, val todayMiles: Double,
         val todayQualifies: Boolean, val interestProtectionActive: Boolean, val todayProtected: Boolean, val days: List<ExpectedStreakDay>,
+        val freezesHeld: Int, val freezeProgressDays: Int, val todayFrozen: Boolean, val canFreezeToday: Boolean,
+        val repairableDay: Instant? = null,
     )
 
     @Serializable
@@ -127,12 +132,18 @@ class FixtureTest {
         same("streak.todayQualifies", s.todayQualifies, xs.todayQualifies)
         same("streak.interestProtectionActive", s.interestProtectionActive, xs.interestProtectionActive)
         same("streak.todayProtected", s.todayProtected, xs.todayProtected)
+        same("streak.freezesHeld", s.freezesHeld, xs.freezesHeld)
+        same("streak.freezeProgressDays", s.freezeProgressDays, xs.freezeProgressDays)
+        same("streak.todayFrozen", s.todayFrozen, xs.todayFrozen)
+        same("streak.canFreezeToday", s.canFreezeToday, xs.canFreezeToday)
+        same("streak.repairableDay", s.repairableDay?.atStartOfDay(zone)?.toInstant(), xs.repairableDay)
         same("streak.days.count", s.days.size, xs.days.size)
         s.days.zip(xs.days).forEach { (a, x) ->
             val tag = "streak day ${x.day}"
             same("$tag day", a.day.atStartOfDay(zone).toInstant(), x.day); near("$tag miles", a.miles, x.miles)
             same("$tag qualifies", a.qualifies, x.qualifies); same("$tag streakNumber", a.streakNumber, x.streakNumber)
             same("$tag interestProtected", a.interestProtected, x.interestProtected)
+            same("$tag frozen", a.frozen, x.frozen)
         }
     }
 }

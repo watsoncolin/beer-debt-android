@@ -31,8 +31,10 @@ import me.colinwatson.beerdebt.ui.home.HomeScreen
 import me.colinwatson.beerdebt.ui.onboarding.OnboardingScreen
 import me.colinwatson.beerdebt.ui.privacy.PrivacyScreen
 import me.colinwatson.beerdebt.ui.streak.StreakActivatedSheet
+import me.colinwatson.beerdebt.ui.streak.FreezeEarnedSheet
 import me.colinwatson.beerdebt.ui.streak.StreakScreen
 import me.colinwatson.beerdebt.health.StreakCelebration
+import me.colinwatson.beerdebt.health.FreezeEarnedCelebration
 import me.colinwatson.beerdebt.widget.BalanceWidgetReceiver
 import androidx.compose.runtime.LaunchedEffect
 import me.colinwatson.beerdebt.ui.runs.RunsScreen
@@ -142,5 +144,12 @@ private fun Root() {
     }
     if (syncState.celebration == null) syncState.streakCelebration?.let { party ->
         StreakActivatedSheet(party, onDismiss = { app.sync.clearStreakCelebration() })
+    }
+    var sampleFreeze by remember {
+        mutableStateOf(if (debugScreen == "freezeEarned") FreezeEarnedCelebration(maxOf(5, app.store.report().streak.currentStreakDays)) else null)
+    }
+    sampleFreeze?.let { party -> FreezeEarnedSheet(party, onDismiss = { sampleFreeze = null }) }
+    if (syncState.celebration == null && syncState.streakCelebration == null) syncState.freezeEarned?.let { party ->
+        FreezeEarnedSheet(party, onDismiss = { app.sync.clearFreezeEarned() })
     }
 }
