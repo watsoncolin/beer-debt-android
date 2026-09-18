@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -60,7 +62,14 @@ fun BeerAddedSheet(beerID: UUID, onDismiss: () -> Unit) {
     var pickingDate by remember { mutableStateOf(false) }
 
     ModalBottomSheet(onDismissRequest = onDismiss, sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true), containerColor = Palette.forestDeep) {
-        Column(Modifier.fillMaxWidth().padding(24.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+        // Scrollable: with a live streak card and the three interest horizons
+        // this content is taller than the sheet, and an unscrolled Column
+        // compresses its last child instead -- which clipped the label off the
+        // "Cheers!" button. Only visible once a streak existed, so it shipped.
+        Column(
+            Modifier.fillMaxWidth().verticalScroll(rememberScrollState()).padding(24.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
             Image(painterResource(R.drawable.brand_mark), contentDescription = null, modifier = Modifier.size(140.dp))
             Spacer(Modifier.height(8.dp))
             Text("Beer added!", color = Palette.cream, fontSize = 34.sp, fontWeight = FontWeight.ExtraBold)
@@ -164,7 +173,10 @@ fun BeerDatePicker(current: Instant, earliest: Instant, latest: Instant, onPick:
 @Composable
 fun DebtFreeSheet(celebration: DebtFreeCelebration, onDismiss: () -> Unit) {
     ModalBottomSheet(onDismissRequest = onDismiss, sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true), containerColor = Palette.forestDeep) {
-        Column(Modifier.fillMaxWidth().padding(24.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+        Column(
+            Modifier.fillMaxWidth().verticalScroll(rememberScrollState()).padding(24.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
             Image(painterResource(R.drawable.debt_free_trophy), contentDescription = null, modifier = Modifier.size(170.dp))
             Text("Debt Free!", color = Palette.gold, fontSize = 44.sp, fontWeight = FontWeight.ExtraBold)
             Text("Nice work. Your tab is paid.", color = Palette.cream, fontSize = 20.sp)
