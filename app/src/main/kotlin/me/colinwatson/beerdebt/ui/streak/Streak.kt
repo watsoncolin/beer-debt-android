@@ -19,6 +19,8 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Check
@@ -399,7 +401,12 @@ private fun FreezeOffer(body: String, button: String, onUse: () -> Unit) {
 @Composable
 fun FreezeEarnedSheet(celebration: FreezeEarnedCelebration, onDismiss: () -> Unit) {
     ModalBottomSheet(onDismissRequest = onDismiss, sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true), containerColor = Palette.forestDeep) {
-        Column(Modifier.fillMaxWidth().padding(24.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+        // Scrollable, or a large accessibility font squeezes the button's
+        // label to nothing -- the bug #6 fixes on the older sheets.
+        Column(
+            Modifier.fillMaxWidth().verticalScroll(rememberScrollState()).padding(24.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
             Text("🧊", fontSize = 72.sp)
             Spacer(Modifier.height(12.dp))
             Text(
