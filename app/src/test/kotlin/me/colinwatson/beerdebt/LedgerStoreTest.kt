@@ -233,4 +233,38 @@ class LedgerStoreTest {
         assertEquals(4, LedgerStore(dir, now = at(DAY)).current.beers.size)
     }
 
+    // --- the load policy: what is a bad file, and what is a broken app ---
+
+    @Test fun anErrorWhileLoadingLeavesTheLedgerAlone() {
+        // A NoClassDefFoundError from a stale or half-dexed build used to be
+        // caught as "this file is corrupt", so the user's whole history was set
+        // aside and the books reopened at zero. Nothing is wrong with the file.
+        val dir = tempDir()
+        val first = LedgerStore(dir, now = t0)
+        first.addBeer(at(HOUR))
+        val file = File(dir, "ledger.json")
+        val before = file.readText()
+
+        val thrown = try {
+            LedgerStore(dir, now = at(DAY), decode = { throw NoClassDefFoundError("engine/Ledger") })
+            null
+        } catch (e: Throwable) { e }
+
+        assertTrue("an Error must propagate, not be swallowed", thrown is NoClassDefFoundError)
+        assertEquals("the ledger must be untouched", before, file.readText())
+        assertTrue("nothing may be quarantined", dir.listFiles()!!.none { it.name.startsWith("ledger-unreadable-") })
+        // And the books still read back intact afterwards.
+        assertEquals(1, LedgerStore(dir, now = at(DAY)).current.beers.size)
+    }
+
+    @Test fun aGenuinelyBadFileIsStillQuarantined() {
+        // The other half: a real decode failure is what the quarantine is for.
+        val dir = tempDir()
+        LedgerStore(dir, now = t0).addBeer(at(HOUR))
+        val store = LedgerStore(dir, now = at(DAY), decode = { throw IllegalArgumentException("not json") })
+        assertNotNull(store.loadError)
+        assertTrue(dir.listFiles()!!.any { it.name.startsWith("ledger-unreadable-") })
+        assertTrue(store.current.beers.isEmpty())
+    }
+
 }

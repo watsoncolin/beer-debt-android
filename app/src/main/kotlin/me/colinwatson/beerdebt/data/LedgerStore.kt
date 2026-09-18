@@ -24,7 +24,17 @@ import java.util.UUID
  * Owns the persisted ledger and derives reports; a port of the Swift
  * `LedgerStore`. One JSON file, the same shape iOS writes, written atomically.
  */
-class LedgerStore(private val directory: File, now: Instant = Instant.now()) {
+class LedgerStore(
+    private val directory: File,
+    now: Instant = Instant.now(),
+    /**
+     * How the file is turned into a [Ledger]. Injectable only so the load
+     * policy can be tested: whether an Error quarantines the user's history is
+     * otherwise unobservable from outside, which is how the bug that did so
+     * survived. Production always uses the default.
+     */
+    private val decode: (String) -> Ledger = { json.decodeFromString(it) },
+) {
     private val file = File(directory, "ledger.json")
     private val _ledger = MutableStateFlow(load(now))
     val ledger: StateFlow<Ledger> = _ledger.asStateFlow()
@@ -42,11 +52,26 @@ class LedgerStore(private val directory: File, now: Instant = Instant.now()) {
     private fun load(now: Instant): Ledger {
         directory.mkdirs()
         if (!file.exists()) return Ledger.open(now.floored()).also { write(it) }
-        return runCatching { json.decodeFromString<Ledger>(file.readText()) }.getOrElse { error ->
+        return try {
+            decode(file.readText())
+        } catch (e: Exception) {
+            // Exception, deliberately not Throwable.
+            //
+            // `runCatching` here caught Throwable, so a NoClassDefFoundError --
+            // which a stale or half-dexed build really does produce -- was read
+            // as "this file is corrupt", and the user's entire history was set
+            // aside and replaced with empty books. Nothing was wrong with their
+            // data; the app just could not load a class that moment. An
+            // OutOfMemoryError on a long ledger would do the same.
+            //
+            // An Error now propagates and crashes. That is reportable, it is
+            // recoverable on the next launch, and it does not touch the file.
+            // Only a genuine decode failure quarantines, which is what the
+            // quarantine is for.
             val aside = File(directory, "ledger-unreadable-${now.epochSecond}.json")
             file.renameTo(aside)
             loadError = "Couldn't read the ledger, so the books were reopened. The old file was kept as ${aside.name}."
-            loadFailure = error
+            loadFailure = e
             Ledger.open(now.floored()).also { write(it) }
         }
     }

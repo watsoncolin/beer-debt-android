@@ -1,0 +1,89 @@
+{
+  "version": 1,
+  "booksOpenedAt": "2026-09-08T00:56:49Z",
+  "rulesHistory": [
+    {
+      "effectiveAt": "2026-09-08T00:56:49Z",
+      "rules": {
+        "milesPerBeer": 1.0,
+        "interestRate": 0.1,
+        "interestPeriod": "daily",
+        "gracePeriod": 86400.0,
+        "maximumCreditBeers": 3.0,
+        "creditDecayRatePerWeek": 0.1,
+        "streakProtection": true
+      }
+    }
+  ],
+  "beers": [
+    {
+      "id": "38917C79-9DA8-4D8D-8FB2-B7CCEE58EA49",
+      "createdAt": "2026-09-11T23:56:49Z",
+      "recordedAt": "2026-09-11T23:56:49Z"
+    },
+    {
+      "id": "6B9E82CA-F10F-4F83-827A-6CA2E7BD799B",
+      "createdAt": "2026-09-12T22:56:49Z",
+      "recordedAt": "2026-09-12T22:56:49Z"
+    },
+    {
+      "id": "1EA523B3-2A82-4BA5-86E8-3C2569723D81",
+      "createdAt": "2026-09-13T21:56:49Z",
+      "recordedAt": "2026-09-13T21:56:49Z"
+    },
+    {
+      "id": "36EB85B0-ED82-4C2A-A27A-2123DA4D3C41",
+      "createdAt": "2026-09-14T23:56:49Z",
+      "recordedAt": "2026-09-14T23:56:49Z"
+    }
+  ],
+  "runs": [
+    {
+      "id": "38C876B3-4E48-457A-94A3-8136D76A1B18",
+      "healthKitWorkoutID": "941A7CD9-6566-4150-9CE0-BD24F7675167",
+      "startedAt": "2026-09-16T10:40:00Z",
+      "endedAt": "2026-09-16T11:12:00Z",
+      "distanceMeters": 1770.2784000000001,
+      "importedAt": "2026-09-16T12:12:00Z",
+      "sourceName": "Seeded for freeze demo"
+    },
+    {
+      "id": "AFF6926C-7E2B-4581-90C4-3C3887EF0794",
+      "healthKitWorkoutID": "10B33B3D-DA0A-4158-AB7D-5AAF1193CC12",
+      "startedAt": "2026-09-15T10:40:00Z",
+      "endedAt": "2026-09-15T11:12:00Z",
+      "distanceMeters": 1931.2128,
+      "importedAt": "2026-09-15T12:12:00Z",
+      "sourceName": "Seeded for freeze demo"
+    },
+    {
+      "id": "C49EB881-0AF4-4C6E-AD48-65F343F33BFD",
+      "healthKitWorkoutID": "FBA3C89A-5D1E-4015-9052-FAA251FCEEAD",
+      "startedAt": "2026-09-14T10:40:00Z",
+      "endedAt": "2026-09-14T11:12:00Z",
+      "distanceMeters": 2092.1472000000003,
+      "importedAt": "2026-09-14T12:12:00Z",
+      "sourceName": "Seeded for freeze demo"
+    },
+    {
+      "id": "EB0DF2D5-DBC3-43CD-8CF8-7BD102F77713",
+      "healthKitWorkoutID": "D379C4CD-1AAD-4C65-BD1F-2141ADF0BB49",
+      "startedAt": "2026-09-13T10:40:00Z",
+      "endedAt": "2026-09-13T11:12:00Z",
+      "distanceMeters": 2253.0816,
+      "importedAt": "2026-09-13T12:12:00Z",
+      "sourceName": "Seeded for freeze demo"
+    },
+    {
+      "id": "9CF795D0-919F-4C53-B16A-8C4E010E2B98",
+      "healthKitWorkoutID": "26524E50-8C07-4774-8524-FED72F9F2EDC",
+      "startedAt": "2026-09-12T10:40:00Z",
+      "endedAt": "2026-09-12T11:12:00Z",
+      "distanceMeters": 2414.016,
+      "importedAt": "2026-09-12T12:12:00Z",
+      "sourceName": "Seeded for freeze demo"
+    }
+  ],
+  "excludedWorkoutIDs": [],
+  "freezeApplications": []
+}
