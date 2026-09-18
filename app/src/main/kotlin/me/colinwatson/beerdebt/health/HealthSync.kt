@@ -99,7 +99,7 @@ class HealthSync(context: Context, private val store: LedgerStore, private val n
     fun showPendingCelebration() {
         prefs.getString(KEY_PENDING_CELEBRATION, null)?.let { raw ->
             prefs.edit().remove(KEY_PENDING_CELEBRATION).apply()
-            runCatching { Json.decodeFromString<DebtFreeCelebration>(raw) }.getOrNull()?.let { party ->
+            decodeOrNull<DebtFreeCelebration>(raw)?.let { party ->
                 _state.update { it.copy(celebration = party) }
             }
             return
@@ -108,14 +108,14 @@ class HealthSync(context: Context, private val store: LedgerStore, private val n
         if (_state.value.celebration == null && _state.value.streakCelebration == null) {
             prefs.getString(KEY_PENDING_FREEZE, null)?.let { raw ->
                 prefs.edit().remove(KEY_PENDING_FREEZE).apply()
-                runCatching { Json.decodeFromString<FreezeEarnedCelebration>(raw) }.getOrNull()?.let { party ->
+                decodeOrNull<FreezeEarnedCelebration>(raw)?.let { party ->
                     _state.update { it.copy(freezeEarned = party) }
                 }
             }
         }
         if (_state.value.celebration == null) prefs.getString(KEY_PENDING_STREAK, null)?.let { raw ->
             prefs.edit().remove(KEY_PENDING_STREAK).apply()
-            runCatching { Json.decodeFromString<StreakCelebration>(raw) }.getOrNull()?.let { party ->
+            decodeOrNull<StreakCelebration>(raw)?.let { party ->
                 _state.update { it.copy(streakCelebration = party) }
             }
         }
@@ -129,6 +129,16 @@ class HealthSync(context: Context, private val store: LedgerStore, private val n
     }
 
     suspend fun syncIfConnected() { if (_state.value.isConnected) sync() }
+
+    /**
+     * A stored celebration that will not decode is simply not shown -- the
+     * pending key is already cleared, so it cannot loop. Exception rather than
+     * Throwable for the same reason as [LedgerStore]: an Error means the app
+     * could not do the work, not that the payload is bad, and swallowing it
+     * hides a real fault.
+     */
+    private inline fun <reified T> decodeOrNull(raw: String): T? =
+        try { Json.decodeFromString<T>(raw) } catch (e: Exception) { null }
 
     /** Mirrors iOS `LedgerStore.refreshWidgets()`; the store's onChange covers writes. */
     private suspend fun refreshWidgets() = BalanceWidget.refresh(app)
