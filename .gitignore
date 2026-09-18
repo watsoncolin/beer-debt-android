@@ -16,7 +16,11 @@ local.properties
 *.ap_
 *.dex
 output.json
-release/
+# Anchored: the signed-APK output dir only. Android Studio's template ships
+# this unanchored as `release/`, which also matches app/src/release/ — the
+# release source set — silently un-tracking its sources. Local builds keep
+# working because the files are on disk; only a clean checkout fails.
+/app/release/
 
 # Generated files
 bin/
