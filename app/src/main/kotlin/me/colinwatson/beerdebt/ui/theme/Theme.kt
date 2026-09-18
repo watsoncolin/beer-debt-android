@@ -25,6 +25,12 @@ object Palette {
     val credit = Color(0xFF5CB878)
     val creditSoft = Color(0xFF9CD8A9)
     /**
+     * A beer that grew: amber for the ones that cost more running than they
+     * should have, [debt] for the ones that really got away. Deliberately not
+     * [gold], which in this app means earned.
+     */
+    val caution = Color(0xFFF29944)
+    /**
      * A streak freeze: cool against the flame's warmth, so a rest day reads as
      * a different kind of thing from a run (spec §25.1).
      */

@@ -8,6 +8,33 @@ import java.util.Locale
 import kotlin.math.abs
 import kotlin.math.roundToInt
 
+/**
+ * How dear a paid beer turned out to be, by the miles actually run to clear
+ * it. Thresholds are absolute miles, not a multiple of the price, because what
+ * the reader is judging is the run they had to go on.
+ *
+ * Mirrors iOS `Format.PaidSeverity`, so the bands cannot drift apart.
+ */
+enum class PaidSeverity {
+    /** About what a beer should cost. */
+    ORDINARY,
+    /** It sat long enough to matter. */
+    DEAR,
+    /** It got away. */
+    STEEP;
+
+    companion object {
+        const val DEAR_MILES = 2.0
+        const val STEEP_MILES = 3.0
+
+        fun of(milesRun: Double): PaidSeverity = when {
+            milesRun >= STEEP_MILES -> STEEP
+            milesRun >= DEAR_MILES -> DEAR
+            else -> ORDINARY
+        }
+    }
+}
+
 /** Display formatting, matching iOS `Format`. */
 object Format {
     fun number(value: Double, decimals: Int = 1): String = String.format(Locale.getDefault(), "%.${decimals}f", value)

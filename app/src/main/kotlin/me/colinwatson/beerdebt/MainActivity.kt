@@ -98,7 +98,7 @@ private fun Root() {
     val start = when {
         rationale || debugScreen == "privacy" -> Routes.PRIVACY
         !onboardingComplete -> Routes.ONBOARDING
-        debugScreen == "debt" || debugScreen == "beerDetail" -> Routes.DEBT
+        debugScreen == "debt" || debugScreen == "beerDetail" || debugScreen == "paid" -> Routes.DEBT
         debugScreen == "runs" -> Routes.RUNS
         debugScreen == "settings" -> Routes.SETTINGS
         debugScreen == "streak" -> Routes.STREAK
@@ -124,7 +124,13 @@ private fun Root() {
                 showLatestBeerSheet = debugScreen == "beerAdded",
             )
         }
-        composable(Routes.DEBT) { DebtScreen(onBack = { nav.popBackStack() }, openFirstBeer = debugScreen == "beerDetail") }
+        composable(Routes.DEBT) {
+            DebtScreen(
+                onBack = { nav.popBackStack() },
+                openFirstBeer = debugScreen == "beerDetail",
+                showPaid = debugScreen == "paid",
+            )
+        }
         composable(Routes.RUNS) { RunsScreen(onBack = { nav.popBackStack() }) }
         composable(Routes.SETTINGS) { SettingsScreen(onBack = { nav.popBackStack() }, onOpenPrivacy = { nav.navigate(Routes.PRIVACY) }) }
         composable(Routes.STREAK) { StreakScreen(onBack = { nav.popBackStack() }) }
