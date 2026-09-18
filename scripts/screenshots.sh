@@ -67,8 +67,20 @@ H, D = timedelta(hours=1), timedelta(days=1)
 rules = {"milesPerBeer": 1.0, "interestRate": 0.1, "interestPeriod": "daily", "gracePeriod": 86400.0, "maximumCreditBeers": 3.0, "creditDecayRatePerWeek": 0.1, "streakProtection": True}
 # Runs at 07:12 local on given days back, so the streak reads as consecutive calendar days (same seeds as iOS).
 local = now.astimezone()
+freezes = []
 def morning(days_back, miles): return (local.replace(hour=7, minute=12, second=0) - days_back*D).astimezone(timezone.utc), miles
-if mode == "debt":
+if mode == "freeze":
+    # Six running days through yesterday earns a freeze, nothing yet today:
+    # the "Use Freeze Today" offer, with a live streak and interest paused.
+    beers = [now - 6*D - H, now - 5*D - 2*H, now - 4*D - 3*H, now - 3*D - H]
+    runs = [morning(n, 1.0 + 0.1*n) for n in range(1, 7)]
+elif mode == "restday":
+    # Same, with the freeze already spent on today: the rest-day state.
+    beers = [now - 6*D - H, now - 5*D - 2*H, now - 4*D - 3*H, now - 3*D - H]
+    runs = [morning(n, 1.0 + 0.1*n) for n in range(1, 7)]
+    # Freeze applications are keyed to midday of the local day (spec §25.1).
+    freezes = [local.replace(hour=12, minute=0, second=0).astimezone(timezone.utc)]
+elif mode == "debt":
     beers = [now - 6*D - H, now - 5*D - 2*H, now - 4*D - 3*H, now - 3*D - H, now - 2*D - 2*H, now - 6*H]
     runs = [morning(5, 1.0), morning(2, 1.1), morning(1, 1.2), morning(0, 1.0)]
 else:
@@ -78,7 +90,8 @@ ledger = {"version": 1, "booksOpenedAt": iso(now - 10*D), "rulesHistory": [{"eff
   "beers": [{"id": str(uuid.uuid4()).upper(), "createdAt": iso(b), "recordedAt": iso(b)} for b in beers],
   "runs": [{"id": str(uuid.uuid4()).upper(), "healthKitWorkoutID": str(uuid.uuid4()).upper(), "startedAt": iso(e - timedelta(minutes=int(m*9.5))), "endedAt": iso(e),
             "distanceMeters": m * 1609.344, "importedAt": iso(e + H), "sourceName": "com.google.android.apps.fitness"} for e, m in runs],
-  "excludedWorkoutIDs": []}
+  "excludedWorkoutIDs": [],
+  "freezeApplications": [{"id": str(uuid.uuid4()).upper(), "day": iso(d), "appliedAt": iso(d)} for d in freezes]}
 json.dump(ledger, sys.stdout)
 PY
   $ADB shell am force-stop $PKG
@@ -156,6 +169,13 @@ pinned=$($ADB shell dumpsys appwidget 2>/dev/null | awk '/^Widgets:/{f=1;next} /
 [ "$pinned" -gt 0 ] || echo "WARNING: nothing pinned; the confirm tap missed (coordinates are for the Pixel 6 profile)"
 $ADB shell input keyevent KEYCODE_HOME; sleep 2
 shoot widget-home
+seed freeze
+launch; shoot home-freeze
+launch streak; shoot streak-freeze
+launch freezeEarned; shoot freeze-earned
+seed restday
+launch streak; shoot streak-restday
+launch; shoot home-restday
 seed credit
 launch; shoot home-credit
 launch runs; shoot runs-credit

@@ -24,6 +24,11 @@ object Palette {
     val debt = Color(0xFFEF6C51)
     val credit = Color(0xFF5CB878)
     val creditSoft = Color(0xFF9CD8A9)
+    /**
+     * A streak freeze: cool against the flame's warmth, so a rest day reads as
+     * a different kind of thing from a run (spec §25.1).
+     */
+    val frost = Color(0xFFA3D4E8)
     val card = Color(0xFF2A3C37)
 }
 

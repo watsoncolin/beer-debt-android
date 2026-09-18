@@ -23,6 +23,13 @@ import kotlinx.serialization.Serializable
 data class DebtFreeCelebration(val totalBeers: Int, val milesRepaid: Double, val creditBeers: Double)
 
 /** Shown when a sync turns a one-day streak into two: interest is now paused (spec §25). */
+/**
+ * Shown when a synced run is the fifth running day, earning a streak freeze
+ * (spec §25.1). The freeze is never spent here; this only says it is in hand.
+ */
+@Serializable
+data class FreezeEarnedCelebration(val streakDays: Int)
+
 @Serializable
 data class StreakCelebration(val days: Int)
 
@@ -34,6 +41,7 @@ data class SyncState(
     val runNotificationsEnabled: Boolean = false,
     val celebration: DebtFreeCelebration? = null,
     val streakCelebration: StreakCelebration? = null,
+    val freezeEarned: FreezeEarnedCelebration? = null,
 )
 
 /**
@@ -85,6 +93,7 @@ class HealthSync(context: Context, private val store: LedgerStore, private val n
 
     fun clearCelebration() = _state.update { it.copy(celebration = null) }
     fun clearStreakCelebration() = _state.update { it.copy(streakCelebration = null) }
+    fun clearFreezeEarned() = _state.update { it.copy(freezeEarned = null) }
 
     /** Surfaces a celebration earned while the app was closed. Debt-free first; the streak sheet waits. */
     fun showPendingCelebration() {
@@ -94,6 +103,15 @@ class HealthSync(context: Context, private val store: LedgerStore, private val n
                 _state.update { it.copy(celebration = party) }
             }
             return
+        }
+        // Last in the queue: earning a freeze is the quietest of the three.
+        if (_state.value.celebration == null && _state.value.streakCelebration == null) {
+            prefs.getString(KEY_PENDING_FREEZE, null)?.let { raw ->
+                prefs.edit().remove(KEY_PENDING_FREEZE).apply()
+                runCatching { Json.decodeFromString<FreezeEarnedCelebration>(raw) }.getOrNull()?.let { party ->
+                    _state.update { it.copy(freezeEarned = party) }
+                }
+            }
         }
         if (_state.value.celebration == null) prefs.getString(KEY_PENDING_STREAK, null)?.let { raw ->
             prefs.edit().remove(KEY_PENDING_STREAK).apply()
@@ -161,6 +179,15 @@ class HealthSync(context: Context, private val store: LedgerStore, private val n
                 if (isAppActive) _state.update { it.copy(streakCelebration = party) }
                 else prefs.edit().putString(KEY_PENDING_STREAK, Json.encodeToString(party)).apply()
             }
+            // The fifth running day put a freeze in hand. Derived, so a run that
+            // imports late still earns it -- and a deleted run that un-earns it
+            // simply stops the sheet appearing next time.
+            if (added.isNotEmpty() && before.streak.freezesHeld == 0 && after.streak.freezesHeld > 0) {
+                val party = FreezeEarnedCelebration(after.streak.currentStreakDays)
+                if (isAppActive) _state.update { it.copy(freezeEarned = party) }
+                else prefs.edit().putString(KEY_PENDING_FREEZE, Json.encodeToString(party)).apply()
+            }
+
             if (!isAppActive && _state.value.runNotificationsEnabled) {
                 val change = RunNotifier.Change(
                     addedRuns = added, removedRuns = removed, before = before.balance, after = after.balance,
@@ -202,5 +229,6 @@ class HealthSync(context: Context, private val store: LedgerStore, private val n
         private const val KEY_NOTIFY = "runNotifications"
         private const val KEY_PENDING_CELEBRATION = "pendingCelebration"
         private const val KEY_PENDING_STREAK = "pendingStreakCelebration"
+        private const val KEY_PENDING_FREEZE = "pendingFreezeCelebration"
     }
 }

@@ -19,7 +19,11 @@ build numbers drift freely.
 floating-point results agree. `StreakEngine.kt` mirrors the Swift
 `StreakEngine` (spec §25): calendar days in a `ZoneId`, passed to
 `BalanceEngine.report(ledger, at, zone)`; the fixtures carry `timeZone`
-(UTC) and the app passes the system zone. `Rules.streakProtection` decodes
+(UTC) and the app passes the system zone. `FreezeApplication` is the
+only freeze state on disk — the days the user chose; earned counts, honoured
+applications and refunds are all derived from the runs at every replay, so a
+late import that brings a frozen day to a mile refunds the freeze by simply
+not honouring its application. `Rules.streakProtection` decodes
 as off when absent; `Rules.OPENING` (on) is what new ledgers use, and
 `LedgerStore` appends a rules change turning it on for old ledgers. `engine/src/test/resources/cases.json` comes
 from `~/beer-debt-ios/scripts/fixtures.sh`; `FixtureTest` replays all cases
@@ -86,6 +90,10 @@ beerDetail|debtFree` handled by `DebugLaunch` in `MainActivity` (the iOS
   `filesDir/BeerDebt/ledger.json`, the same shape as iOS; `addBeer`,
   `updateBeerDate` (30-day window), `removeBeer`, `importRuns` (dedup +
   excluded set), `removeRuns`, `deleteRun`, `updateRules` (forward-only).
+  `applyFreeze` / `freezeToday` spend a streak freeze (spec §25.1), and allow
+  only today or `StreakStatus.repairableDay` — the MVP guard against arbitrary
+  history editing. Whether a freeze was in hand is the engine's business: an
+  application it cannot honour is ignored on replay, never trusted here.
   A failed write is remembered, not swallowed: `isPersisted` goes false and
   `persist()` retries it. Before discarding the only means of rebuilding
   what was written, call `persist()` first — `HealthSync.sync()` is the live

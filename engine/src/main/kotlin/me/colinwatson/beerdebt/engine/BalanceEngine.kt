@@ -76,7 +76,14 @@ private class DebtAccount(
 private class Replay(private val ledger: Ledger, private val now: Double, zone: ZoneId) {
     private var rules: Rules = ledger.rulesHistory.firstOrNull()?.rules ?: Rules()
     private val streak: StreakStatus = StreakEngine.calculate(
-        ledger.runs.filter { it.endedAt.seconds >= ledger.booksOpenedAt.seconds }, now.toInstant(), zone,
+        runs = ledger.runs.filter { it.endedAt.seconds >= ledger.booksOpenedAt.seconds },
+        // Freezes before the books opened are meaningless, as pre-books runs are.
+        freezeApplications = ledger.freezeApplications.filter {
+            !it.day.atZone(zone).toLocalDate()
+                .isBefore(ledger.booksOpenedAt.seconds.toInstant().atZone(zone).toLocalDate())
+        },
+        at = now.toInstant(),
+        zone = zone,
     )
     private val open = mutableListOf<DebtAccount>()
     private val closed = mutableListOf<DebtAccount>()
