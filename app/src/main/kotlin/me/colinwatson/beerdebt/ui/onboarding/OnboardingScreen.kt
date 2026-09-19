@@ -74,7 +74,9 @@ fun OnboardingScreen(onDone: () -> Unit) {
                 Rule(Icons.Default.Percent, "Ignore it and it grows.", "Interest starts after 24 hours. The rules are yours to tune.")
             }
             Spacer(Modifier.weight(1f))
-            GoldButton(if (connecting) "Connecting…" else "Connect Health Connect", enabled = !connecting && app.sync.isAvailable) {
+            // Neutral label, matching iOS: a pre-permission screen may explain
+            // itself, but its button must not steer the answer to the system prompt.
+            GoldButton(if (connecting) "Connecting…" else "Continue", enabled = !connecting && app.sync.isAvailable) {
                 connecting = true
                 launcher.launch(app.sync.health.permissions)
             }
