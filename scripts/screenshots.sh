@@ -152,6 +152,8 @@ launch paid; shoot paid
 launch beerDetail; shoot beer-detail
 launch runs; shoot runs
 launch settings; shoot settings
+launch bankruptcy; shoot bankruptcy
+launch bankruptcyWrittenOff; shoot bankruptcy-written-off
 launch streak; shoot streak
 launch streakActivated; shoot streak-activated
 launch privacy; shoot privacy

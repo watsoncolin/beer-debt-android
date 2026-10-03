@@ -100,7 +100,7 @@ private fun Root() {
         !onboardingComplete -> Routes.ONBOARDING
         debugScreen == "debt" || debugScreen == "beerDetail" || debugScreen == "paid" -> Routes.DEBT
         debugScreen == "runs" -> Routes.RUNS
-        debugScreen == "settings" -> Routes.SETTINGS
+        debugScreen == "settings" || debugScreen?.startsWith("bankruptcy") == true -> Routes.SETTINGS
         debugScreen == "streak" -> Routes.STREAK
         else -> Routes.HOME
     }
@@ -132,7 +132,14 @@ private fun Root() {
             )
         }
         composable(Routes.RUNS) { RunsScreen(onBack = { nav.popBackStack() }) }
-        composable(Routes.SETTINGS) { SettingsScreen(onBack = { nav.popBackStack() }, onOpenPrivacy = { nav.navigate(Routes.PRIVACY) }) }
+        composable(Routes.SETTINGS) {
+            SettingsScreen(
+                onBack = { nav.popBackStack() },
+                onOpenPrivacy = { nav.navigate(Routes.PRIVACY) },
+                showBankruptcy = debugScreen?.startsWith("bankruptcy") == true,
+                bankruptcyWrittenOff = debugScreen == "bankruptcyWrittenOff",
+            )
+        }
         composable(Routes.STREAK) { StreakScreen(onBack = { nav.popBackStack() }) }
         composable(Routes.PRIVACY) { PrivacyScreen(onBack = { if (!nav.popBackStack()) (context as? Activity)?.finish() }) }
     }

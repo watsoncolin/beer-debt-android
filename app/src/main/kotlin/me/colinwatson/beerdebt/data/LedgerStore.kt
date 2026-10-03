@@ -180,6 +180,34 @@ class LedgerStore(
         return true
     }
 
+    /**
+     * Writes off everything on the books and reopens them at [now] (spec §26).
+     * The one destructive act in the app: beers, runs and freeze applications
+     * all go, and the streak goes with the runs, since it is derived from them.
+     *
+     * The rules survive. A tuned economy is not a liability, and a user who set
+     * 2 miles a beer meant it before the bankruptcy and means it after; history
+     * collapses to a single opening entry carrying them, so replay has nothing
+     * to reach back into.
+     *
+     * The written-off runs' workout IDs land in [Ledger.excludedWorkoutIDs], as
+     * a run taken off the books by hand does. Opening the books earlier
+     * afterwards (Settings › About) would otherwise re-import them from Health
+     * Connect as pure credit, the beers that paid for them being gone.
+     *
+     * Returns false if the wipe is in memory but didn't reach the file: the
+     * books look clean until the next launch reads the old ones back, so the
+     * caller tells the user rather than claiming a fresh start.
+     */
+    fun declareBankruptcy(now: Instant = Instant.now()): Boolean {
+        val opened = now.floored()
+        mutate { l ->
+            Ledger.open(opened, l.currentRules)
+                .copy(excludedWorkoutIDs = l.excludedWorkoutIDs + l.runs.map { it.healthKitWorkoutID })
+        }
+        return isPersisted
+    }
+
     /** Forward-only: appended as an event, never rewrites history. */
     fun updateRules(rules: Rules, at: Instant = Instant.now()) {
         if (rules == currentRules) return
