@@ -6,7 +6,14 @@
 set -euo pipefail
 ROOT=$(cd "$(dirname "$0")/.." && pwd)
 export ANDROID_HOME="${ANDROID_HOME:-$HOME/Library/Android/sdk}"
-export JAVA_HOME="${JAVA_HOME:-/Applications/Android Studio.app/Contents/jbr/Contents/Home}"
+# Gradle needs a JDK 17+. Ask macOS rather than hardcoding a path: Android
+# Studio's bundled JBR registers itself with java_home, and so does any other
+# JDK, so this keeps working when Studio moves or is uninstalled.
+if [ -z "${JAVA_HOME:-}" ]; then
+  JAVA_HOME=$(/usr/libexec/java_home -v "17+" 2>/dev/null || true)
+  [ -n "$JAVA_HOME" ] || { echo "no JDK 17+; install one (Android Studio bundles it)"; exit 1; }
+  export JAVA_HOME
+fi
 ADB=$ANDROID_HOME/platform-tools/adb
 PKG=me.colinwatson.beerdebt
 cd "$ROOT" && ./gradlew :app:assembleRelease -q 2>&1 | grep -v "^WARNING\|^w: \|^$" || true

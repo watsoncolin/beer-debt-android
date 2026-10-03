@@ -4,7 +4,14 @@
 # scripts/screenshots.sh boots. Android Studio's device manager does the same
 # thing with clicks.
 set -euo pipefail
-export JAVA_HOME="${JAVA_HOME:-/Applications/Android Studio.app/Contents/jbr/Contents/Home}"
+# Gradle needs a JDK 17+. Ask macOS rather than hardcoding a path: Android
+# Studio's bundled JBR registers itself with java_home, and so does any other
+# JDK, so this keeps working when Studio moves or is uninstalled.
+if [ -z "${JAVA_HOME:-}" ]; then
+  JAVA_HOME=$(/usr/libexec/java_home -v "17+" 2>/dev/null || true)
+  [ -n "$JAVA_HOME" ] || { echo "no JDK 17+; install one (Android Studio bundles it)"; exit 1; }
+  export JAVA_HOME
+fi
 export ANDROID_HOME="${ANDROID_HOME:-$HOME/Library/Android/sdk}"
 export ANDROID_SDK_ROOT=$ANDROID_HOME
 IMAGE="system-images;android-36;google_apis;arm64-v8a"
