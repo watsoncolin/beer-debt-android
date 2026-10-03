@@ -78,8 +78,9 @@ since a launcher mid-animation or a screen that never drew still writes a
 valid PNG; doubtful ones are named at the end and the script exits non-zero.
 Re-running rewrites all fifteen, but most differ only by the clock and the
 seeded dates — commit the ones your change actually touched. It relies on
-the debug-only intent extra `--es debugScreen debt|runs|settings|beerAdded|
-beerDetail|debtFree` handled by `DebugLaunch` in `MainActivity` (the iOS
+the debug-only intent extra `--es debugScreen debt|runs|settings|bankruptcy|
+bankruptcyWrittenOff|beerAdded|beerDetail|debtFree` handled by `DebugLaunch`
+in `MainActivity` (the iOS
 `-debugScreen` equivalent). Keep the seed shapes in that script in sync with
 `Ledger`'s JSON and with the iOS script.
 
@@ -90,6 +91,11 @@ beerDetail|debtFree` handled by `DebugLaunch` in `MainActivity` (the iOS
   `filesDir/BeerDebt/ledger.json`, the same shape as iOS; `addBeer`,
   `updateBeerDate` (30-day window), `removeBeer`, `importRuns` (dedup +
   excluded set), `removeRuns`, `deleteRun`, `updateRules` (forward-only).
+  `declareBankruptcy` is the one destructive act (Settings › Fresh Start,
+  spec §26): it replaces the ledger rather than appending, keeping only the
+  rules in force, and parks the written-off runs' workout IDs in
+  `excludedWorkoutIDs` so a later `reopenBooks` can't pull them back as pure
+  credit. It returns `isPersisted` so the sheet can own up to a failed write.
   `applyFreeze` / `freezeToday` spend a streak freeze (spec §25.1), and allow
   only today or `StreakStatus.repairableDay` — the MVP guard against arbitrary
   history editing. Whether a freeze was in hand is the engine's business: an
@@ -136,7 +142,8 @@ beerDetail|debtFree` handled by `DebugLaunch` in `MainActivity` (the iOS
 - `ui/` — `home` (HomeScreen + BeerAddedSheet + DebtFreeSheet), `debt`
   (DebtScreen + BeerDetailSheet), `runs` (RunsScreen with a Canvas bar
   chart), `settings` (rules, Health Connect incl. the Play install link,
-  weekly summary, About with the Privacy link), `privacy` (the Health
+  weekly summary, About with the Privacy link, and Fresh Start ›
+  `BankruptcySheet`: the filing, then the WRITTEN OFF stamp), `privacy` (the Health
   Connect rationale screen; also what Health Connect's
   ACTION_SHOW_PERMISSIONS_RATIONALE and VIEW_PERMISSION_USAGE open),
   `onboarding`, `components`, `theme` (Palette from iOS `Theme.swift`,

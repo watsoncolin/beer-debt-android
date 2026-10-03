@@ -167,6 +167,68 @@ class LedgerStoreTest {
         assertEquals(at(-365 * DAY), store.current.booksOpenedAt)
     }
 
+    // --- bankruptcy (iOS PR #15, spec §26) ---
+
+    @Test fun bankruptcyWritesOffEverythingAndKeepsTheRules() {
+        val dir = tempDir()
+        val store = LedgerStore(dir, now = t0)
+        store.updateRules(store.currentRules.copy(milesPerBeer = 2.0), at(HOUR))
+        store.addBeer(at(2 * HOUR))
+        store.addBeer(at(3 * HOUR))
+        store.importRuns(listOf(run(1.0, at(DAY - 13 * HOUR))))
+        assertEquals(BalanceState.DEBT, store.report(at(DAY)).balance.state)
+
+        assertTrue(store.declareBankruptcy(now = at(2 * DAY)))
+        assertTrue(store.current.beers.isEmpty())
+        assertTrue(store.current.runs.isEmpty())
+        assertTrue(store.current.freezeApplications.isEmpty())
+        assertEquals(at(2 * DAY), store.current.booksOpenedAt)
+        assertEquals(BalanceState.EVEN, store.report(at(2 * DAY)).balance.state)
+        // The economy the user tuned is not a liability: it survives, as the
+        // single opening entry, so replay never reaches back past the wipe.
+        assertEquals(2.0, store.currentRules.milesPerBeer, 0.0)
+        assertEquals(1, store.current.rulesHistory.size)
+        assertEquals(at(2 * DAY), store.current.rulesHistory.first().effectiveAt)
+        // And it is on disk, not just in memory.
+        val reloaded = LedgerStore(dir, now = at(3 * DAY))
+        assertTrue(reloaded.current.beers.isEmpty())
+        assertEquals(at(2 * DAY), reloaded.current.booksOpenedAt)
+        assertEquals(2.0, reloaded.currentRules.milesPerBeer, 0.0)
+    }
+
+    @Test fun writtenOffRunsNeverComeBackFromHealth() {
+        val store = LedgerStore(tempDir(), now = t0)
+        val workout = UUID.randomUUID()
+        store.importRuns(listOf(run(3.0, at(HOUR), workout)))
+        store.declareBankruptcy(now = at(2 * HOUR))
+
+        // Health Connect still holds the session, and a re-read offers it again.
+        assertTrue(store.importRuns(listOf(run(3.0, at(HOUR), workout))).isEmpty())
+        // Including after the books are opened back over the day it ended,
+        // where the beers that paid for it are gone and it would be pure credit.
+        assertTrue(store.reopenBooks(at(-DAY), now = at(3 * HOUR)))
+        assertTrue(store.importRuns(listOf(run(3.0, at(HOUR), workout))).isEmpty())
+        assertEquals(BalanceState.EVEN, store.report(at(3 * HOUR)).balance.state)
+    }
+
+    @Test fun bankruptcyThatDoesntReachTheDiskSaysSo() {
+        val dir = tempDir()
+        val store = LedgerStore(dir, now = t0)
+        store.addBeer(at(HOUR))
+        assertTrue(dir.setWritable(false))
+        try {
+            assertFalse(store.declareBankruptcy(now = at(2 * HOUR)))
+            // Wiped in memory all the same, so a retry is just another attempt
+            // at the same write rather than a second wipe.
+            assertTrue(store.current.beers.isEmpty())
+            assertFalse(store.declareBankruptcy(now = at(3 * HOUR)))
+        } finally {
+            assertTrue(dir.setWritable(true))
+        }
+        assertTrue(store.persist())
+        assertTrue(LedgerStore(dir, now = at(4 * DAY)).current.beers.isEmpty())
+    }
+
     @Test fun anOldLedgerGetsStreakProtectionSwitchedOnForwardOnly() {
         val dir = tempDir()
         val old = Ledger.open(t0, Rules())   // written before the feature: protection off

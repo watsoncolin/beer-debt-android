@@ -63,7 +63,12 @@ import me.colinwatson.beerdebt.ui.theme.Palette
 
 /** Tune the rules; every change is a forward-only rules event. */
 @Composable
-fun SettingsScreen(onBack: () -> Unit, onOpenPrivacy: () -> Unit = {}) {
+fun SettingsScreen(
+    onBack: () -> Unit,
+    onOpenPrivacy: () -> Unit = {},
+    showBankruptcy: Boolean = false,
+    bankruptcyWrittenOff: Boolean = false,
+) {
     val context = LocalContext.current
     val app = context.applicationContext as BeerDebtApp
     val ledger by app.store.ledger.collectAsState()
@@ -86,6 +91,7 @@ fun SettingsScreen(onBack: () -> Unit, onOpenPrivacy: () -> Unit = {}) {
     var weeklyMinute by remember { mutableStateOf(weekly.minute) }
     var pickingTime by remember { mutableStateOf(false) }
     var reopeningBooks by remember { mutableStateOf(false) }
+    var filing by remember { mutableStateOf(if (showBankruptcy) BankruptcyFiling(app.store.report()) else null) }
     val weeklyLauncher = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
         weekly.setEnabled(granted); weeklyEnabled = granted; weeklyDenied = !granted
     }
@@ -184,10 +190,26 @@ fun SettingsScreen(onBack: () -> Unit, onOpenPrivacy: () -> Unit = {}) {
                     }
                 }
                 item { Footer("Runs that ended before the books opened don't count. Tap the date to open the books earlier and pull those runs in from Health Connect.") }
+
+                item { SectionHeader("Fresh Start") }
+                item {
+                    Card {
+                        Text("Declare Bankruptcy", color = Palette.debt, modifier = Modifier.fillMaxWidth().clickable { filing = BankruptcyFiling(app.store.report()) }.padding(vertical = 12.dp))
+                    }
+                }
+                item { Footer("Tab got away from you? Write the whole thing off and open clean books. Your rules carry over; the beers, runs, and streak don't.") }
             }
         }
     }
 
+    filing?.let { current ->
+        BankruptcySheet(
+            filing = current,
+            startWrittenOff = bankruptcyWrittenOff,
+            onWriteOff = { app.store.declareBankruptcy() },
+            onDismiss = { filing = null },
+        )
+    }
     if (reopeningBooks) {
         ReopenBooksPicker(current = ledger.booksOpenedAt, onPick = { scope.launch { app.sync.reopenBooks(it) }; reopeningBooks = false }, onDismiss = { reopeningBooks = false })
     }
