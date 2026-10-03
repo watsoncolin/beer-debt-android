@@ -23,8 +23,9 @@ the ports drift.
 
 ## Setup
 
-- JDK 17+. Android Studio's bundled JDK works:
-  `export JAVA_HOME="/Applications/Android Studio.app/Contents/jbr/Contents/Home"`
+- JDK 17+. Android Studio's bundled JBR works and registers itself, so
+  `export JAVA_HOME=$(/usr/libexec/java_home -v "17+")` finds it wherever it
+  lives — no need to hardcode Studio's path.
 - Gradle 9.7 via the wrapper; AGP 9.4; Kotlin 2.4.
 
 ```sh

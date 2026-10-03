@@ -44,7 +44,7 @@ Connect record id.
 ## Build
 
 ```sh
-export JAVA_HOME="/Applications/Android Studio.app/Contents/jbr/Contents/Home"
+export JAVA_HOME=$(/usr/libexec/java_home -v "17+")
 ./gradlew :engine:test
 ```
 
