@@ -79,7 +79,7 @@ valid PNG; doubtful ones are named at the end and the script exits non-zero.
 Re-running rewrites all fifteen, but most differ only by the clock and the
 seeded dates — commit the ones your change actually touched. It relies on
 the debug-only intent extra `--es debugScreen debt|runs|settings|bankruptcy|
-bankruptcyWrittenOff|beerAdded|beerDetail|debtFree` handled by `DebugLaunch`
+bankruptcyWrittenOff|mileMarkers|beerAdded|beerDetail|debtFree` handled by `DebugLaunch`
 in `MainActivity` (the iOS
 `-debugScreen` equivalent). Keep the seed shapes in that script in sync with
 `Ledger`'s JSON and with the iOS script.
@@ -136,6 +136,15 @@ in `MainActivity` (the iOS
   `BeerDebtApp` refreshes every placed widget on each ledger save through
   `LedgerStore.onChange`; `res/xml/balance_widget_info.xml` adds a
   half-hourly tick.
+- `ui/milemarkers/` — the Mile Markers screen (iOS spec §27).
+  `MileMarkersStats` is the pure reading of the books and mirrors the Swift
+  one; it sits here rather than in `engine/` because it reads the books rather
+  than being part of them, so it is outside the fixture contract and needs no
+  `cases.json` regeneration. `MileMarkersCharts` draws with `Canvas` (there is
+  no Swift Charts here): the tab with its streak/freeze washes and marker lane,
+  two flow strips, the cumulative lines, and the contribution grid. The build
+  runs on `Dispatchers.Default` and is cached, because the curve costs one
+  engine replay per sampled point.
 - `ui/streak/Streak.kt` — `StreakFlame`, `StreakCopy` (words identical to
   iOS), `StreakCard` (Home), `StreakScreen` ("Your Streak"),
   `StreakActivatedSheet` (day two, paired with Debt Free).

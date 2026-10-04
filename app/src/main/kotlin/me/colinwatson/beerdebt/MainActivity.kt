@@ -28,6 +28,7 @@ import me.colinwatson.beerdebt.health.DebtFreeCelebration
 import me.colinwatson.beerdebt.ui.debt.DebtScreen
 import me.colinwatson.beerdebt.ui.home.DebtFreeSheet
 import me.colinwatson.beerdebt.ui.home.HomeScreen
+import me.colinwatson.beerdebt.ui.milemarkers.MileMarkersScreen
 import me.colinwatson.beerdebt.ui.onboarding.OnboardingScreen
 import me.colinwatson.beerdebt.ui.privacy.PrivacyScreen
 import me.colinwatson.beerdebt.ui.streak.StreakActivatedSheet
@@ -57,6 +58,7 @@ object Routes {
     const val SETTINGS = "settings"
     const val PRIVACY = "privacy"
     const val STREAK = "streak"
+    const val MILE_MARKERS = "mileMarkers"
 }
 
 /**
@@ -102,6 +104,7 @@ private fun Root() {
         debugScreen == "runs" -> Routes.RUNS
         debugScreen == "settings" || debugScreen?.startsWith("bankruptcy") == true -> Routes.SETTINGS
         debugScreen == "streak" -> Routes.STREAK
+        debugScreen == "mileMarkers" -> Routes.MILE_MARKERS
         else -> Routes.HOME
     }
     if (debugScreen == "widget") LaunchedEffect(Unit) {
@@ -121,6 +124,7 @@ private fun Root() {
                 onOpenRuns = { nav.navigate(Routes.RUNS) },
                 onOpenSettings = { nav.navigate(Routes.SETTINGS) },
                 onOpenStreak = { nav.navigate(Routes.STREAK) },
+                onOpenMileMarkers = { nav.navigate(Routes.MILE_MARKERS) },
                 showLatestBeerSheet = debugScreen == "beerAdded",
             )
         }
@@ -141,6 +145,7 @@ private fun Root() {
             )
         }
         composable(Routes.STREAK) { StreakScreen(onBack = { nav.popBackStack() }) }
+        composable(Routes.MILE_MARKERS) { MileMarkersScreen(onBack = { nav.popBackStack() }) }
         composable(Routes.PRIVACY) { PrivacyScreen(onBack = { if (!nav.popBackStack()) (context as? Activity)?.finish() }) }
     }
 

@@ -155,6 +155,7 @@ launch settings; shoot settings
 launch bankruptcy; shoot bankruptcy
 launch bankruptcyWrittenOff; shoot bankruptcy-written-off
 launch streak; shoot streak
+launch mileMarkers; shoot mile-markers
 launch streakActivated; shoot streak-activated
 launch privacy; shoot privacy
 launch debtFree; shoot debt-free
