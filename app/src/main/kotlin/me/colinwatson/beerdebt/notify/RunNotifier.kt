@@ -21,7 +21,21 @@ import me.colinwatson.beerdebt.ui.Format
 class RunNotifier(private val context: Context) {
     data class Message(val title: String, val body: String)
     data class Change(
-        val addedRuns: List<RunEntry>, val removedRuns: Int, val before: Balance, val after: Balance, val beersPaidOff: Int,
+        val addedRuns: List<RunEntry>, val removedRuns: Int, val before: Balance, val after: Balance,
+        /**
+         * What the new runs actually took off the tab, summed from their own
+         * statements.
+         *
+         * Not the drop in the balance between the two reports. A run that
+         * carries the streak to two days makes today interest-protected, and
+         * the replay then skips today's postings that the earlier report had
+         * already made -- so the balance falls by the miles run *plus* the
+         * interest that un-posted, and attributing all of it to the run
+         * overstates it, often by more than the run itself. The streak's share
+         * is already announced on its own line; counting it here said it twice.
+         */
+        val debtPaidMiles: Double,
+        val beersPaidOff: Int,
         /** The streak after the sync, and whether the new runs landed on a streak day. */
         val streakDays: Int = 0, val streakDay: Boolean = false,
         /** This sync made it two days in a row: interest just paused. */
@@ -71,7 +85,7 @@ class RunNotifier(private val context: Context) {
             val title = if (change.addedRuns.size == 1) "Run logged: ${Format.miles(miles)}" else "${change.addedRuns.size} runs logged: ${Format.miles(miles)}"
             val body = when {
                 change.before.state == BalanceState.DEBT && after.state == BalanceState.DEBT -> {
-                    val knocked = maxOf(0.0, change.before.debtMiles - after.debtMiles)
+                    val knocked = maxOf(0.0, change.debtPaidMiles)
                     if (change.beersPaidOff > 0) "Paid off ${beers(change.beersPaidOff)}. ${Format.miles(after.debtMiles)} still owed."
                     else "Knocked ${Format.miles(knocked)} off your tab. ${Format.miles(after.debtMiles)} still owed."
                 }
