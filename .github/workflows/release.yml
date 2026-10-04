@@ -81,10 +81,23 @@ jobs:
       - name: Build signed AAB
         run: ./gradlew :app:bundleRelease -PversionCode=${{ steps.vc.outputs.code }} -PsentryProguardUuid=${{ steps.sentry.outputs.uuid }} --stacktrace
 
+      # A step's own `env:` block is not in scope for that step's own `if:`,
+      # so the `if: env.SENTRY_AUTH_TOKEN != ''` this used to carry was always
+      # false and the upload silently skipped every run -- including the one
+      # that shipped 1.1, whose binary therefore carries a Sentry proguard
+      # UUID that Sentry has no mapping for. Test for the secret in a step of
+      # its own, the way the Play upload below does: `secrets` is not a
+      # documented context for a step-level `if:` either.
+      - name: Check for a Sentry token
+        id: sentry_token
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+        run: echo "enabled=$([ -n "$SENTRY_AUTH_TOKEN" ] && echo true || echo false)" >> "$GITHUB_OUTPUT"
+
       # Deobfuscated stack traces in Sentry. Skipped without the token; the
       # build still ships, just with obfuscated traces.
       - name: Upload R8 mapping to Sentry
-        if: env.SENTRY_AUTH_TOKEN != ''
+        if: steps.sentry_token.outputs.enabled == 'true'
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
           SENTRY_ORG: pawfect-edit
@@ -126,6 +139,10 @@ jobs:
           serviceAccountJsonPlainText: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
           packageName: me.colinwatson.beerdebt
           releaseFiles: app/build/outputs/bundle/release/app-release.aab
+          # Without this Play deobfuscates nothing: its own release-quality
+          # warnings came back naming classes like `sf0.b`, and any crash in
+          # Android vitals would too.
+          mappingFile: app/build/outputs/mapping/release/mapping.txt
           track: ${{ inputs.track }}
           status: ${{ inputs.status }}
           whatsNewDirectory: whatsnew
