@@ -28,7 +28,7 @@ android {
         // CI passes -PversionCode=<run number> for release builds; local builds default to 1.
         versionCode = (project.findProperty("versionCode") as String?)?.toInt() ?: 1
         // Matches MARKETING_VERSION in beer-debt-ios per shipped feature.
-        versionName = "1.0"
+        versionName = "1.1"
         vectorDrawables { useSupportLibrary = true }
         // Sentry (org pawfect-edit, project beer-debt-android). The DSN is not a
         // secret; it only lets the app send events. Blank disables Sentry.
