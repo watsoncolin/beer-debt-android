@@ -50,6 +50,7 @@ fun OnboardingScreen(onDone: () -> Unit) {
     val app = context.applicationContext as BeerDebtApp
     val scope = rememberCoroutineScope()
     var connecting by remember { mutableStateOf(false) }
+    var installFailed by remember { mutableStateOf(false) }
     val launcher = rememberLauncherForActivityResult(PermissionController.createRequestPermissionResultContract()) {
         scope.launch { app.sync.connected(); connecting = false; onDone() }
     }
@@ -78,10 +79,16 @@ fun OnboardingScreen(onDone: () -> Unit) {
             // itself, but its button must not steer the answer to the system prompt.
             GoldButton(if (connecting) "Connecting…" else "Continue", enabled = !connecting && app.sync.isAvailable) {
                 connecting = true
-                launcher.launch(app.sync.health.permissions)
+                launcher.launch(app.sync.health.requestedPermissions)
             }
             if (app.sync.health.needsInstall) {
-                TextButton(onClick = { context.startActivity(app.sync.health.installIntent()) }) { Text("Install Health Connect from Google Play", color = Palette.gold) }
+                TextButton(onClick = { installFailed = !app.sync.health.startInstall(context) }) { Text("Install Health Connect from Google Play", color = Palette.gold) }
+                if (installFailed) {
+                    Text(
+                        "Couldn't open the store on this device. Install Health Connect from Google Play, then come back.",
+                        color = Palette.debt, fontSize = 13.sp, modifier = Modifier.padding(top = 8.dp),
+                    )
+                }
             } else if (!app.sync.isAvailable) {
                 Text("Health Connect isn't available on this device.", color = Palette.cream.copy(alpha = 0.6f), fontSize = 13.sp, modifier = Modifier.padding(top = 8.dp))
             }

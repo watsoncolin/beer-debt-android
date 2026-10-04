@@ -1,5 +1,6 @@
 package me.colinwatson.beerdebt.health
 
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -28,10 +29,27 @@ class HealthConnectService(private val context: Context) {
 
     data class FetchResult(val runs: List<RunEntry>, val deletedWorkoutIDs: List<UUID>, val token: String)
 
+    /** What the app cannot work without. [hasPermissions] checks exactly these. */
     val permissions: Set<String> = setOf(
         HealthPermission.getReadPermission(ExerciseSessionRecord::class),
         HealthPermission.getReadPermission(DistanceRecord::class),
     )
+
+    /**
+     * Reading while the app is in the background. Android 15 refuses
+     * `getChangeLogs` from a worker without it, which is what broke the hourly
+     * sync silently: the SecurityException classifies as PERMISSION_DENIED, so
+     * it stopped being reported without ever being fixed.
+     *
+     * Deliberately *not* in [permissions]. A user may decline it and the app
+     * still works -- it just syncs when opened instead of hourly -- and folding
+     * it into the required set would report a perfectly connected user as not
+     * connected.
+     */
+    val backgroundPermission: String = "android.permission.health.READ_HEALTH_DATA_IN_BACKGROUND"
+
+    /** What the permission sheet asks for: the required set plus background read. */
+    val requestedPermissions: Set<String> = permissions + backgroundPermission
 
     val isAvailable: Boolean
         get() = HealthConnectClient.getSdkStatus(context) == HealthConnectClient.SDK_AVAILABLE
@@ -40,18 +58,58 @@ class HealthConnectService(private val context: Context) {
     val needsInstall: Boolean
         get() = HealthConnectClient.getSdkStatus(context) == HealthConnectClient.SDK_UNAVAILABLE_PROVIDER_UPDATE_REQUIRED
 
-    /** Play Store deep link to Health Connect's onboarding, as the Health Connect guide prescribes. */
-    fun installIntent(): Intent = Intent(Intent.ACTION_VIEW).apply {
-        setPackage("com.android.vending")
-        data = Uri.parse("market://details?id=$PROVIDER_PACKAGE&url=healthconnect%3A%2F%2Fonboarding")
-        putExtra("overlay", true)
-        putExtra("callerId", context.packageName)
+    /**
+     * Where to send someone who hasn't got Health Connect, best first.
+     *
+     * The Play Store deep link is what the Health Connect guide prescribes,
+     * but it names `com.android.vending` explicitly, so on a device without
+     * the Play Store app -- an emulator, a de-Googled phone, Play disabled --
+     * nothing can handle it. Launching it unguarded crashed the app with
+     * `ActivityNotFoundException` for two users on 1.0+6. The web page is the
+     * fallback any browser can take.
+     */
+    fun installIntents(): List<Intent> = listOf(
+        Intent(Intent.ACTION_VIEW).apply {
+            setPackage("com.android.vending")
+            data = Uri.parse("market://details?id=$PROVIDER_PACKAGE&url=healthconnect%3A%2F%2Fonboarding")
+            putExtra("overlay", true)
+            putExtra("callerId", context.packageName)
+        },
+        Intent(Intent.ACTION_VIEW).apply {
+            data = Uri.parse("https://play.google.com/store/apps/details?id=$PROVIDER_PACKAGE")
+        },
+    )
+
+    /**
+     * Opens the first install page the device can handle; false if it can
+     * handle none, which the caller should say rather than leaving a dead tap.
+     *
+     * [from] is the launching activity's context, so no NEW_TASK flag is
+     * needed. Both the onboarding screen and Settings go through here: the
+     * crash this guards against was live in two places at once.
+     */
+    fun startInstall(from: Context): Boolean {
+        for (intent in installIntents()) {
+            try {
+                from.startActivity(intent)
+                return true
+            } catch (_: ActivityNotFoundException) {
+                // Nothing on this device takes it; try the next.
+            }
+        }
+        return false
     }
 
     private val client: HealthConnectClient get() = HealthConnectClient.getOrCreate(context)
 
     suspend fun hasPermissions(): Boolean =
         isAvailable && client.permissionController.getGrantedPermissions().containsAll(permissions)
+
+    /** Whether a background read would be allowed. False on older platforms. */
+    suspend fun canReadInBackground(): Boolean =
+        isAvailable && runCatching {
+            client.permissionController.getGrantedPermissions().contains(backgroundPermission)
+        }.getOrDefault(false)
 
     /**
      * Everything since [token]; a full read since [since] when there is no

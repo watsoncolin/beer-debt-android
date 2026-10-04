@@ -4,6 +4,13 @@
     <!-- Health Connect: running sessions and their distance, read only. -->
     <uses-permission android:name="android.permission.health.READ_EXERCISE" />
     <uses-permission android:name="android.permission.health.READ_DISTANCE" />
+    <!--
+      Without this the hourly SyncWorker's getChangeLogs throws SecurityException
+      ("must be in foreground") on Android 15, so background sync never ran. It
+      is optional: the user may decline it and everything still works on resume,
+      so it is asked for but never required by `hasPermissions`.
+    -->
+    <uses-permission android:name="android.permission.health.READ_HEALTH_DATA_IN_BACKGROUND" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <queries>
