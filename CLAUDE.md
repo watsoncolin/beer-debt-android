@@ -110,7 +110,14 @@ in `MainActivity` (the iOS
 - `health/HealthConnectService` — read-only Health Connect; running
   sessions via the Changes API (token persisted; full re-read on expiry),
   distance aggregated per session; workout ids are UUIDs derived from the
-  record id. `HealthSync` mirrors iOS `HealthSync` (foreground sync on
+  record id. `permissions` is what the app cannot work without and is all
+  `hasPermissions` checks; `requestedPermissions` adds
+  `READ_HEALTH_DATA_IN_BACKGROUND`, which is asked for but optional —
+  without it Android 15 refuses `getChangeLogs` from the hourly worker, and
+  with it folded into the required set a perfectly connected user would read
+  as not connected. `startInstall` is the only way to open the Play page:
+  it walks the deep link then the web URL and catches
+  `ActivityNotFoundException`, which was a fatal crash at two call sites. `HealthSync` mirrors iOS `HealthSync` (foreground sync on
   resume, hourly `SyncWorker`, deletions, debt-free celebration, run
   notifications through `RunNotifier`, whose copy is identical to iOS).
   **Report only what we can't explain:** `HealthFailure` classifies a thrown

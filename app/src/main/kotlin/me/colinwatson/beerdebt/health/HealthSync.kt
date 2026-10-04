@@ -145,6 +145,12 @@ class HealthSync(context: Context, private val store: LedgerStore, private val n
 
     suspend fun sync() {
         if (!_state.value.isConnected || _state.value.isSyncing) return
+        // Android 15 refuses a read from the background without
+        // READ_HEALTH_DATA_IN_BACKGROUND. Asking anyway throws a
+        // SecurityException that `HealthFailure` then classifies as
+        // PERMISSION_DENIED -- no event, no message, and the hourly sync
+        // quietly doing nothing. Skip instead; the next resume covers it.
+        if (!isAppActive && !health.canReadInBackground()) return
         _state.update { it.copy(isSyncing = true) }
         try {
             val result = health.fetchRunningWorkouts(prefs.getString(KEY_TOKEN, null), store.current.booksOpenedAt)
