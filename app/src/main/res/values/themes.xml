@@ -3,8 +3,12 @@
     <!-- Dark forest from the first frame; Compose draws everything else. -->
     <style name="Theme.BeerDebt" parent="android:Theme.Material.NoActionBar">
         <item name="android:windowBackground">@color/forest</item>
-        <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <!--
+          No statusBarColor/navigationBarColor here. Both are deprecated as of
+          Android 15 and no-ops at targetSdk 35+, and `enableEdgeToEdge()` in
+          MainActivity already makes the bars transparent on every API level
+          the app supports. Play flags them as a release-quality issue.
+        -->
         <item name="android:windowLightStatusBar">false</item>
     </style>
 </resources>
