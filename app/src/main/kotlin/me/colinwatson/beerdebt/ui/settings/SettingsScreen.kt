@@ -91,6 +91,7 @@ fun SettingsScreen(
     var weeklyMinute by remember { mutableStateOf(weekly.minute) }
     var pickingTime by remember { mutableStateOf(false) }
     var reopeningBooks by remember { mutableStateOf(false) }
+    var installFailed by remember { mutableStateOf(false) }
     var filing by remember { mutableStateOf(if (showBankruptcy) BankruptcyFiling(app.store.report()) else null) }
     val weeklyLauncher = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
         weekly.setEnabled(granted); weeklyEnabled = granted; weeklyDenied = !granted
@@ -121,7 +122,13 @@ fun SettingsScreen(
                             if (app.sync.health.needsInstall) {
                                 ValueRow("Health Connect", "Not installed")
                                 HorizontalDivider(color = Palette.cream.copy(alpha = 0.1f))
-                                Text("Install Health Connect", color = Palette.gold, modifier = Modifier.fillMaxWidth().clickable { context.startActivity(app.sync.health.installIntent()) }.padding(vertical = 12.dp))
+                                Text("Install Health Connect", color = Palette.gold, modifier = Modifier.fillMaxWidth().clickable { installFailed = !app.sync.health.startInstall(context) }.padding(vertical = 12.dp))
+                                if (installFailed) {
+                                    Text(
+                                        "Couldn't open the store on this device. Install Health Connect from Google Play, then come back.",
+                                        color = Palette.debt, fontSize = 13.sp, modifier = Modifier.padding(top = 8.dp),
+                                    )
+                                }
                             } else if (!app.sync.isAvailable) {
                                 Text("Health Connect isn't available on this device.", color = Palette.cream.copy(alpha = 0.7f))
                             } else if (sync.isConnected) {
@@ -139,7 +146,7 @@ fun SettingsScreen(
                             } else {
                                 ValueRow("Health Connect", "Not connected")
                                 HorizontalDivider(color = Palette.cream.copy(alpha = 0.1f))
-                                Text("Connect Health Connect", color = Palette.gold, modifier = Modifier.fillMaxWidth().clickable { healthLauncher.launch(app.sync.health.permissions) }.padding(vertical = 12.dp))
+                                Text("Connect Health Connect", color = Palette.gold, modifier = Modifier.fillMaxWidth().clickable { healthLauncher.launch(app.sync.health.requestedPermissions) }.padding(vertical = 12.dp))
                             }
                             sync.lastError?.let { Text(it, color = Palette.debt, fontSize = 13.sp, modifier = Modifier.padding(top = 8.dp)) }
                         }
