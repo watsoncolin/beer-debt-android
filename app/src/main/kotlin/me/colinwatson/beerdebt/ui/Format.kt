@@ -40,6 +40,24 @@ object Format {
     fun number(value: Double, decimals: Int = 1): String = String.format(Locale.getDefault(), "%.${decimals}f", value)
     fun miles(value: Double, decimals: Int = 1): String = "${number(value, decimals)} mi"
 
+    /**
+     * Short enough for a stat tile. The tab compounds at 10% a day by default
+     * (iOS decisions §A.1), so a few unpaid months reach five and six figures
+     * and the full number stops being readable long before it stops being true.
+     */
+    fun compact(value: Double): String {
+        val magnitude = abs(value)
+        return when {
+            magnitude >= 1_000_000 -> number(value / 1_000_000, if (magnitude < 10_000_000) 1 else 0) + "M"
+            magnitude >= 10_000 -> number(value / 1_000, 0) + "k"
+            magnitude >= 1_000 -> number(value / 1_000, 1) + "k"
+            else -> number(value, if (magnitude < 100) 1 else 0)
+        }
+    }
+
+    /** [compact], with the unit. */
+    fun compactMiles(value: Double): String = compact(value) + " mi"
+
     /** 2 → "2", 2.5 → "2.5", 2.37 → "2.4" */
     fun beers(value: Double): String {
         val rounded = (value * 10).roundToInt() / 10.0

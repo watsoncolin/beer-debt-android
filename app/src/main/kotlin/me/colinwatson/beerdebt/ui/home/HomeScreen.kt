@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ShowChart
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.DirectionsRun
 import androidx.compose.material.icons.filled.Settings
@@ -54,7 +55,11 @@ import java.time.Instant
 
 /** The product: the balance dominates; one big + Beer; one line of context. */
 @Composable
-fun HomeScreen(onOpenDebt: () -> Unit, onOpenRuns: () -> Unit, onOpenSettings: () -> Unit, onOpenStreak: () -> Unit = {}, showLatestBeerSheet: Boolean = false) {
+fun HomeScreen(
+    onOpenDebt: () -> Unit, onOpenRuns: () -> Unit, onOpenSettings: () -> Unit,
+    onOpenStreak: () -> Unit = {}, onOpenMileMarkers: () -> Unit = {},
+    showLatestBeerSheet: Boolean = false,
+) {
     val app = LocalContext.current.applicationContext as BeerDebtApp
     val ledger by app.store.ledger.collectAsState()
     var tick by remember { mutableIntStateOf(0) }
@@ -88,7 +93,16 @@ fun HomeScreen(onOpenDebt: () -> Unit, onOpenRuns: () -> Unit, onOpenSettings: (
             GoldButton("🍺  + Beer") { addedBeer = app.store.addBeer() }
             Spacer(Modifier.height(16.dp))
             RunsCard(report, now, onOpenRuns)
-            Spacer(Modifier.height(16.dp))
+            Spacer(Modifier.height(12.dp))
+            Row(
+                Modifier.clickable(onClick = onOpenMileMarkers).padding(vertical = 4.dp, horizontal = 8.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Icon(Icons.AutoMirrored.Filled.ShowChart, null, tint = Palette.gold.copy(alpha = 0.9f), modifier = Modifier.size(15.dp))
+                Spacer(Modifier.width(6.dp))
+                Text("Mile Markers", color = Palette.gold.copy(alpha = 0.9f), fontSize = 13.sp, fontWeight = FontWeight.SemiBold)
+            }
+            Spacer(Modifier.height(10.dp))
             Text(
                 quip(report.balance), color = Palette.cream.copy(alpha = 0.7f), fontSize = 13.sp, fontStyle = FontStyle.Italic,
                 textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth(),
