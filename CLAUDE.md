@@ -126,7 +126,9 @@ in `MainActivity` (the iOS
   that last call conditional on the ledger changing; a declined reload is
   otherwise permanent.
 - `notify/` — `RunNotifier` (channels `runs` and `weekly`, the pure run
-  copy) and `WeeklySummary` (prefs `weekly`; iOS numbering 1 = Sunday; the
+  copy; it is told what the runs paid via `Change.debtPaidMiles` rather than
+  diffing the balances, because a run that earns streak protection also
+  un-posts today's interest — iOS decisions §9) and `WeeklySummary` (prefs `weekly`; iOS numbering 1 = Sunday; the
   pure `message`/`nextFireDates`; schedules one `WeeklySummaryWorker` via
   WorkManager that builds the copy at fire time from the live ledger, so
   unlike iOS nothing is rescheduled on ledger changes).
@@ -156,7 +158,11 @@ in `MainActivity` (the iOS
 `./gradlew :engine:test :app:testDebugUnitTest`. The app module's tests are
 plain JUnit 4 (`app/src/test/kotlin`): `LedgerStoreTest`, `RunNotifierTest`,
 `WeeklySummaryTest`, the same cases as the iOS `BeerDebtTests` with the
-same fixture instants in `TestSupport.kt`. Keep pure logic (copy builders,
+same fixture instants in `TestSupport.kt`. **The `ledger()` helper here
+defaults to `Rules()`, which has `streakProtection` off** (that is how a
+pre-feature ledger decodes); Swift's helper defaults to `Rules.default`, which
+has it **on**. A test ported across without naming `Rules.OPENING` therefore
+measures a ledger with no protection at all, and passes while testing nothing. Keep pure logic (copy builders,
 schedules) free of Android types so it stays testable on the JVM.
 
 ## Release

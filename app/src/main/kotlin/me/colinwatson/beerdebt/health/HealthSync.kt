@@ -199,8 +199,10 @@ class HealthSync(context: Context, private val store: LedgerStore, private val n
             }
 
             if (!isAppActive && _state.value.runNotificationsEnabled) {
+                val addedIDs = added.map { it.id }.toSet()
                 val change = RunNotifier.Change(
                     addedRuns = added, removedRuns = removed, before = before.balance, after = after.balance,
+                    debtPaidMiles = after.runs.filter { it.run.id in addedIDs }.sumOf { it.debtPaidMiles },
                     beersPaidOff = maxOf(0, after.beers.count { it.isPaid } - before.beers.count { it.isPaid }),
                     streakDays = after.streak.currentStreakDays,
                     streakDay = added.any { after.streak.qualifies(it.endedAt) },
