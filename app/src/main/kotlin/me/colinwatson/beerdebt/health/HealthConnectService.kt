@@ -8,6 +8,7 @@ import androidx.health.connect.client.HealthConnectClient
 import androidx.health.connect.client.changes.DeletionChange
 import androidx.health.connect.client.changes.UpsertionChange
 import androidx.health.connect.client.permission.HealthPermission
+import androidx.health.connect.client.records.ActiveCaloriesBurnedRecord
 import androidx.health.connect.client.records.DistanceRecord
 import androidx.health.connect.client.records.ExerciseSessionRecord
 import androidx.health.connect.client.request.AggregateRequest
@@ -15,14 +16,16 @@ import androidx.health.connect.client.request.ChangesTokenRequest
 import androidx.health.connect.client.request.ReadRecordsRequest
 import androidx.health.connect.client.time.TimeRangeFilter
 import me.colinwatson.beerdebt.engine.floored
+import me.colinwatson.beerdebt.engine.PaymentMode
 import me.colinwatson.beerdebt.engine.RunEntry
 import java.time.Instant
 import java.util.UUID
 
 /**
- * Read-only bridge to Health Connect: running sessions and their distance.
- * The Changes API plays the role HealthKit's anchored query plays on iOS:
- * incremental, with deletions.
+ * Read-only bridge to Health Connect: running sessions and their distance,
+ * and in calorie mode (iOS spec §28) every session and the active calories
+ * burned during it. The Changes API plays the role HealthKit's anchored query
+ * plays on iOS: incremental, with deletions.
  */
 class HealthConnectService(private val context: Context) {
     companion object { const val PROVIDER_PACKAGE = "com.google.android.apps.healthdata" }
@@ -48,8 +51,16 @@ class HealthConnectService(private val context: Context) {
      */
     val backgroundPermission: String = "android.permission.health.READ_HEALTH_DATA_IN_BACKGROUND"
 
-    /** What the permission sheet asks for: the required set plus background read. */
-    val requestedPermissions: Set<String> = permissions + backgroundPermission
+    /**
+     * Calorie mode's extra read, asked for only when the user picks it.
+     * Optional like [backgroundPermission]: declined, workouts still import
+     * but carry no calories and pay nothing, and the card says so.
+     */
+    val caloriesPermission: String = HealthPermission.getReadPermission(ActiveCaloriesBurnedRecord::class)
+
+    /** What the permission sheet asks for: the required set, background read, and calories in calorie mode. */
+    fun requestedPermissions(mode: PaymentMode): Set<String> =
+        permissions + backgroundPermission + (if (mode == PaymentMode.CALORIES) setOf(caloriesPermission) else emptySet())
 
     val isAvailable: Boolean
         get() = HealthConnectClient.getSdkStatus(context) == HealthConnectClient.SDK_AVAILABLE
@@ -111,11 +122,20 @@ class HealthConnectService(private val context: Context) {
             client.permissionController.getGrantedPermissions().contains(backgroundPermission)
         }.getOrDefault(false)
 
+    /** Whether calorie mode's extra read was granted. */
+    suspend fun canReadCalories(): Boolean =
+        isAvailable && runCatching {
+            client.permissionController.getGrantedPermissions().contains(caloriesPermission)
+        }.getOrDefault(false)
+
     /**
-     * Everything since [token]; a full read since [since] when there is no
-     * token or it expired (dedup on the store makes the re-read harmless).
+     * Everything [mode] reads since [token]; a full read since [since] when
+     * there is no token or it expired (dedup on the store makes the re-read
+     * harmless).
      */
-    suspend fun fetchRunningWorkouts(token: String?, since: Instant): FetchResult {
+    suspend fun fetchWorkouts(mode: PaymentMode, token: String?, since: Instant): FetchResult {
+        val calories = mode == PaymentMode.CALORIES && canReadCalories()
+        suspend fun read(c: HealthConnectClient, s: ExerciseSessionRecord) = toRun(c, s, mode, calories)
         val c = client
         if (token != null) {
             val runs = mutableListOf<RunEntry>()
@@ -127,7 +147,7 @@ class HealthConnectService(private val context: Context) {
                 if (page.changesTokenExpired) { expired = true; break }
                 for (change in page.changes) {
                     when (change) {
-                        is UpsertionChange -> (change.record as? ExerciseSessionRecord)?.let { session -> toRun(c, session)?.let(runs::add) }
+                        is UpsertionChange -> (change.record as? ExerciseSessionRecord)?.let { session -> read(c, session)?.let(runs::add) }
                         is DeletionChange -> deleted.add(workoutID(change.recordId))
                     }
                 }
@@ -140,17 +160,26 @@ class HealthConnectService(private val context: Context) {
         val sessions = c.readRecords(
             ReadRecordsRequest(ExerciseSessionRecord::class, timeRangeFilter = TimeRangeFilter.after(since))
         ).records
-        val runs = sessions.mapNotNull { toRun(c, it) }
+        val runs = sessions.mapNotNull { read(c, it) }
         return FetchResult(runs, emptyList(), fresh)
     }
 
-    private suspend fun toRun(c: HealthConnectClient, session: ExerciseSessionRecord): RunEntry? {
-        if (session.exerciseType != ExerciseSessionRecord.EXERCISE_TYPE_RUNNING &&
-            session.exerciseType != ExerciseSessionRecord.EXERCISE_TYPE_RUNNING_TREADMILL) return null
-        val meters = c.aggregate(
-            AggregateRequest(setOf(DistanceRecord.DISTANCE_TOTAL), TimeRangeFilter.between(session.startTime, session.endTime))
-        )[DistanceRecord.DISTANCE_TOTAL]?.inMeters ?: 0.0
-        if (meters <= 0) return null
+    private suspend fun toRun(c: HealthConnectClient, session: ExerciseSessionRecord, mode: PaymentMode, calories: Boolean): RunEntry? {
+        val isRun = session.exerciseType == ExerciseSessionRecord.EXERCISE_TYPE_RUNNING ||
+            session.exerciseType == ExerciseSessionRecord.EXERCISE_TYPE_RUNNING_TREADMILL
+        if (!isRun && mode != PaymentMode.CALORIES) return null
+        val range = TimeRangeFilter.between(session.startTime, session.endTime)
+        val meters = c.aggregate(AggregateRequest(setOf(DistanceRecord.DISTANCE_TOTAL), range))[DistanceRecord.DISTANCE_TOTAL]?.inMeters ?: 0.0
+        // A run pays by distance, so one without any pays nothing in either
+        // mode. Anything else pays by calories and is kept even with none, so
+        // the card can say so.
+        if (isRun && meters <= 0) return null
+        // Active only: total includes resting burn (iOS decisions §B.10).
+        val kcal = if (calories) {
+            c.aggregate(AggregateRequest(setOf(ActiveCaloriesBurnedRecord.ACTIVE_CALORIES_TOTAL), range))[
+                ActiveCaloriesBurnedRecord.ACTIVE_CALORIES_TOTAL
+            ]?.inKilocalories?.takeIf { it > 0 }
+        } else null
         return RunEntry(
             id = UUID.randomUUID(),
             healthKitWorkoutID = workoutID(session.metadata.id),
@@ -159,6 +188,8 @@ class HealthConnectService(private val context: Context) {
             distanceMeters = meters,
             importedAt = Instant.now().floored(),
             sourceName = session.metadata.dataOrigin.packageName,
+            activityType = WorkoutTypes.activityType(session.exerciseType),
+            activeEnergyKcal = kcal,
         )
     }
 

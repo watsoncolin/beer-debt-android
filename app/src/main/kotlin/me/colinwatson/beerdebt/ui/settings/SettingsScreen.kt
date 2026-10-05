@@ -1,5 +1,9 @@
 package me.colinwatson.beerdebt.ui.settings
 
+import me.colinwatson.beerdebt.ui.LocalUnits
+import me.colinwatson.beerdebt.engine.PaymentBasis
+import me.colinwatson.beerdebt.engine.PaymentMode
+import me.colinwatson.beerdebt.ui.components.Segmented
 import android.Manifest
 import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -76,9 +80,29 @@ fun SettingsScreen(
     val scope = rememberCoroutineScope()
     val rules = ledger.currentRules
     fun update(transform: (Rules) -> Rules) = app.store.updateRules(transform(rules))
+    val units = LocalUnits.current
 
     val healthLauncher = rememberLauncherForActivityResult(PermissionController.createRequestPermissionResultContract()) {
         scope.launch { app.sync.connected() }
+    }
+    // Calorie mode's extra read is asked for when the user picks it (iOS spec
+    // §28). Whatever the answer, the switch goes ahead: declined, workouts
+    // come in without calories and pay nothing, and the footer says where to fix it.
+    var pendingPayment by remember { mutableStateOf<PaymentBasis?>(null) }
+    val caloriesLauncher = rememberLauncherForActivityResult(PermissionController.createRequestPermissionResultContract()) {
+        pendingPayment?.let { payment -> scope.launch { app.sync.updatePayment(payment) } }
+        pendingPayment = null
+    }
+    fun choose(mode: PaymentMode) {
+        val payment = ledger.payment.copy(mode = mode)
+        scope.launch {
+            if (mode == PaymentMode.CALORIES && sync.isConnected && !app.sync.health.canReadCalories()) {
+                pendingPayment = payment
+                caloriesLauncher.launch(setOf(app.sync.health.caloriesPermission))
+            } else {
+                app.sync.updatePayment(payment)
+            }
+        }
     }
     val notificationsLauncher = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
         app.sync.setRunNotifications(granted)
@@ -100,11 +124,31 @@ fun SettingsScreen(
     ForestBackground {
         Scaffold(containerColor = Color.Transparent, topBar = { ForestTopBar("Settings", onBack) }) { padding ->
             LazyColumn(Modifier.fillMaxSize().padding(padding), contentPadding = PaddingValues(start = 20.dp, end = 20.dp, bottom = 32.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                item { SectionHeader("Pay With") }
+                item {
+                    Card {
+                        Column {
+                            Segmented(PaymentMode.entries, ledger.paymentMode, { if (it == PaymentMode.RUNS) "Runs" else "Calories" }, ::choose,
+                                Modifier.padding(vertical = 8.dp))
+                            if (units.isCalories) {
+                                PickerRow("Calories per Mile", listOf(80.0, 100.0, 120.0, 150.0).withCurrent(ledger.caloriesPerMile), ledger.caloriesPerMile,
+                                    { "${Format.number(it, 0)} kcal" }, last = true) { v -> scope.launch { app.sync.updatePayment(ledger.payment.copy(caloriesPerMile = v)) } }
+                            }
+                        }
+                    }
+                }
+                item {
+                    Footer(
+                        if (units.isCalories) "Every workout counts. A run pays its distance; anything else pays the active calories it burned, at ${Format.number(ledger.caloriesPerMile, 0)} kcal a mile. Switching re-reads your whole history, and switching back loses nothing."
+                        else "Only running workouts count, by distance. Switch to calories to let rides, swims and lifts pay too. Switching re-reads your whole history, and switching back loses nothing."
+                    )
+                }
+
                 item { SectionHeader("The Rules") }
                 item {
                     Card {
                         Column {
-                            PickerRow("Miles per Beer", listOf(0.5, 1.0, 1.5, 2.0, 3.0, 5.0).withCurrent(rules.milesPerBeer), rules.milesPerBeer, { Format.miles(it) }) { v -> update { it.copy(milesPerBeer = v) } }
+                            PickerRow(if (units.isCalories) "Calories per Beer" else "Miles per Beer", listOf(0.5, 1.0, 1.5, 2.0, 3.0, 5.0).withCurrent(rules.milesPerBeer), rules.milesPerBeer, { units.amount(it) }) { v -> update { it.copy(milesPerBeer = v) } }
                             PickerRow("Interest Rate", listOf(0.0, 0.05, 0.10, 0.15, 0.20, 0.25).withCurrent(rules.interestRate), rules.interestRate, { if (it == 0.0) "Off" else Format.percent(it) }) { v -> update { it.copy(interestRate = v) } }
                             PickerRow("Interest Frequency", CompoundingPeriod.entries, rules.interestPeriod, { if (it == CompoundingPeriod.DAILY) "Daily" else "Weekly" }) { v -> update { it.copy(interestPeriod = v) } }
                             PickerRow("Grace Period", listOf(0.0, 12 * 3600.0, 24 * 3600.0, 48 * 3600.0, 7 * 86_400.0).withCurrent(rules.gracePeriod), rules.gracePeriod, { Format.gracePeriod(it) }) { v -> update { it.copy(gracePeriod = v) } }
@@ -138,7 +182,7 @@ fun SettingsScreen(
                                 sync.lastSyncAt?.let { HorizontalDivider(color = Palette.cream.copy(alpha = 0.1f)); ValueRow("Last sync", Format.dateTime(it)) }
                                 HorizontalDivider(color = Palette.cream.copy(alpha = 0.1f))
                                 Row(Modifier.fillMaxWidth().padding(vertical = 6.dp), verticalAlignment = Alignment.CenterVertically) {
-                                    Text("Notify me when a run lands", color = Palette.cream, modifier = Modifier.weight(1f))
+                                    Text("Notify me when a ${units.workout} lands", color = Palette.cream, modifier = Modifier.weight(1f))
                                     Switch(checked = sync.runNotificationsEnabled, onCheckedChange = { on ->
                                         if (on && Build.VERSION.SDK_INT >= 33) notificationsLauncher.launch(Manifest.permission.POST_NOTIFICATIONS) else app.sync.setRunNotifications(on)
                                     }, colors = SwitchDefaults.colors(checkedTrackColor = Palette.gold, checkedThumbColor = Palette.ink))
@@ -146,13 +190,18 @@ fun SettingsScreen(
                             } else {
                                 ValueRow("Health Connect", "Not connected")
                                 HorizontalDivider(color = Palette.cream.copy(alpha = 0.1f))
-                                Text("Connect Health Connect", color = Palette.gold, modifier = Modifier.fillMaxWidth().clickable { healthLauncher.launch(app.sync.health.requestedPermissions) }.padding(vertical = 12.dp))
+                                Text("Connect Health Connect", color = Palette.gold, modifier = Modifier.fillMaxWidth().clickable { healthLauncher.launch(app.sync.health.requestedPermissions(ledger.paymentMode)) }.padding(vertical = 12.dp))
                             }
                             sync.lastError?.let { Text(it, color = Palette.debt, fontSize = 13.sp, modifier = Modifier.padding(top = 8.dp)) }
                         }
                     }
                 }
-                item { Footer("Only running workouts count toward your balance. Runs sync when you open the app and about hourly in the background.") }
+                item {
+                    Footer(
+                        if (units.isCalories) "Every workout counts toward your balance, by calories burned. Workouts sync when you open the app and about hourly in the background. If calories aren't showing up, allow Active calories burned in Health Connect › App permissions › Beer Debt."
+                        else "Only running workouts count toward your balance. Runs sync when you open the app and about hourly in the background."
+                    )
+                }
 
                 item { SectionHeader("Weekly Summary") }
                 item {
@@ -179,7 +228,7 @@ fun SettingsScreen(
                         }
                     }
                 }
-                item { Footer("A once-a-week recap: beers, miles, and where your tab stands.") }
+                item { Footer("A once-a-week recap: beers, ${units.word}, and where your tab stands.") }
 
                 item { SectionHeader("About") }
                 item {
@@ -196,7 +245,7 @@ fun SettingsScreen(
                         }
                     }
                 }
-                item { Footer("Runs that ended before the books opened don't count. Tap the date to open the books earlier and pull those runs in from Health Connect.") }
+                item { Footer("${units.workoutsTitle} that ended before the books opened don't count. Tap the date to open the books earlier and pull those ${units.workout}s in from Health Connect.") }
 
                 item { SectionHeader("Fresh Start") }
                 item {
@@ -204,7 +253,7 @@ fun SettingsScreen(
                         Text("Declare Bankruptcy", color = Palette.debt, modifier = Modifier.fillMaxWidth().clickable { filing = BankruptcyFiling(app.store.report()) }.padding(vertical = 12.dp))
                     }
                 }
-                item { Footer("Tab got away from you? Write the whole thing off and open clean books. Your rules carry over; the beers, runs, and streak don't.") }
+                item { Footer("Tab got away from you? Write the whole thing off and open clean books. Your rules carry over; the beers, ${units.workout}s, and streak don't.") }
             }
         }
     }

@@ -1,5 +1,6 @@
 package me.colinwatson.beerdebt.ui.debt
 
+import me.colinwatson.beerdebt.ui.LocalUnits
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -40,6 +41,7 @@ import java.util.UUID
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BeerDetailSheet(beerID: UUID, onDismiss: () -> Unit) {
+    val units = LocalUnits.current
     val app = LocalContext.current.applicationContext as BeerDebtApp
     val ledger by app.store.ledger.collectAsState()
     val now = Instant.now()
@@ -64,13 +66,13 @@ fun BeerDetailSheet(beerID: UUID, onDismiss: () -> Unit) {
                 Spacer(Modifier.height(8.dp))
                 Card {
                     Column {
-                        Line("Cost", Format.miles(statement.costMiles, 2))
-                        if (statement.coveredByCreditMiles > BalanceEngine.EPSILON) Line("Paid from credit", Format.miles(statement.coveredByCreditMiles, 2))
-                        Line("Principal", Format.miles(statement.principalMiles, 2))
-                        Line("Interest accrued", Format.miles(statement.interestAccruedMiles, 2))
-                        Line("Repaid by running", Format.miles(statement.paidMiles, 2))
-                        if (statement.writtenOffMiles > BalanceEngine.EPSILON) Line("Written off", Format.miles(statement.writtenOffMiles, 2))
-                        Line("Outstanding", Format.miles(statement.outstandingMiles, 2), valueColor = if (statement.isPaid) Palette.cream.copy(alpha = 0.6f) else Palette.debt, last = true)
+                        Line("Cost", units.amount(statement.costMiles, 2))
+                        if (statement.coveredByCreditMiles > BalanceEngine.EPSILON) Line("Paid from credit", units.amount(statement.coveredByCreditMiles, 2))
+                        Line("Principal", units.amount(statement.principalMiles, 2))
+                        Line("Interest accrued", units.amount(statement.interestAccruedMiles, 2))
+                        Line(if (units.isCalories) "Repaid by workouts" else "Repaid by running", units.amount(statement.paidMiles, 2))
+                        if (statement.writtenOffMiles > BalanceEngine.EPSILON) Line("Written off", units.amount(statement.writtenOffMiles, 2))
+                        Line("Outstanding", units.amount(statement.outstandingMiles, 2), valueColor = if (statement.isPaid) Palette.cream.copy(alpha = 0.6f) else Palette.debt, last = true)
                     }
                 }
                 Spacer(Modifier.height(12.dp))
@@ -98,7 +100,7 @@ fun BeerDetailSheet(beerID: UUID, onDismiss: () -> Unit) {
         AlertDialog(
             onDismissRequest = { confirmingDelete = false },
             title = { Text("Take this beer off the books?") },
-            text = { Text("Any run that paid for it goes to your other beers or to credit instead.") },
+            text = { Text("Any ${LocalUnits.current.workout} that paid for it goes to your other beers or to credit instead.") },
             confirmButton = { TextButton(onClick = { app.store.removeBeer(beerID); confirmingDelete = false; onDismiss() }) { Text("Delete Beer", color = Palette.debt) } },
             dismissButton = { TextButton(onClick = { confirmingDelete = false }) { Text("Cancel") } },
         )

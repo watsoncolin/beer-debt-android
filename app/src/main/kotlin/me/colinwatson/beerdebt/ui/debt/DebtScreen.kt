@@ -1,5 +1,6 @@
 package me.colinwatson.beerdebt.ui.debt
 
+import me.colinwatson.beerdebt.ui.LocalUnits
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -82,7 +83,7 @@ fun DebtScreen(onBack: () -> Unit, openFirstBeer: Boolean = false, showPaid: Boo
                     Segmented(Filter.entries, filter, { if (it == Filter.ACTIVE) "Active (${active.size})" else "Paid (${paid.size})" }, { filter = it })
                 }
                 if (shown.isEmpty()) {
-                    item { Card { Text(if (filter == Filter.ACTIVE) "Nothing owed. Books are clean." else "No beers paid off yet. Go for a run.", color = Palette.cream.copy(alpha = 0.7f)) } }
+                    item { Card { Text(if (filter == Filter.ACTIVE) "Nothing owed. Books are clean." else "No beers paid off yet. ${if (LocalUnits.current.isCalories) "Go work out." else "Go for a run."}", color = Palette.cream.copy(alpha = 0.7f)) } }
                 }
                 items(shown, key = { it.id }) { statement ->
                     SwipeToDelete(onDelete = { toDelete = statement }) {
@@ -94,7 +95,7 @@ fun DebtScreen(onBack: () -> Unit, openFirstBeer: Boolean = false, showPaid: Boo
                         Row(Modifier.padding(horizontal = 4.dp, vertical = 8.dp), verticalAlignment = Alignment.CenterVertically) {
                             Icon(Icons.Default.Info, contentDescription = null, tint = Palette.cream.copy(alpha = 0.6f), modifier = Modifier.size(16.dp))
                             Spacer(Modifier.width(8.dp))
-                            Text("Runs are applied to your oldest beers first.", color = Palette.cream.copy(alpha = 0.6f), fontSize = 13.sp)
+                            Text("${LocalUnits.current.workoutsTitle} are applied to your oldest beers first.", color = Palette.cream.copy(alpha = 0.6f), fontSize = 13.sp)
                         }
                     }
                 }
@@ -107,7 +108,7 @@ fun DebtScreen(onBack: () -> Unit, openFirstBeer: Boolean = false, showPaid: Boo
         AlertDialog(
             onDismissRequest = { toDelete = null },
             title = { Text("Take this beer off the books?") },
-            text = { Text("Any run that paid for it goes to your other beers or to credit instead.") },
+            text = { Text("Any ${LocalUnits.current.workout} that paid for it goes to your other beers or to credit instead.") },
             confirmButton = { TextButton(onClick = { app.store.removeBeer(statement.id); toDelete = null }) { Text("Delete Beer #${statement.number}", color = Palette.debt) } },
             dismissButton = { TextButton(onClick = { toDelete = null }) { Text("Cancel") } },
         )
@@ -123,13 +124,14 @@ fun DebtScreen(onBack: () -> Unit, openFirstBeer: Boolean = false, showPaid: Boo
  */
 @Composable
 private fun TotalsPanel(report: Report) {
+    val units = LocalUnits.current
     val balance = report.balance
     Card {
         Column(verticalArrangement = Arrangement.spacedBy(14.dp)) {
             when (balance.state) {
                 BalanceState.DEBT -> {
                     Caption("TOTAL OWED")
-                    BigNumber(Format.miles(balance.debtMiles, decimals = 2), Palette.debt)
+                    BigNumber(units.amount(balance.debtMiles, decimals = 2), Palette.debt)
                 }
                 BalanceState.CREDIT -> {
                     Caption("BANKED")
@@ -144,12 +146,12 @@ private fun TotalsPanel(report: Report) {
                 Box(Modifier.fillMaxWidth().height(1.dp).background(Palette.cream.copy(alpha = 0.15f)))
                 Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.Top) {
                     if (balance.state == BalanceState.DEBT) {
-                        LeadingStat(Format.number(balance.principalMiles, decimals = 2), "principal", Modifier.weight(1f))
-                        LeadingStat(Format.number(balance.interestMiles, decimals = 2), "interest so far", Modifier.weight(1f))
+                        LeadingStat(LocalUnits.current.number(balance.principalMiles, decimals = 2), "principal", Modifier.weight(1f))
+                        LeadingStat(LocalUnits.current.number(balance.interestMiles, decimals = 2), "interest so far", Modifier.weight(1f))
                         InterestRateStat(report, Modifier.weight(1f), Alignment.Start)
                     } else {
-                        LeadingStat(Format.number(balance.creditMiles, decimals = 2), "miles banked", Modifier.weight(1f))
-                        LeadingStat(Format.number(report.creditExpiringThisWeekMiles, decimals = 2), "expires this week", Modifier.weight(1f))
+                        LeadingStat(LocalUnits.current.number(balance.creditMiles, decimals = 2), "${LocalUnits.current.word} banked", Modifier.weight(1f))
+                        LeadingStat(LocalUnits.current.number(report.creditExpiringThisWeekMiles, decimals = 2), "expires this week", Modifier.weight(1f))
                         Spacer(Modifier.weight(1f))
                     }
                 }
@@ -179,6 +181,7 @@ private fun LeadingStat(value: String, label: String, modifier: Modifier = Modif
 
 @Composable
 fun BeerRow(statement: BeerStatement, now: Instant) {
+    val units = LocalUnits.current
     Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
         Image(painterResource(R.drawable.brand_mark), contentDescription = null, modifier = Modifier.size(36.dp))
         Spacer(Modifier.width(14.dp))
@@ -194,7 +197,7 @@ fun BeerRow(statement: BeerStatement, now: Instant) {
                 // the opening price.
                 val severity = PaidSeverity.of(statement.paidMiles)
                 Text(
-                    Format.miles(statement.paidMiles, 2),
+                    units.amount(statement.paidMiles, 2),
                     color = when (severity) {
                         PaidSeverity.STEEP -> Palette.debt
                         PaidSeverity.DEAR -> Palette.caution
@@ -205,8 +208,8 @@ fun BeerRow(statement: BeerStatement, now: Instant) {
                 )
                 Text(if (statement.settledByCredit) "from credit" else "paid ${Format.day(statement.paidAt!!)}", color = Palette.cream.copy(alpha = 0.5f), fontSize = 12.sp)
             } else {
-                Text(Format.miles(statement.outstandingMiles, 2), color = Palette.debt, fontWeight = FontWeight.SemiBold, fontSize = 17.sp)
-                Text(Format.miles(statement.principalMiles, 2), color = Palette.cream.copy(alpha = 0.65f), fontSize = 15.sp)
+                Text(units.amount(statement.outstandingMiles, 2), color = Palette.debt, fontWeight = FontWeight.SemiBold, fontSize = 17.sp)
+                Text(units.amount(statement.principalMiles, 2), color = Palette.cream.copy(alpha = 0.65f), fontSize = 15.sp)
                 Text(Format.age(statement.createdAt, now), color = Palette.cream.copy(alpha = 0.5f), fontSize = 12.sp)
             }
         }

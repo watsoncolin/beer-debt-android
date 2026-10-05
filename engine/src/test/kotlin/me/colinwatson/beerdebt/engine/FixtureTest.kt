@@ -85,6 +85,22 @@ class FixtureTest {
         println("✓ ${fixtures.cases.size} Swift fixtures reproduced")
     }
 
+    /**
+     * Calorie mode's inputs live on the ledger and the workouts, not in
+     * `expected`, so `ignoreUnknownKeys` could drop them with every case
+     * replaying as runs mode. Prove they are read.
+     */
+    @Test
+    fun `calorie fixtures decode their payment basis and workout fields`() {
+        val text = javaClass.getResource("/cases.json")?.readText() ?: fail("cases.json missing from test resources")
+        val cases = json.decodeFromString<Fixtures>(text).cases.filter { it.name.startsWith("calories:") }
+        assertTrue(cases.size >= 10, "expected the calorie scenarios, got ${cases.size}")
+        assertTrue(cases.any { it.ledger.paymentMode == PaymentMode.CALORIES }, "no case decoded as calorie mode")
+        assertTrue(cases.any { it.ledger.caloriesPerMile == 150.0 }, "caloriesPerMile not decoded")
+        val workouts = cases.flatMap { it.ledger.runs }
+        assertTrue(workouts.any { it.activityType == 13 && it.activeEnergyKcal != null }, "workout fields not decoded")
+    }
+
     private fun check(case: Case, tol: Double, zone: ZoneId) {
         val report = BalanceEngine.report(case.ledger, case.now, zone)
         val e = case.expected

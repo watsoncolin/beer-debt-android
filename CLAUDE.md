@@ -35,6 +35,16 @@ until it is named in `FixtureTest`'s `Expected*` classes and asserted: a copied
 one non-optional, so the reverse — fixtures that predate a field the engine has
 — fails the decode loudly instead.
 
+**Calorie mode** (iOS spec §28, decisions §B.10): `Ledger.paymentMode` and
+`caloriesPerMile` are a payment basis, not a rule — every replay reads them
+whole, so switching reinterprets history. `PaymentBasis.milesPaidBy` decides
+what a workout pays (runs by distance always; anything else by
+`activeEnergyKcal` in calorie mode only). `RunEntry.activityType` stores iOS's
+`HKWorkoutActivityType` raw values; `health/WorkoutTypes` maps Health Connect
+exercise types onto them. `HealthSync` keeps one changes token per mode, and
+screens format every amount through `Units` (`LocalUnits`, provided in
+`MainActivity`), never multiplying miles into calories themselves.
+
 The ledger JSON is shared byte-for-byte in meaning: `Ledger`, `BeerEntry`,
 `RunEntry`, `RulesChange`, `Rules`, ISO 8601 UTC whole-second instants, UUID
 strings (iOS writes uppercase; both sides parse either). `healthKitWorkoutID`

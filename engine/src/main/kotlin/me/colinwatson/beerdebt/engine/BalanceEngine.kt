@@ -44,7 +44,8 @@ private fun Double.swiftString(): String =
 private sealed class Event(val time: Double, val rank: Int, val tieBreaker: String) {
     class RulesEvent(val change: RulesChange) : Event(change.effectiveAt.seconds, 0, change.effectiveAt.seconds.swiftString())
     class BeerEvent(val beer: BeerEntry) : Event(beer.createdAt.seconds, 1, beer.id.toString().uppercase())
-    class RunEvent(val run: RunEntry) : Event(run.endedAt.seconds, 2, run.id.toString().uppercase())
+    /** A workout that counts under the ledger's payment basis, with the miles it pays. */
+    class RunEvent(val run: RunEntry, val miles: Double) : Event(run.endedAt.seconds, 2, run.id.toString().uppercase())
 }
 
 private class DebtAccount(
@@ -82,6 +83,7 @@ private class Replay(private val ledger: Ledger, private val now: Double, zone: 
             !it.day.atZone(zone).toLocalDate()
                 .isBefore(ledger.booksOpenedAt.seconds.toInstant().atZone(zone).toLocalDate())
         },
+        payment = ledger.payment,
         at = now.toInstant(),
         zone = zone,
     )
@@ -94,7 +96,7 @@ private class Replay(private val ledger: Ledger, private val now: Double, zone: 
     fun run(): Report {
         val events: List<Event> = (ledger.rulesHistory.map { Event.RulesEvent(it) } +
             ledger.beers.map { Event.BeerEvent(it) } +
-            ledger.runs.map { Event.RunEvent(it) })
+            ledger.runs.mapNotNull { run -> ledger.payment.milesPaidBy(run)?.let { Event.RunEvent(run, it) } })
             .filter { it.time <= now }
             .sortedWith(compareBy<Event> { it.time }.thenBy { it.rank }.thenBy { it.tieBreaker })
 
@@ -103,7 +105,7 @@ private class Replay(private val ledger: Ledger, private val now: Double, zone: 
             when (event) {
                 is Event.RulesEvent -> apply(event.change)
                 is Event.BeerEvent -> apply(event.beer)
-                is Event.RunEvent -> apply(event.run)
+                is Event.RunEvent -> apply(event.run, event.miles)
             }
         }
         advance(now)
@@ -165,13 +167,13 @@ private class Replay(private val ledger: Ledger, private val now: Double, zone: 
         }
     }
 
-    private fun apply(run: RunEntry) {
+    private fun apply(run: RunEntry, paying: Double) {
         val endedAt = run.endedAt.seconds
         if (endedAt < ledger.booksOpenedAt.seconds) {
             runStatements.add(RunStatement(run, 0.0, 0.0, 0.0, ignored = true, streakDayNumber = null))
             return
         }
-        var miles = run.distanceMiles
+        var miles = paying
         var debtPaid = 0.0
         var i = 0
         while (miles > BalanceEngine.EPSILON && i < open.size) {

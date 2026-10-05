@@ -64,6 +64,9 @@ data class RunStatement(
     val streakDayNumber: Int? = null,
 ) {
     val id: UUID get() = run.id
+
+    /** Everything the workout was worth in miles: for a run its distance, otherwise its calories at the rate. */
+    val paidMiles: Double get() = debtPaidMiles + creditEarnedMiles + discardedMiles
 }
 
 data class Report(

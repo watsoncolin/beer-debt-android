@@ -8,6 +8,7 @@ import me.colinwatson.beerdebt.engine.RulesChange
 import me.colinwatson.beerdebt.engine.RunStatement
 import me.colinwatson.beerdebt.engine.StreakStatus
 import me.colinwatson.beerdebt.ui.Format
+import me.colinwatson.beerdebt.ui.Units
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
@@ -180,16 +181,17 @@ data class MileMarkersReport(
             data object Clean : Kind
         }
 
-        val title: String
-            get() = when (kind) {
+        val title: String get() = title(Units.MILES)
+
+        fun title(units: Units): String = when (kind) {
                 is Kind.BigDay -> "Big one: +${kind.beers} beers"
                 is Kind.StreakStarted -> "${kind.days} day streak started"
                 Kind.RestDay -> "Rest day — freeze spent"
                 is Kind.LowPoint ->
                     if (kind.miles < 0.05) "Lowest tab of the range"
-                    else "Lowest tab: ${Format.miles(kind.miles)}"
+                    else "Lowest tab: ${units.amount(kind.miles)}"
                 Kind.Clean -> "Books went clean"
-            }
+        }
     }
 }
 
@@ -235,7 +237,7 @@ object MileMarkersStats {
             val beers = if (i == 0) emptyList() else beersInRange.filter { inBucket(it.createdAt) }
             val runs = if (i == 0) emptyList() else runsInRange.filter { inBucket(it.run.endedAt) }
             cumulativeBeerMiles += beers.sumOf { it.costMiles }
-            cumulativeRunMiles += runs.sumOf { it.run.distanceMiles }
+            cumulativeRunMiles += runs.sumOf { it.paidMiles }
             val balance = balances[i]
             MileMarkersReport.Point(
                 date = instant,
@@ -244,7 +246,7 @@ object MileMarkersStats {
                 interestMiles = balance.interestMiles,
                 creditMiles = balance.creditMiles,
                 beers = beers.size,
-                runMiles = runs.sumOf { it.run.distanceMiles },
+                runMiles = runs.sumOf { it.paidMiles },
                 cumulativeBeerMiles = cumulativeBeerMiles,
                 cumulativeRunMiles = cumulativeRunMiles,
             )
@@ -272,7 +274,7 @@ object MileMarkersStats {
             events = events(points, days, beersInRange, zone),
             beersAdded = beersInRange.size,
             runCount = runsInRange.size,
-            milesRun = runsInRange.sumOf { it.run.distanceMiles },
+            milesRun = runsInRange.sumOf { it.paidMiles },
             interestChargedMiles = charged,
             interestWaivedMiles = waived,
             debtChangeMiles = (balances.lastOrNull()?.debtMiles ?: 0.0) - (balances.firstOrNull()?.debtMiles ?: 0.0),
@@ -288,7 +290,7 @@ object MileMarkersStats {
             longestDrySpellDays = longestDrySpell(beersInRange, start, now, zone),
             biggestDayBeers = big?.second ?: 0,
             biggestDay = big?.first,
-            longestRun = runsInRange.maxByOrNull { it.run.distanceMiles },
+            longestRun = runsInRange.maxByOrNull { it.paidMiles },
         )
     }
 

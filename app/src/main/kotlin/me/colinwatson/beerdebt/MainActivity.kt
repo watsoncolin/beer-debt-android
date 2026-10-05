@@ -11,6 +11,9 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import me.colinwatson.beerdebt.ui.LocalUnits
+import me.colinwatson.beerdebt.ui.Units
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -81,6 +84,14 @@ private val rationaleActions = setOf("androidx.health.ACTION_SHOW_PERMISSIONS_RA
 
 @Composable
 private fun Root() {
+    val app = LocalContext.current.applicationContext as BeerDebtApp
+    val ledger by app.store.ledger.collectAsState()
+    // Miles or calories (iOS spec §28), set once here; every screen formats through it.
+    CompositionLocalProvider(LocalUnits provides Units(ledger.payment)) { RootContent() }
+}
+
+@Composable
+private fun RootContent() {
     val context = LocalContext.current
     val app = context.applicationContext as BeerDebtApp
     val prefs = remember { context.getSharedPreferences("app", 0) }

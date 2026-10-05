@@ -1,5 +1,6 @@
 package me.colinwatson.beerdebt.ui.milemarkers
 
+import me.colinwatson.beerdebt.ui.LocalUnits
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -78,6 +79,7 @@ fun PositionChart(
     zone: ZoneId,
     modifier: Modifier = Modifier,
 ) {
+    val units = LocalUnits.current
     val measurer = rememberTextMeasurer()
     val axisStyle = TextStyle(color = Palette.cream.copy(alpha = 0.55f), fontSize = 11.sp)
     val dateFormat = rememberDayFormatter(zone)
@@ -109,7 +111,7 @@ fun PositionChart(
                 )
             }
 
-            gridAndAxis(scale, w, h, measurer, axisStyle)
+            gridAndAxis(scale, w, h, measurer, axisStyle, units::compact)
 
             // Owed: filled area under a solid line.
             val owed = Path().apply {
@@ -215,6 +217,8 @@ internal fun niceCeiling(value: Double): Double {
 private fun DrawScope.gridAndAxis(
     scale: VScale, w: Float, h: Float,
     measurer: androidx.compose.ui.text.TextMeasurer, style: TextStyle,
+    /** Engine miles to an axis label, in the books' units. */
+    label: (Double) -> String,
 ) {
     val steps = if (scale.log) {
         generateSequence(1.0) { it * 10 }.takeWhile { it <= scale.hi }.filter { it >= scale.lo }.toList()
@@ -224,7 +228,7 @@ private fun DrawScope.gridAndAxis(
     for (v in steps) {
         val y = h - scale.fraction(v) * h
         drawLine(Palette.cream.copy(alpha = 0.12f), Offset(0f, y), Offset(w, y), strokeWidth = 1f)
-        drawText(measurer, Format.compact(v), topLeft = Offset(w + 6.dp.toPx(), y - 7.dp.toPx()), style = style)
+        drawText(measurer, label(v), topLeft = Offset(w + 6.dp.toPx(), y - 7.dp.toPx()), style = style)
     }
 }
 
@@ -275,6 +279,7 @@ fun FlowChart(
  */
 @Composable
 fun OutpacingChart(points: List<MileMarkersReport.Point>, zone: ZoneId, modifier: Modifier = Modifier) {
+    val units = LocalUnits.current
     val measurer = rememberTextMeasurer()
     val axisStyle = TextStyle(color = Palette.cream.copy(alpha = 0.55f), fontSize = 11.sp)
     val dateFormat = rememberDayFormatter(zone)
@@ -293,7 +298,7 @@ fun OutpacingChart(points: List<MileMarkersReport.Point>, zone: ZoneId, modifier
         for (i in 0..4) {
             val v = top * i / 4
             drawLine(Palette.cream.copy(alpha = 0.12f), Offset(0f, y(v)), Offset(w, y(v)), strokeWidth = 1f)
-            drawText(measurer, Format.compact(v), topLeft = Offset(w + 6.dp.toPx(), y(v) - 7.dp.toPx()), style = axisStyle)
+            drawText(measurer, units.compact(v), topLeft = Offset(w + 6.dp.toPx(), y(v) - 7.dp.toPx()), style = axisStyle)
         }
         fun line(of: (MileMarkersReport.Point) -> Double, colour: Color, width: Float) {
             val path = Path().apply {

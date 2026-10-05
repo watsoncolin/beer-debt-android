@@ -1,5 +1,7 @@
 package me.colinwatson.beerdebt.ui.runs
 
+import me.colinwatson.beerdebt.ui.LocalUnits
+import me.colinwatson.beerdebt.ui.Units
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -69,6 +71,7 @@ data class Bucket(val label: String, val miles: Double, val showsLabel: Boolean)
 /** Runs: range picker, the total, a bar chart, and the runs as cards. */
 @Composable
 fun RunsScreen(onBack: () -> Unit) {
+    val units = LocalUnits.current
     val app = LocalContext.current.applicationContext as BeerDebtApp
     val ledger by app.store.ledger.collectAsState()
     val now = Instant.now()
@@ -77,25 +80,26 @@ fun RunsScreen(onBack: () -> Unit) {
     var toDelete by remember { mutableStateOf<RunStatement?>(null) }
     val runs = remember(report, range) { RunChart.runsIn(range, report, now) }
     val buckets = remember(runs, range) { RunChart.buckets(range, runs, now) }
-    val total = runs.sumOf { it.run.distanceMiles }
+    val total = runs.sumOf { it.paidMiles }
 
     ForestBackground {
-        Scaffold(containerColor = Color.Transparent, topBar = { ForestTopBar("Runs", onBack) }) { padding ->
+        Scaffold(containerColor = Color.Transparent, topBar = { ForestTopBar(units.workoutsTitle, onBack) }) { padding ->
             LazyColumn(Modifier.fillMaxSize().padding(padding), contentPadding = PaddingValues(start = 20.dp, end = 20.dp, bottom = 24.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
                 item {
                     Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()) {
                         Segmented(RunRange.entries, range, { it.label }, { range = it })
                         Spacer(Modifier.height(28.dp))
-                        Text(Format.miles(total), color = Palette.cream, fontSize = 44.sp, fontWeight = FontWeight.Black)
+                        Text(units.amount(total), color = Palette.cream, fontSize = 44.sp, fontWeight = FontWeight.Black)
                         Text(range.caption, color = Palette.cream.copy(alpha = 0.7f), fontSize = 15.sp)
                         Spacer(Modifier.height(20.dp))
-                        BarChart(buckets, Modifier.fillMaxWidth().height(190.dp))
+                        // In display units, so the axis reads in calories when the books do.
+                        BarChart(buckets.map { it.copy(miles = units.value(it.miles)) }, Modifier.fillMaxWidth().height(190.dp))
                         Spacer(Modifier.height(20.dp))
-                        Text("Recent Runs", color = Palette.cream, fontSize = 22.sp, fontWeight = FontWeight.Bold, modifier = Modifier.fillMaxWidth().padding(start = 4.dp))
+                        Text("Recent ${units.workoutsTitle}", color = Palette.cream, fontSize = 22.sp, fontWeight = FontWeight.Bold, modifier = Modifier.fillMaxWidth().padding(start = 4.dp))
                     }
                 }
                 if (runs.isEmpty()) {
-                    item { Card { Text(if (range == RunRange.ALL) "No runs yet. Health Connect will hand them over." else "No runs ${range.caption}.", color = Palette.cream.copy(alpha = 0.7f)) } }
+                    item { Card { Text(if (range == RunRange.ALL) "No ${units.workout}s yet. Health Connect will hand them over." else "No ${units.workout}s ${range.caption}.", color = Palette.cream.copy(alpha = 0.7f)) } }
                 }
                 items(runs, key = { it.id }) { statement ->
                     SwipeToDelete(onDelete = { toDelete = statement }) { Card { RunRow(statement) } }
@@ -107,9 +111,9 @@ fun RunsScreen(onBack: () -> Unit) {
     toDelete?.let { statement ->
         AlertDialog(
             onDismissRequest = { toDelete = null },
-            title = { Text("Take this run off the books?") },
+            title = { Text("Take this ${units.workout} off the books?") },
             text = { Text("Whatever it paid goes back on your tab. It stays in Health Connect but won't count here again.") },
-            confirmButton = { TextButton(onClick = { app.store.deleteRun(statement.id); toDelete = null }) { Text("Delete ${Format.miles(statement.run.distanceMiles)} run", color = Palette.debt) } },
+            confirmButton = { TextButton(onClick = { app.store.deleteRun(statement.id); toDelete = null }) { Text("Delete ${units.amount(statement.paidMiles)} ${WorkoutKind.of(statement.run).label.lowercase()}", color = Palette.debt) } },
             dismissButton = { TextButton(onClick = { toDelete = null }) { Text("Cancel") } },
         )
     }
@@ -117,13 +121,15 @@ fun RunsScreen(onBack: () -> Unit) {
 
 @Composable
 fun RunRow(statement: RunStatement) {
+    val units = LocalUnits.current
     Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-        Icon(Icons.Default.DirectionsRun, contentDescription = null, tint = Palette.cream, modifier = Modifier.size(28.dp))
+        val kind = WorkoutKind.of(statement.run)
+        Icon(kind.icon, contentDescription = kind.label, tint = Palette.cream, modifier = Modifier.size(28.dp))
         Spacer(Modifier.width(14.dp))
         Column(Modifier.weight(1f)) {
-            Text(Format.miles(statement.run.distanceMiles), color = Palette.cream, fontWeight = FontWeight.SemiBold, fontSize = 17.sp)
-            Text(Format.dateTime(statement.run.endedAt), color = Palette.cream.copy(alpha = 0.65f), fontSize = 15.sp)
-            breakdown(statement)?.let { Text(it, color = Palette.cream.copy(alpha = 0.5f), fontSize = 12.sp) }
+            Text(units.amount(statement.paidMiles), color = Palette.cream, fontWeight = FontWeight.SemiBold, fontSize = 17.sp)
+            Text(subtitle(statement, kind, units), color = Palette.cream.copy(alpha = 0.65f), fontSize = 15.sp)
+            breakdown(statement, units)?.let { Text(it, color = Palette.cream.copy(alpha = 0.5f), fontSize = 12.sp) }
         }
         Column(horizontalAlignment = Alignment.End, verticalArrangement = Arrangement.spacedBy(6.dp)) {
             if (statement.ignored) Pill("Ignored", Palette.cream.copy(alpha = 0.6f)) else Pill("Applied")
@@ -132,11 +138,24 @@ fun RunRow(statement: RunStatement) {
     }
 }
 
-private fun breakdown(s: RunStatement): String? {
+/**
+ * When it ended, and in calorie mode what it was: "Ride · Sep 9, 8:13 PM".
+ * A workout that recorded no calories says so rather than reading as a zero
+ * nobody can explain.
+ */
+private fun subtitle(s: RunStatement, kind: WorkoutKind, units: Units): String {
+    val whenText = Format.dateTime(s.run.endedAt)
+    if (!units.isCalories) return whenText
+    if (s.run.isRunning) return "${kind.label} · ${Format.miles(s.run.distanceMiles)} · $whenText"
+    if (s.run.activeEnergyKcal == null) return "${kind.label} · No calories recorded · $whenText"
+    return "${kind.label} · $whenText"
+}
+
+private fun breakdown(s: RunStatement, units: Units): String? {
     val parts = buildList {
-        if (s.debtPaidMiles > BalanceEngine.EPSILON) add("${Format.miles(s.debtPaidMiles)} to debt")
-        if (s.creditEarnedMiles > BalanceEngine.EPSILON) add("${Format.miles(s.creditEarnedMiles)} banked")
-        if (s.discardedMiles > BalanceEngine.EPSILON) add("${Format.miles(s.discardedMiles)} over the cap")
+        if (s.debtPaidMiles > BalanceEngine.EPSILON) add("${units.amount(s.debtPaidMiles)} to debt")
+        if (s.creditEarnedMiles > BalanceEngine.EPSILON) add("${units.amount(s.creditEarnedMiles)} banked")
+        if (s.discardedMiles > BalanceEngine.EPSILON) add("${units.amount(s.discardedMiles)} over the cap")
     }
     return parts.takeIf { it.isNotEmpty() }?.joinToString(" · ")
 }
@@ -158,7 +177,7 @@ object RunChart {
 
     fun buckets(range: RunRange, runs: List<RunStatement>, now: Instant): List<Bucket> {
         val today = now.atZone(zone).toLocalDate()
-        fun milesOn(day: LocalDate) = runs.filter { it.run.endedAt.atZone(zone).toLocalDate() == day }.sumOf { it.run.distanceMiles }
+        fun milesOn(day: LocalDate) = runs.filter { it.run.endedAt.atZone(zone).toLocalDate() == day }.sumOf { it.paidMiles }
         return when (range) {
             RunRange.WEEK -> {
                 val first = today.with(WeekFields.of(Locale.getDefault()).dayOfWeek(), 1)
@@ -170,7 +189,7 @@ object RunChart {
             }
             RunRange.ALL -> (11 downTo 0).map { back ->
                 val ym = YearMonth.from(today).minusMonths(back.toLong())
-                val miles = runs.filter { YearMonth.from(it.run.endedAt.atZone(zone).toLocalDate()) == ym }.sumOf { it.run.distanceMiles }
+                val miles = runs.filter { YearMonth.from(it.run.endedAt.atZone(zone).toLocalDate()) == ym }.sumOf { it.paidMiles }
                 Bucket(ym.month.getDisplayName(JavaTextStyle.SHORT, Locale.getDefault()), miles, back % 2 == 0)
             }
         }
@@ -190,7 +209,13 @@ fun BarChart(buckets: List<Bucket>, modifier: Modifier = Modifier) {
         val plotWidth = size.width - axisWidth
         val plotHeight = size.height - labelHeight
         val yMax = maxOf(2.0, (buckets.maxOf { it.miles }) * 1.15)
-        val gridSteps = if (yMax <= 2.5) listOf(0.0, 0.5, 1.0, 1.5, 2.0).filter { it <= yMax } else (0..yMax.toInt() step maxOf(1, (yMax / 4).toInt())).map { it.toDouble() }
+        val gridSteps = if (yMax <= 2.5) listOf(0.0, 0.5, 1.0, 1.5, 2.0).filter { it <= yMax } else {
+            // A round step (1, 2 or 5 × 10ⁿ), so a calorie axis reads 0, 50, 100 rather than 0, 31, 62.
+            val raw = yMax / 4
+            val magnitude = Math.pow(10.0, kotlin.math.floor(kotlin.math.log10(raw)))
+            val step = listOf(1.0, 2.0, 5.0, 10.0).map { it * magnitude }.first { it >= raw }
+            generateSequence(0.0) { it + step }.takeWhile { it <= yMax }.toList()
+        }
         for (g in gridSteps) {
             val y = plotHeight - (g / yMax * plotHeight).toFloat()
             drawLine(Palette.cream.copy(alpha = 0.12f), Offset(0f, y), Offset(plotWidth, y), strokeWidth = 1f)

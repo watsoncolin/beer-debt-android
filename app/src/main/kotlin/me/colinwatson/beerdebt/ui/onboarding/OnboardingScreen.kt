@@ -40,10 +40,18 @@ import kotlinx.coroutines.launch
 import me.colinwatson.beerdebt.BeerDebtApp
 import me.colinwatson.beerdebt.R
 import me.colinwatson.beerdebt.ui.components.GoldButton
+import me.colinwatson.beerdebt.ui.components.Segmented
+import me.colinwatson.beerdebt.ui.LocalUnits
+import me.colinwatson.beerdebt.engine.PaymentMode
+import androidx.compose.material.icons.filled.LocalFireDepartment
 import me.colinwatson.beerdebt.ui.theme.Backdrop
 import me.colinwatson.beerdebt.ui.theme.Palette
 
-/** First run: explain the one permission, ask for it, allow "not now". */
+/**
+ * First run: explain the one permission, ask for it, allow "not now". What
+ * pays the tab is chosen here, before the permission ask (iOS spec §28), so the
+ * sheet asks for exactly what the chosen mode reads the first time.
+ */
 @Composable
 fun OnboardingScreen(onDone: () -> Unit) {
     val context = LocalContext.current
@@ -51,6 +59,8 @@ fun OnboardingScreen(onDone: () -> Unit) {
     val scope = rememberCoroutineScope()
     var connecting by remember { mutableStateOf(false) }
     var installFailed by remember { mutableStateOf(false) }
+    val units = LocalUnits.current
+    val mode = units.payment.mode
     val launcher = rememberLauncherForActivityResult(PermissionController.createRequestPermissionResultContract()) {
         scope.launch { app.sync.connected(); connecting = false; onDone() }
     }
@@ -70,8 +80,15 @@ fun OnboardingScreen(onDone: () -> Unit) {
                 Modifier.fillMaxWidth().background(Palette.forestDeep.copy(alpha = 0.85f), RoundedCornerShape(18.dp)).padding(20.dp),
                 verticalArrangement = androidx.compose.foundation.layout.Arrangement.spacedBy(16.dp),
             ) {
-                Rule(Icons.Default.LocalBar, "Every beer costs a mile.", "Tap + Beer and it goes on your tab.")
-                Rule(Icons.Default.DirectionsRun, "Runs pay the tab.", "Health Connect hands over your runs. Only running counts. We'll ping you when one lands.")
+                Rule(Icons.Default.LocalBar, if (units.isCalories) "Every beer costs ${units.amount(1.0)}." else "Every beer costs a mile.", "Tap + Beer and it goes on your tab.")
+                if (units.isCalories) {
+                    Rule(Icons.Default.LocalFireDepartment, "Workouts pay the tab.", "Health Connect hands over every workout. A run pays its distance; anything else, what it burned. We'll ping you when one lands.")
+                } else {
+                    Rule(Icons.Default.DirectionsRun, "Runs pay the tab.", "Health Connect hands over your runs. Only running counts. We'll ping you when one lands.")
+                }
+                // Not connected yet: nothing to re-read, so the store alone.
+                Segmented(PaymentMode.entries, mode, { if (it == PaymentMode.RUNS) "Pay with runs" else "Pay with calories" },
+                    { app.store.updatePayment(units.payment.copy(mode = it)) })
                 Rule(Icons.Default.Percent, "Ignore it and it grows.", "Interest starts after 24 hours. The rules are yours to tune.")
             }
             Spacer(Modifier.weight(1f))
@@ -79,7 +96,7 @@ fun OnboardingScreen(onDone: () -> Unit) {
             // itself, but its button must not steer the answer to the system prompt.
             GoldButton(if (connecting) "Connecting…" else "Continue", enabled = !connecting && app.sync.isAvailable) {
                 connecting = true
-                launcher.launch(app.sync.health.requestedPermissions)
+                launcher.launch(app.sync.health.requestedPermissions(mode))
             }
             if (app.sync.health.needsInstall) {
                 TextButton(onClick = { installFailed = !app.sync.health.startInstall(context) }) { Text("Install Health Connect from Google Play", color = Palette.gold) }

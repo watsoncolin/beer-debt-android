@@ -1,5 +1,8 @@
 package me.colinwatson.beerdebt.ui.home
 
+import me.colinwatson.beerdebt.ui.Units
+import androidx.compose.material.icons.filled.LocalFireDepartment
+import me.colinwatson.beerdebt.ui.LocalUnits
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -104,7 +107,7 @@ fun HomeScreen(
             }
             Spacer(Modifier.height(10.dp))
             Text(
-                quip(report.balance), color = Palette.cream.copy(alpha = 0.7f), fontSize = 13.sp, fontStyle = FontStyle.Italic,
+                quip(report.balance, LocalUnits.current), color = Palette.cream.copy(alpha = 0.7f), fontSize = 13.sp, fontStyle = FontStyle.Italic,
                 textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth(),
             )
         }
@@ -118,11 +121,11 @@ private fun BalanceHero(report: Report) {
     val balance = report.balance
     when (balance.state) {
         BalanceState.DEBT -> {
-            BigNumber(Format.number(balance.debtMiles))
-            Text("mi owed", color = Palette.cream.copy(alpha = 0.85f), fontSize = 22.sp, fontWeight = FontWeight.SemiBold)
+            BigNumber(LocalUnits.current.number(balance.debtMiles))
+            Text("${LocalUnits.current.symbol} owed", color = Palette.cream.copy(alpha = 0.85f), fontSize = 22.sp, fontWeight = FontWeight.SemiBold)
             Spacer(Modifier.height(20.dp))
             Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-                Stat(Format.number(balance.principalMiles), "principal", Modifier.weight(1f))
+                Stat(LocalUnits.current.number(balance.principalMiles), "principal", Modifier.weight(1f))
                 Box(Modifier.width(1.dp).height(36.dp).background(Palette.cream.copy(alpha = 0.25f)))
                 InterestRateStat(report, Modifier.weight(1f))
             }
@@ -160,22 +163,24 @@ private fun Stat(value: String, label: String, modifier: Modifier) {
 
 @Composable
 private fun RunsCard(report: Report, now: Instant, onClick: () -> Unit) {
+    val units = LocalUnits.current
     Row(
         Modifier.fillMaxWidth().background(Palette.forestDeep.copy(alpha = 0.85f), RoundedCornerShape(18.dp)).clickable(onClick = onClick).padding(16.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Icon(Icons.Default.DirectionsRun, contentDescription = null, tint = Palette.cream)
+        Icon(if (LocalUnits.current.isCalories) Icons.Default.LocalFireDepartment else Icons.Default.DirectionsRun, contentDescription = null, tint = Palette.cream)
         Spacer(Modifier.width(12.dp))
         Column(Modifier.weight(1f)) {
-            Text(Format.miles(report.milesRunInWeekOf(now)), color = Palette.cream, fontWeight = FontWeight.SemiBold, fontSize = 17.sp)
-            Text(if (report.balance.state == BalanceState.DEBT) "paid this week" else "run this week", color = Palette.cream.copy(alpha = 0.7f), fontSize = 12.sp)
+            Text(units.amount(report.milesRunInWeekOf(now)), color = Palette.cream, fontWeight = FontWeight.SemiBold, fontSize = 17.sp)
+            Text(if (report.balance.state == BalanceState.DEBT) "paid this week" else "${LocalUnits.current.effortPast} this week", color = Palette.cream.copy(alpha = 0.7f), fontSize = 12.sp)
         }
         Icon(Icons.AutoMirrored.Filled.KeyboardArrowRight, contentDescription = null, tint = Palette.cream.copy(alpha = 0.6f))
     }
 }
 
-private fun quip(balance: Balance): String = when (balance.state) {
-    BalanceState.DEBT -> if (balance.interestMiles > 0.05) "Your tab is getting expensive." else "Your drinking is currently outpacing your running."
+private fun quip(balance: Balance, units: Units): String = when (balance.state) {
+    BalanceState.DEBT -> if (balance.interestMiles > 0.05) "Your tab is getting expensive."
+        else "Your drinking is currently outpacing your ${if (units.isCalories) "workouts" else "running"}."
     BalanceState.CREDIT -> if (balance.creditBeers >= 2) "You've earned a couple." else "You've earned one."
-    BalanceState.EVEN -> "Every beer has a price. Yours is measured in miles."
+    BalanceState.EVEN -> "Every beer has a price. Yours is measured in ${units.word}."
 }

@@ -8,6 +8,7 @@ import me.colinwatson.beerdebt.engine.BalanceEngine
 import me.colinwatson.beerdebt.engine.BalanceState
 import me.colinwatson.beerdebt.engine.Ledger
 import me.colinwatson.beerdebt.ui.Format
+import me.colinwatson.beerdebt.ui.Units
 import java.time.DayOfWeek
 import java.time.Duration
 import java.time.Instant
@@ -82,20 +83,21 @@ class WeeklySummary(context: Context) {
         fun message(ledger: Ledger, fireDate: Instant): RunNotifier.Message {
             val weekStart = fireDate.minusSeconds(7 * 86_400)
             val beers = ledger.beers.count { it.createdAt >= weekStart && it.createdAt < fireDate }
+            val units = Units(ledger.payment)
             val miles = ledger.runs
                 .filter { it.endedAt >= weekStart && it.endedAt < fireDate && it.endedAt >= ledger.booksOpenedAt }
-                .sumOf { it.distanceMiles }
+                .sumOf { ledger.payment.milesPaidBy(it) ?: 0.0 }
             val balance = BalanceEngine.report(ledger, fireDate).balance
 
             val standing = when (balance.state) {
-                BalanceState.DEBT -> "You're at ${Format.miles(balance.debtMiles)} owed."
+                BalanceState.DEBT -> "You're at ${units.amount(balance.debtMiles)} owed."
                 BalanceState.CREDIT -> "You've got ${Format.beersLabel(balance.creditBeers)} banked."
                 BalanceState.EVEN -> "Books are clean."
             }
-            val tally = "${if (beers == 1) "1 beer" else "$beers beers"}, ${Format.miles(miles)} run."
+            val tally = "${if (beers == 1) "1 beer" else "$beers beers"}, ${units.amount(miles)} ${units.effortPast}."
             val body = when {
                 beers == 0 && miles < 0.05 -> "$tally Nothing to report. Suspicious."
-                beers > 0 && miles < 0.05 -> "$tally The running part is optional, apparently. $standing"
+                beers > 0 && miles < 0.05 -> "$tally The ${if (units.isCalories) "workout" else "running"} part is optional, apparently. $standing"
                 else -> "$tally $standing"
             }
             return RunNotifier.Message("Your week in beer", body)

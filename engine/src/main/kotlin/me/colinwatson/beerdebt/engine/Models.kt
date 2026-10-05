@@ -88,11 +88,62 @@ data class RunEntry(
     val distanceMeters: Double,
     val importedAt: Instant,
     val sourceName: String? = null,
+    /**
+     * The workout's type, as iOS's `HKWorkoutActivityType` raw value (37 is
+     * running) so the ledger means the same on both platforms; Health
+     * Connect exercise types are mapped onto it at import. Null means
+     * running: every entry written before calorie mode (spec §28) was a run.
+     */
+    val activityType: Int? = null,
+    /** Active energy burned, in kilocalories. Null when none was recorded. */
+    val activeEnergyKcal: Double? = null,
 ) {
     val distanceMiles: Double get() = distanceMeters / METERS_PER_MILE
 
+    val isRunning: Boolean get() = activityType == null || activityType == RUNNING_ACTIVITY_TYPE
+
     companion object {
         const val METERS_PER_MILE = 1609.344
+        /** `HKWorkoutActivityType.running.rawValue`. */
+        const val RUNNING_ACTIVITY_TYPE = 37
+    }
+}
+
+/** What pays down the tab (spec §28). */
+@Serializable
+enum class PaymentMode {
+    /** Running workouts, by distance. The default. */
+    @SerialName("runs") RUNS,
+    /** Every workout: runs by distance, everything else by active energy. */
+    @SerialName("calories") CALORIES,
+}
+
+/**
+ * The mode and the calorie rate together: everything the engine needs to turn
+ * a workout into miles paid. Not a rule: rules are forward-only, this
+ * reinterprets the whole ledger on every replay (iOS decisions §B.10).
+ */
+data class PaymentBasis(
+    val mode: PaymentMode = PaymentMode.RUNS,
+    /** Calories worth one mile. */
+    val caloriesPerMile: Double = DEFAULT_CALORIES_PER_MILE,
+) {
+    /**
+     * Miles [workout] pays, or null if it doesn't count in this mode. A run
+     * pays its distance in both modes; anything else pays nothing in runs
+     * mode and its active energy at the rate in calorie mode.
+     */
+    fun milesPaidBy(workout: RunEntry): Double? {
+        if (workout.isRunning) return workout.distanceMiles
+        if (mode != PaymentMode.CALORIES) return null
+        if (caloriesPerMile <= 0) return 0.0
+        return (workout.activeEnergyKcal ?: 0.0) / caloriesPerMile
+    }
+
+    companion object {
+        /** About what a mile of running burns. */
+        const val DEFAULT_CALORIES_PER_MILE = 100.0
+        val RUNS = PaymentBasis()
     }
 }
 
@@ -154,8 +205,17 @@ data class Ledger(
      * Absent in every ledger written before freezes existed.
      */
     val freezeApplications: List<FreezeApplication> = emptyList(),
+    /** What pays the tab (spec §28). Not a rule: the whole ledger replays under it. */
+    val paymentMode: PaymentMode = PaymentMode.RUNS,
+    /** Calories worth one mile in calorie mode. Reinterprets like the mode. */
+    val caloriesPerMile: Double = PaymentBasis.DEFAULT_CALORIES_PER_MILE,
 ) {
     val currentRules: Rules get() = rulesHistory.lastOrNull()?.rules ?: Rules()
+
+    val payment: PaymentBasis get() = PaymentBasis(paymentMode, caloriesPerMile)
+
+    fun withPayment(payment: PaymentBasis): Ledger =
+        copy(paymentMode = payment.mode, caloriesPerMile = payment.caloriesPerMile)
 
     companion object {
         fun open(at: Instant, rules: Rules = Rules.OPENING): Ledger =
