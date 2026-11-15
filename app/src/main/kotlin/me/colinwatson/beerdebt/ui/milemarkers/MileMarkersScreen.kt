@@ -1,5 +1,7 @@
 package me.colinwatson.beerdebt.ui.milemarkers
 
+import me.colinwatson.beerdebt.ui.LocalUnits
+import me.colinwatson.beerdebt.ui.Units
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -73,6 +75,7 @@ import java.time.format.DateTimeFormatter
  */
 @Composable
 fun MileMarkersScreen(onBack: () -> Unit, initialRange: MileMarkersRange = MileMarkersRange.QUARTER) {
+    val units = LocalUnits.current
     val app = LocalContext.current.applicationContext as BeerDebtApp
     val ledger by app.store.ledger.collectAsState()
     val zone = remember { ZoneId.systemDefault() }
@@ -107,11 +110,11 @@ fun MileMarkersScreen(onBack: () -> Unit, initialRange: MileMarkersRange = MileM
                     verticalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
                     if (r != null && !r.isEmpty) {
-                        tabSection(r, zone)
-                        headlineSection(r, range)
-                        outpacingSection(r, zone)
-                        streakSection(r, range)
-                        notableSection(r, zone)
+                        tabSection(r, zone, units)
+                        headlineSection(r, range, units)
+                        outpacingSection(r, zone, units)
+                        streakSection(r, range, units)
+                        notableSection(r, zone, units)
                     } else {
                         item {
                             Column(
@@ -124,7 +127,7 @@ fun MileMarkersScreen(onBack: () -> Unit, initialRange: MileMarkersRange = MileM
                                     Text("Reading the books…", color = Palette.cream.copy(alpha = 0.7f))
                                 } else {
                                     Text(
-                                        "Nothing on the books over ${range.phrase}. Log a beer or go for a run.",
+                                        "Nothing on the books over ${range.phrase}. Log a beer or ${if (LocalUnits.current.isCalories) "go work out" else "go for a run"}.",
                                         color = Palette.cream.copy(alpha = 0.7f),
                                         textAlign = TextAlign.Center,
                                     )
@@ -138,14 +141,14 @@ fun MileMarkersScreen(onBack: () -> Unit, initialRange: MileMarkersRange = MileM
     }
 }
 
-private fun androidx.compose.foundation.lazy.LazyListScope.tabSection(r: MileMarkersReport, zone: ZoneId) {
+private fun androidx.compose.foundation.lazy.LazyListScope.tabSection(r: MileMarkersReport, zone: ZoneId, units: Units) {
     item { SectionHeader("The Tab") }
     item {
         Column {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Column(Modifier.weight(1f)) {
                     Text(
-                        Format.compactMiles(r.debtAtEndMiles),
+                        units.compactAmount(r.debtAtEndMiles),
                         color = Palette.cream, fontSize = 34.sp, fontWeight = FontWeight.ExtraBold,
                     )
                     Text(
@@ -172,8 +175,8 @@ private fun androidx.compose.foundation.lazy.LazyListScope.tabSection(r: MileMar
                 note = if (scaleFor(r.points, r.spans).log) "log scale" else null,
             )
             Spacer(Modifier.height(10.dp))
-            StripLabel("miles run", Palette.creditSoft)
-            FlowChart(r.points, { it.runMiles }, Palette.creditSoft, Modifier.fillMaxWidth().height(38.dp))
+            StripLabel("${units.word} ${units.effortPast}", Palette.creditSoft)
+            FlowChart(r.points, { it.runMiles }, Palette.creditSoft, Modifier.fillMaxWidth().height(38.dp), axisLabel = units::compact)
             StripLabel("beers", Palette.caution)
             FlowChart(
                 r.points, { it.beers.toDouble() }, Palette.caution,
@@ -190,7 +193,7 @@ private fun androidx.compose.foundation.lazy.LazyListScope.tabSection(r: MileMar
                             color = Palette.cream.copy(alpha = 0.55f), fontSize = 12.sp,
                             fontWeight = FontWeight.SemiBold, modifier = Modifier.width(56.dp),
                         )
-                        Text(event.title, color = Palette.cream.copy(alpha = 0.8f), fontSize = 12.sp)
+                        Text(event.title(units), color = Palette.cream.copy(alpha = 0.8f), fontSize = 12.sp)
                     }
                 }
             }
@@ -198,14 +201,14 @@ private fun androidx.compose.foundation.lazy.LazyListScope.tabSection(r: MileMar
     }
 }
 
-private fun androidx.compose.foundation.lazy.LazyListScope.headlineSection(r: MileMarkersReport, range: MileMarkersRange) {
+private fun androidx.compose.foundation.lazy.LazyListScope.headlineSection(r: MileMarkersReport, range: MileMarkersRange, units: Units) {
     item { SectionHeader("Over ${range.phrase}") }
     item {
         Column {
             Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                Tile(Format.compact(r.milesRun), "miles run", Icons.Filled.DirectionsRun, Palette.creditSoft, Modifier.weight(1f))
+                Tile(units.compact(r.milesRun), "${units.word} ${units.effortPast}", if (units.isCalories) Icons.Filled.LocalFireDepartment else Icons.Filled.DirectionsRun, Palette.creditSoft, Modifier.weight(1f))
                 Tile("${r.beersAdded}", if (r.beersAdded == 1) "beer" else "beers", Icons.Filled.SportsBar, Palette.gold, Modifier.weight(1f))
-                Tile(Format.compact(r.interestChargedMiles), "mi interest", Icons.Filled.Percent, Palette.debt, Modifier.weight(1f))
+                Tile(units.compact(r.interestChargedMiles), "${units.symbol} interest", Icons.Filled.Percent, Palette.debt, Modifier.weight(1f))
             }
             // The number no other app can show: what the streak kept off the
             // books, from replaying the same ledger unprotected.
@@ -220,7 +223,7 @@ private fun androidx.compose.foundation.lazy.LazyListScope.headlineSection(r: Mi
                     Icon(Icons.Filled.AcUnit, null, tint = Palette.frost, modifier = Modifier.size(16.dp))
                     Spacer(Modifier.width(10.dp))
                     Text(
-                        "Your streak waived ${Format.compactMiles(r.interestWaivedMiles)} of interest.",
+                        "Your streak waived ${units.compactAmount(r.interestWaivedMiles)} of interest.",
                         color = Palette.cream.copy(alpha = 0.85f), fontSize = 13.sp,
                     )
                 }
@@ -229,7 +232,7 @@ private fun androidx.compose.foundation.lazy.LazyListScope.headlineSection(r: Mi
     }
 }
 
-private fun androidx.compose.foundation.lazy.LazyListScope.outpacingSection(r: MileMarkersReport, zone: ZoneId) {
+private fun androidx.compose.foundation.lazy.LazyListScope.outpacingSection(r: MileMarkersReport, zone: ZoneId, units: Units) {
     item { SectionHeader("Keeping Up?") }
     item {
         val owed = r.points.lastOrNull()?.cumulativeBeerMiles ?: 0.0
@@ -238,9 +241,9 @@ private fun androidx.compose.foundation.lazy.LazyListScope.outpacingSection(r: M
         Column {
             Text(
                 when {
-                    kotlin.math.abs(gap) < 0.1 -> "Dead even — every beer run off."
-                    gap > 0 -> "Run ${Format.compactMiles(gap)} more than you drank."
-                    else -> "Drunk ${Format.compactMiles(-gap)} more than you've run."
+                    kotlin.math.abs(gap) < 0.1 -> "Dead even — every beer ${if (units.isCalories) "burned" else "run"} off."
+                    gap > 0 -> "${if (units.isCalories) "Burned" else "Run"} ${units.compactAmount(gap)} more than you drank."
+                    else -> "Drunk ${units.compactAmount(-gap)} more than you've ${units.effortPast}."
                 },
                 color = if (run >= owed) Palette.credit else Palette.debt,
                 fontSize = 14.sp, fontWeight = FontWeight.SemiBold,
@@ -251,21 +254,21 @@ private fun androidx.compose.foundation.lazy.LazyListScope.outpacingSection(r: M
             // turned that into.
             if (r.interestChargedMiles > 0.05) {
                 Text(
-                    "Interest put ${Format.compactMiles(r.interestChargedMiles)} on top of that.",
+                    "Interest put ${units.compactAmount(r.interestChargedMiles)} on top of that.",
                     color = Palette.debt.copy(alpha = 0.9f), fontSize = 12.sp,
                 )
             }
             Spacer(Modifier.height(10.dp))
             OutpacingChart(r.points, zone, Modifier.fillMaxWidth().height(140.dp))
             Spacer(Modifier.height(6.dp))
-            Key(listOf(Palette.caution to "beer miles", Palette.credit to "miles run"))
+            Key(listOf(Palette.caution to "beer ${units.word}", Palette.credit to "${units.word} ${units.effortPast}"))
         }
     }
-    item { Footer("Beer miles are what the beers cost when you drank them. Interest is the tab above.") }
+    item { Footer("Beer ${units.word} are what the beers cost when you drank them. Interest is the tab above.") }
 }
 
-private fun androidx.compose.foundation.lazy.LazyListScope.streakSection(r: MileMarkersReport, range: MileMarkersRange) {
-    item { SectionHeader("Running Days") }
+private fun androidx.compose.foundation.lazy.LazyListScope.streakSection(r: MileMarkersReport, range: MileMarkersRange, units: Units) {
+    item { SectionHeader(if (units.isCalories) "Workout Days" else "Running Days") }
     item {
         Column {
             StreakGrid(r.days, Modifier.fillMaxWidth())
@@ -287,7 +290,7 @@ private fun androidx.compose.foundation.lazy.LazyListScope.streakSection(r: Mile
     }
 }
 
-private fun androidx.compose.foundation.lazy.LazyListScope.notableSection(r: MileMarkersReport, zone: ZoneId) {
+private fun androidx.compose.foundation.lazy.LazyListScope.notableSection(r: MileMarkersReport, zone: ZoneId, units: Units) {
     item { SectionHeader("Notable") }
     item {
         val formatter = DateTimeFormatter.ofPattern("MMM d")
@@ -296,11 +299,11 @@ private fun androidx.compose.foundation.lazy.LazyListScope.notableSection(r: Mil
                 val rows = buildList {
                     r.priciestBeer?.let {
                         if (r.priciestBeerInterestMiles > 0.05) {
-                            add(Triple("Priciest beer", "#${it.number}", "${Format.compactMiles(r.priciestBeerInterestMiles)} of interest") to Palette.debt)
+                            add(Triple("Priciest beer", "#${it.number}", "${units.compactAmount(r.priciestBeerInterestMiles)} of interest") to Palette.debt)
                         }
                     }
                     r.longestRun?.let {
-                        add(Triple("Longest run", Format.miles(it.run.distanceMiles), formatter.format(it.run.endedAt.atZone(zone))) to Palette.creditSoft)
+                        add(Triple(if (units.isCalories) "Biggest burn" else "Longest run", units.amount(it.paidMiles), formatter.format(it.run.endedAt.atZone(zone))) to Palette.creditSoft)
                     }
                     if (r.biggestDayBeers > 1 && r.biggestDay != null) {
                         add(Triple("Biggest day", "${r.biggestDayBeers} beers", formatter.format(r.biggestDay)) to Palette.gold)
@@ -347,6 +350,7 @@ private fun Footer(text: String) {
 
 @Composable
 private fun ChangePill(delta: Double) {
+    val units = LocalUnits.current
     val flat = kotlin.math.abs(delta) < 0.05
     val colour = if (flat) Palette.cream.copy(alpha = 0.6f) else if (delta < 0) Palette.credit else Palette.debt
     Row(
@@ -365,7 +369,7 @@ private fun ChangePill(delta: Double) {
         )
         Spacer(Modifier.width(4.dp))
         Text(
-            if (flat) "flat" else Format.compactMiles(kotlin.math.abs(delta)),
+            if (flat) "flat" else units.compactAmount(kotlin.math.abs(delta)),
             color = colour, fontSize = 14.sp, fontWeight = FontWeight.SemiBold,
         )
     }

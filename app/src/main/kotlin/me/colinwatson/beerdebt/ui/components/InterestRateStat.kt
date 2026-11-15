@@ -1,5 +1,6 @@
 package me.colinwatson.beerdebt.ui.components
 
+import me.colinwatson.beerdebt.ui.LocalUnits
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -40,14 +41,15 @@ import me.colinwatson.beerdebt.ui.theme.Palette
 fun InterestRateStat(report: Report, modifier: Modifier = Modifier, alignment: Alignment.Horizontal = Alignment.CenterHorizontally) {
     val paused = report.streak.todayProtected
     val on = report.rules.interestEnabled
-    val value = Format.number(report.balance.interestPerPeriodMiles, decimals = 2)
+    val units = LocalUnits.current
+    val value = units.number(report.balance.interestPerPeriodMiles, decimals = 2)
     val label = if (on) report.rules.interestPeriod.perLabel else "interest off"
     val struck = on && paused
 
     val spoken = when {
         !on -> "Interest is off"
-        paused -> "$value miles $label in interest, paused by your streak today"
-        else -> "$value miles $label in interest"
+        paused -> "$value ${units.word} $label in interest, paused by your streak today"
+        else -> "$value ${units.word} $label in interest"
     }
 
     Column(

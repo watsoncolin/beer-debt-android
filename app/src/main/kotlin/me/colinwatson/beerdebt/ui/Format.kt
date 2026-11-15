@@ -1,5 +1,7 @@
 package me.colinwatson.beerdebt.ui
 
+import me.colinwatson.beerdebt.engine.PaymentBasis
+import me.colinwatson.beerdebt.engine.PaymentMode
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
@@ -126,3 +128,61 @@ object Format {
         return da.get(wf.weekBasedYear()) == db.get(wf.weekBasedYear()) && da.get(wf.weekOfWeekBasedYear()) == db.get(wf.weekOfWeekBasedYear())
     }
 }
+
+/**
+ * How amounts read on screen: miles, or calories at the ledger's rate (iOS
+ * spec §28). Mirrors iOS `Units`. The engine works in miles either way; this
+ * is the one place they become calories, so screens pass it miles and never
+ * multiply. Calories are whole numbers and go compact from four figures.
+ */
+data class Units(val payment: PaymentBasis) {
+    val isCalories: Boolean get() = payment.mode == PaymentMode.CALORIES
+
+    /** "mi" / "kcal" */
+    val symbol: String get() = if (isCalories) "kcal" else "mi"
+    /** "miles" / "calories" */
+    val word: String get() = if (isCalories) "calories" else "miles"
+
+    /** The display value for an engine amount. */
+    fun value(miles: Double): Double = if (isCalories) miles * payment.caloriesPerMile else miles
+
+    /** Bare number: miles at [decimals], calories whole. */
+    fun number(miles: Double, decimals: Int = 1): String =
+        if (isCalories) String.format(Locale.getDefault(), "%,.0f", value(miles)) else Format.number(miles, decimals)
+
+    /** "2.3 mi" / "230 kcal" */
+    fun amount(miles: Double, decimals: Int = 1): String = number(miles, decimals) + " " + symbol
+
+    /** Short enough for a stat tile. Calories stay whole under a thousand. */
+    fun compact(miles: Double): String {
+        val shown = value(miles)
+        if (isCalories && abs(shown) < 1_000) return Format.number(shown, 0)
+        return Format.compact(shown)
+    }
+
+    fun compactAmount(miles: Double): String = compact(miles) + " " + symbol
+
+    /** "run" / "workout" */
+    val workout: String get() = if (isCalories) "workout" else "run"
+    /** "Runs" / "Workouts" */
+    val workoutsTitle: String get() = if (isCalories) "Workouts" else "Runs"
+    /** "run" / "burned", as in "4.2 mi run this week". */
+    val effortPast: String get() = if (isCalories) "burned" else "run"
+    /** "Run it off" / "Burn it off" */
+    val payOffPhrase: String get() = if (isCalories) "Burn it off" else "Run it off"
+    /** "run" / "work out", as in "if you run today". */
+    val verb: String get() = if (isCalories) "work out" else "run"
+    /** "running day" / "workout day" */
+    val activeDay: String get() = if (isCalories) "workout day" else "running day"
+    /** The streak's daily bar, one mile's worth: "Run 1+ mile" / "Burn 100+ kcal". */
+    val dailyGoal: String get() = if (isCalories) "Burn ${number(1.0)}+ kcal" else "Run 1+ mile"
+    /** "Keep running 1+ mile" / "Keep burning 100+ kcal" */
+    val keepGoing: String get() = if (isCalories) "Keep burning ${number(1.0)}+ kcal" else "Keep running 1+ mile"
+
+    companion object {
+        val MILES = Units(PaymentBasis.RUNS)
+    }
+}
+
+/** The [Units] in force, provided once at the root from the ledger. */
+val LocalUnits = androidx.compose.runtime.staticCompositionLocalOf { Units.MILES }

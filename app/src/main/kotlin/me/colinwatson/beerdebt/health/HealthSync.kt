@@ -11,6 +11,8 @@ import kotlinx.coroutines.flow.update
 import kotlinx.serialization.json.Json
 import me.colinwatson.beerdebt.data.LedgerStore
 import me.colinwatson.beerdebt.engine.BalanceState
+import me.colinwatson.beerdebt.engine.PaymentBasis
+import me.colinwatson.beerdebt.engine.PaymentMode
 import me.colinwatson.beerdebt.notify.RunNotifier
 import me.colinwatson.beerdebt.notify.WeeklySummary
 import me.colinwatson.beerdebt.telemetry.Telemetry
@@ -66,6 +68,16 @@ class HealthSync(context: Context, private val store: LedgerStore, private val n
 
     /** True while the app is in the foreground; syncs then update the UI instead of notifying. */
     @Volatile var isAppActive = false
+
+    /** A sync was asked for while one was running; run again when it ends. */
+    @Volatile private var syncRequested = false
+
+    /**
+     * The next completed sync is the re-read after a mode switch. What it
+     * imports was always there, so it celebrates and notifies nothing
+     * (iOS spec §28: a toggle is not an event).
+     */
+    @Volatile private var quietUntilSynced = false
 
     val isAvailable: Boolean get() = health.isAvailable
 
@@ -124,8 +136,29 @@ class HealthSync(context: Context, private val store: LedgerStore, private val n
     /** Moves the books-opened date back and re-reads Health Connect from scratch (the store dedups on workout id). */
     suspend fun reopenBooks(at: Instant) {
         if (!store.reopenBooks(at)) return
-        prefs.edit().remove(KEY_TOKEN).apply()
+        dropTokens()
         syncIfConnected()
+    }
+
+    /**
+     * Switches what pays the tab (iOS spec §28) and replays the books under
+     * it. Ask for [HealthConnectService.caloriesPermission] first when
+     * switching to calories; declined, the switch still happens and workouts
+     * simply carry no calories. Choosing calories re-reads Health Connect from
+     * scratch through that mode's own token, so every workout since the books
+     * opened counts; switching back needs no re-read. A rate change alone is
+     * a replay and touches nothing in Health Connect.
+     */
+    suspend fun updatePayment(payment: PaymentBasis) {
+        val switching = payment.mode != store.current.paymentMode
+        store.updatePayment(payment)
+        if (!switching || !_state.value.isConnected) return
+        quietUntilSynced = true
+        sync()
+    }
+
+    private fun dropTokens() {
+        prefs.edit().apply { PaymentMode.entries.forEach { remove(tokenKey(it)) } }.apply()
     }
 
     suspend fun syncIfConnected() { if (_state.value.isConnected) sync() }
@@ -143,8 +176,17 @@ class HealthSync(context: Context, private val store: LedgerStore, private val n
     /** Mirrors iOS `LedgerStore.refreshWidgets()`; the store's onChange covers writes. */
     private suspend fun refreshWidgets() = BalanceWidget.refresh(app)
 
+    /** Asked for while one is running, it runs again once that one ends, so a mode switch mid-sync still gets its re-read. */
     suspend fun sync() {
-        if (!_state.value.isConnected || _state.value.isSyncing) return
+        if (!_state.value.isConnected) return
+        if (_state.value.isSyncing) { syncRequested = true; return }
+        do {
+            syncRequested = false
+            syncOnce()
+        } while (syncRequested)
+    }
+
+    private suspend fun syncOnce() {
         // Android 15 refuses a read from the background without
         // READ_HEALTH_DATA_IN_BACKGROUND. Asking anyway throws a
         // SecurityException that `HealthFailure` then classifies as
@@ -152,8 +194,12 @@ class HealthSync(context: Context, private val store: LedgerStore, private val n
         // quietly doing nothing. Skip instead; the next resume covers it.
         if (!isAppActive && !health.canReadInBackground()) return
         _state.update { it.copy(isSyncing = true) }
+        // Captured once: a mode switch mid-read can only move the token of the mode the read started in.
+        val mode = store.current.paymentMode
+        val tokenKey = tokenKey(mode)
+        val quiet = quietUntilSynced
         try {
-            val result = health.fetchRunningWorkouts(prefs.getString(KEY_TOKEN, null), store.current.booksOpenedAt)
+            val result = health.fetchWorkouts(mode, prefs.getString(tokenKey, null), store.current.booksOpenedAt)
             val before = store.report()
             val eligible = result.runs.filter { it.endedAt >= store.current.booksOpenedAt }
             val added = store.importRuns(eligible)
@@ -173,8 +219,9 @@ class HealthSync(context: Context, private val store: LedgerStore, private val n
                 ) }
                 return
             }
-            prefs.edit().putString(KEY_TOKEN, result.token).apply()
+            prefs.edit().putString(tokenKey, result.token).apply()
             _state.update { it.copy(lastSyncAt = Instant.now(), lastError = null) }
+            if (quiet && mode == store.current.paymentMode) quietUntilSynced = false
             // Even when nothing changed. A reload asked for on a background
             // wake can be dropped, and the sync that would ask again imports
             // nothing the second time, so it never writes; this is what repairs
@@ -183,6 +230,7 @@ class HealthSync(context: Context, private val store: LedgerStore, private val n
 
             if (added.isEmpty() && removed == 0) return
             val after = store.report()
+            if (quiet) return
 
             if (added.isNotEmpty() && before.balance.state == BalanceState.DEBT && after.balance.state != BalanceState.DEBT) {
                 val party = DebtFreeCelebration(after.beers.size, after.runs.sumOf { it.debtPaidMiles }, after.balance.creditBeers)
@@ -213,6 +261,7 @@ class HealthSync(context: Context, private val store: LedgerStore, private val n
                     streakDays = after.streak.currentStreakDays,
                     streakDay = added.any { after.streak.qualifies(it.endedAt) },
                     streakActivated = streakActivated,
+                    payment = store.current.payment,
                 )
                 RunNotifier.message(change)?.let(notifier::post)
             }
@@ -227,7 +276,7 @@ class HealthSync(context: Context, private val store: LedgerStore, private val n
             val failure = HealthFailure.of(e, available = health.isAvailable, needsInstall = health.needsInstall)
             _state.update { it.copy(lastError = failure.message(e.message ?: e.toString())) }
             if (failure.isReportable) {
-                Telemetry.report(e, context = "health", values = mapOf("action" to "sync", "hasToken" to (prefs.getString(KEY_TOKEN, null) != null)))
+                Telemetry.report(e, context = "health", values = mapOf("action" to "sync", "mode" to mode.name, "hasToken" to (prefs.getString(tokenKey, null) != null)))
             }
         } finally {
             _state.update { it.copy(isSyncing = false) }
@@ -243,7 +292,16 @@ class HealthSync(context: Context, private val store: LedgerStore, private val n
 
     companion object {
         private const val KEY_CONNECTED = "connected"
-        private const val KEY_TOKEN = "changesToken"
+        /**
+         * One changes token per payment mode, because each reads a different
+         * slice of Health Connect: switching to calories starts that mode's
+         * read from scratch without touching where runs mode stood. Runs
+         * keeps the original key, so an upgrade carries on where it was.
+         */
+        private fun tokenKey(mode: PaymentMode) = when (mode) {
+            PaymentMode.RUNS -> "changesToken"
+            PaymentMode.CALORIES -> "changesToken.calories"
+        }
         private const val KEY_NOTIFY = "runNotifications"
         private const val KEY_PENDING_CELEBRATION = "pendingCelebration"
         private const val KEY_PENDING_STREAK = "pendingStreakCelebration"

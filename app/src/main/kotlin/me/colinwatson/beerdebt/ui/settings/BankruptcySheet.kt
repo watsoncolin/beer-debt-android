@@ -1,5 +1,6 @@
 package me.colinwatson.beerdebt.ui.settings
 
+import me.colinwatson.beerdebt.ui.LocalUnits
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -113,6 +114,7 @@ fun BankruptcySheet(
 
 @Composable
 private fun FilingForm(filing: BankruptcyFiling, writeFailed: Boolean, onWriteOff: () -> Unit, onDismiss: () -> Unit) {
+    val units = LocalUnits.current
     Text(
         "CHAPTER 7 · SECTION BEER",
         color = Palette.gold.copy(alpha = 0.9f),
@@ -144,9 +146,9 @@ private fun FilingForm(filing: BankruptcyFiling, writeFailed: Boolean, onWriteOf
             )
             Spacer(Modifier.height(8.dp))
             LineItem("Beers", Format.beersLabel(filing.beers.toDouble()))
-            if (filing.outstandingMiles > 0) LineItem("Outstanding", Format.miles(filing.outstandingMiles), Palette.debt)
-            if (filing.creditMiles > 0) LineItem("Banked credit", Format.miles(filing.creditMiles), Palette.credit)
-            LineItem("Runs", "${filing.runs}")
+            if (filing.outstandingMiles > 0) LineItem("Outstanding", units.amount(filing.outstandingMiles), Palette.debt)
+            if (filing.creditMiles > 0) LineItem("Banked credit", units.amount(filing.creditMiles), Palette.credit)
+            LineItem(LocalUnits.current.workoutsTitle, "${filing.runs}")
             if (filing.streakDays > 0) {
                 LineItem("Streak", "${filing.streakDays} day${if (filing.streakDays == 1) "" else "s"}", Palette.gold)
             }
@@ -155,8 +157,8 @@ private fun FilingForm(filing: BankruptcyFiling, writeFailed: Boolean, onWriteOf
     Spacer(Modifier.height(18.dp))
 
     Column(Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(12.dp)) {
-        Note(Icons.Filled.Delete, Palette.debt, "Gone for good: ", "every beer, run, streak, and freeze on the books. There's no undo.")
-        Note(Icons.Filled.CheckCircle, Palette.credit, "Untouched: ", "the rules you set, and every run in Health Connect. They simply stop counting here.")
+        Note(Icons.Filled.Delete, Palette.debt, "Gone for good: ", "every beer, ${LocalUnits.current.workout}, streak, and freeze on the books. There's no undo.")
+        Note(Icons.Filled.CheckCircle, Palette.credit, "Untouched: ", "the rules you set, and every ${LocalUnits.current.workout} in Health Connect. They simply stop counting here.")
     }
 
     if (writeFailed) {

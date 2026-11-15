@@ -1,5 +1,6 @@
 package me.colinwatson.beerdebt.widget
 
+import me.colinwatson.beerdebt.ui.Units
 import android.content.Context
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
@@ -59,12 +60,14 @@ class BalanceWidget : GlanceAppWidget() {
     override suspend fun provideGlance(context: Context, id: GlanceId) {
         val now = Instant.now()
         val report = BeerDebtApp.instance.store.report(now)
+        // Miles or calories, from the same ledger as the report (iOS spec §28).
+        val units = Units(BeerDebtApp.instance.store.current.payment)
         scheduleRefresh(context, report.nextInterestAt, now)
-        provideContent { Face(report, now) }
+        provideContent { Face(report, now, units) }
     }
 
     @Composable
-    private fun Face(report: Report, now: Instant) {
+    private fun Face(report: Report, now: Instant, units: Units) {
         val medium = LocalSize.current.width >= MEDIUM.width
         val balance = report.balance
         Column(
@@ -78,29 +81,29 @@ class BalanceWidget : GlanceAppWidget() {
                     Column(GlanceModifier.defaultWeight()) {
                         Header()
                         Spacer(GlanceModifier.defaultWeight())
-                        Hero(balance, 44)
+                        Hero(balance, 44, units)
                     }
                     Spacer(GlanceModifier.width(16.dp))
                     Column(GlanceModifier.defaultWeight()) {
                         when (balance.state) {
                             BalanceState.DEBT -> Row {
-                                Stat(Format.number(balance.principalMiles), "principal")
+                                Stat(units.number(balance.principalMiles), "principal")
                                 Spacer(GlanceModifier.width(14.dp))
-                                Stat(Format.number(balance.interestMiles), "interest")
+                                Stat(units.number(balance.interestMiles), "interest")
                             }
                             BalanceState.CREDIT -> Text("Credit slowly expires.", style = caption(Palette.cream.copy(alpha = 0.7f)))
                             BalanceState.EVEN -> Text("Drink now. Run later.", style = caption(Palette.cream.copy(alpha = 0.7f)))
                         }
                         Spacer(GlanceModifier.height(10.dp))
-                        Text("🏃 ${runLine(report, now)}", style = TextStyle(color = ColorProvider(Palette.cream), fontSize = 12.sp, fontWeight = FontWeight.Medium))
+                        Text("${if (units.isCalories) "🔥" else "🏃"} ${runLine(report, now, units)}", style = TextStyle(color = ColorProvider(Palette.cream), fontSize = 12.sp, fontWeight = FontWeight.Medium))
                     }
                 }
             } else {
                 Header()
                 Spacer(GlanceModifier.defaultWeight())
-                Hero(balance, 40)
+                Hero(balance, 40, units)
                 Spacer(GlanceModifier.defaultWeight())
-                Text(runLine(report, now), style = caption(Palette.cream.copy(alpha = 0.7f)))
+                Text(runLine(report, now, units), style = caption(Palette.cream.copy(alpha = 0.7f)))
             }
         }
     }
@@ -111,10 +114,10 @@ class BalanceWidget : GlanceAppWidget() {
     }
 
     @Composable
-    private fun Hero(balance: Balance, numberSize: Int) {
+    private fun Hero(balance: Balance, numberSize: Int, units: Units) {
         Column {
-            Text(heroNumber(balance), style = TextStyle(color = ColorProvider(Palette.cream), fontSize = numberSize.sp, fontWeight = FontWeight.Bold), maxLines = 1)
-            Text(heroCaption(balance), style = TextStyle(color = ColorProvider(heroCaptionColor(balance)), fontSize = 12.sp, fontWeight = FontWeight.Bold))
+            Text(heroNumber(balance, units), style = TextStyle(color = ColorProvider(Palette.cream), fontSize = numberSize.sp, fontWeight = FontWeight.Bold), maxLines = 1)
+            Text(heroCaption(balance, units), style = TextStyle(color = ColorProvider(heroCaptionColor(balance)), fontSize = 12.sp, fontWeight = FontWeight.Bold))
         }
     }
 
@@ -144,14 +147,15 @@ class BalanceWidget : GlanceAppWidget() {
         const val REFRESH_WORK = "widget-refresh"
 
         // Copy, identical to iOS BalanceWidgetView.
-        fun heroNumber(balance: Balance): String = when (balance.state) {
-            BalanceState.DEBT -> Format.number(balance.debtMiles)
+        fun heroNumber(balance: Balance, units: Units = Units.MILES): String = when (balance.state) {
+            // Calories run to four figures fast; compact keeps the small face legible.
+            BalanceState.DEBT -> if (units.isCalories) units.compact(balance.debtMiles) else Format.number(balance.debtMiles)
             BalanceState.CREDIT -> Format.beers(balance.creditBeers)
             BalanceState.EVEN -> "0"
         }
 
-        fun heroCaption(balance: Balance): String = when (balance.state) {
-            BalanceState.DEBT -> "mi owed"
+        fun heroCaption(balance: Balance, units: Units = Units.MILES): String = when (balance.state) {
+            BalanceState.DEBT -> "${units.symbol} owed"
             BalanceState.CREDIT -> if (balance.creditBeers < 1.05) "beer banked" else "beers banked"
             BalanceState.EVEN -> "BOOKS ARE CLEAN"
         }
@@ -162,9 +166,9 @@ class BalanceWidget : GlanceAppWidget() {
             BalanceState.EVEN -> Palette.gold
         }
 
-        fun runLine(report: Report, now: Instant): String {
+        fun runLine(report: Report, now: Instant, units: Units = Units.MILES): String {
             val miles = report.milesRunInWeekOf(now)
-            return "${Format.miles(miles)} ${if (report.balance.state == BalanceState.DEBT) "paid" else "run"} this week"
+            return "${units.amount(miles)} ${if (report.balance.state == BalanceState.DEBT) "paid" else units.effortPast} this week"
         }
 
         /** Re-render every placed widget; called after each ledger save. */

@@ -1,5 +1,6 @@
 package me.colinwatson.beerdebt.ui.home
 
+import me.colinwatson.beerdebt.ui.LocalUnits
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -52,6 +53,7 @@ import java.util.UUID
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BeerAddedSheet(beerID: UUID, onDismiss: () -> Unit) {
+    val units = LocalUnits.current
     val app = LocalContext.current.applicationContext as BeerDebtApp
     val ledger by app.store.ledger.collectAsState()
     val now = Instant.now()
@@ -81,11 +83,11 @@ fun BeerAddedSheet(beerID: UUID, onDismiss: () -> Unit) {
                         Text("${Format.beersLabel(current.balance.creditBeers)} still banked.", color = Palette.cream.copy(alpha = 0.7f))
                     }
                     else -> {
-                        Text("That's +${Format.miles(opening.principalMiles)}", color = Palette.cream, fontSize = 20.sp, fontWeight = FontWeight.SemiBold)
+                        Text("That's +${units.amount(opening.principalMiles)}", color = Palette.cream, fontSize = 20.sp, fontWeight = FontWeight.SemiBold)
                         val sub = when {
-                            opening.coveredByCreditMiles > BalanceEngine.EPSILON -> "${Format.miles(opening.coveredByCreditMiles)} came out of credit."
-                            entry.isBackdated && statement.isPaid -> "Dated ${Format.dateTime(entry.createdAt)}. Already paid off by a run."
-                            entry.isBackdated && statement.interestAccruedMiles > BalanceEngine.EPSILON -> "Dated ${Format.dateTime(entry.createdAt)}. Already ${Format.miles(statement.outstandingMiles, 2)} with interest."
+                            opening.coveredByCreditMiles > BalanceEngine.EPSILON -> "${units.amount(opening.coveredByCreditMiles)} came out of credit."
+                            entry.isBackdated && statement.isPaid -> "Dated ${Format.dateTime(entry.createdAt)}. Already paid off by a ${units.workout}."
+                            entry.isBackdated && statement.interestAccruedMiles > BalanceEngine.EPSILON -> "Dated ${Format.dateTime(entry.createdAt)}. Already ${units.amount(statement.outstandingMiles, 2)} with interest."
                             current.rules.interestEnabled -> "(for now...)"
                             else -> ""
                         }
@@ -99,7 +101,7 @@ fun BeerAddedSheet(beerID: UUID, onDismiss: () -> Unit) {
                         Spacer(Modifier.size(10.dp))
                         Column {
                             Text("${current.streak.currentStreakDays} day streak", color = Palette.cream, fontWeight = FontWeight.SemiBold)
-                            Text(if (current.streak.todayProtected) "0% APR while your streak holds." else "Run 1+ mile today and this beer earns 0% APR.", color = Palette.cream.copy(alpha = 0.7f), fontSize = 12.sp)
+                            Text(if (current.streak.todayProtected) "0% APR while your streak holds." else "${units.dailyGoal} today and this beer earns 0% APR.", color = Palette.cream.copy(alpha = 0.7f), fontSize = 12.sp)
                         }
                     }
                 }
@@ -107,12 +109,12 @@ fun BeerAddedSheet(beerID: UUID, onDismiss: () -> Unit) {
                     Spacer(Modifier.height(18.dp))
                     Column(Modifier.fillMaxWidth().background(Palette.card.copy(alpha = 0.85f), RoundedCornerShape(18.dp)).padding(18.dp)) {
                         if (current.rules.interestEnabled) {
-                            Text("If you don't run it off, this beer will cost you:", color = Palette.cream.copy(alpha = 0.8f), modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Center)
+                            Text("If you don't ${units.payOffPhrase.lowercase()}, this beer will cost you:", color = Palette.cream.copy(alpha = 0.8f), modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Center)
                             Spacer(Modifier.height(10.dp))
                             for ((seconds, label) in horizons(current.rules.interestPeriod)) {
                                 val cost = app.store.report(now.plusSeconds(seconds)).statement(beerID)?.outstandingMiles ?: 0.0
                                 Row(Modifier.fillMaxWidth().padding(vertical = 3.dp)) {
-                                    Text(Format.miles(cost, 2), color = Palette.debt, fontWeight = FontWeight.SemiBold, modifier = Modifier.weight(1f))
+                                    Text(units.amount(cost, 2), color = Palette.debt, fontWeight = FontWeight.SemiBold, modifier = Modifier.weight(1f))
                                     Text(label, color = Palette.cream.copy(alpha = 0.7f))
                                 }
                             }
@@ -181,7 +183,7 @@ fun DebtFreeSheet(celebration: DebtFreeCelebration, onDismiss: () -> Unit) {
             Text("Debt Free!", color = Palette.gold, fontSize = 44.sp, fontWeight = FontWeight.ExtraBold)
             Text("Nice work. Your tab is paid.", color = Palette.cream, fontSize = 20.sp)
             Spacer(Modifier.height(24.dp))
-            StatRow("${celebration.totalBeers}" to "total beers", Format.number(celebration.milesRepaid) to "miles repaid", Format.beers(celebration.creditBeers) to "beers banked")
+            StatRow("${celebration.totalBeers}" to "total beers", LocalUnits.current.number(celebration.milesRepaid) to "${LocalUnits.current.word} repaid", Format.beers(celebration.creditBeers) to "beers banked")
             Spacer(Modifier.height(24.dp))
             GoldButton("Cheers!", onClick = onDismiss)
             Spacer(Modifier.height(16.dp))

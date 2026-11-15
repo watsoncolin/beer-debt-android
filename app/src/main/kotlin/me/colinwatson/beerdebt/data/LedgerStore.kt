@@ -9,6 +9,7 @@ import me.colinwatson.beerdebt.engine.BalanceEngine
 import me.colinwatson.beerdebt.engine.BeerEntry
 import me.colinwatson.beerdebt.engine.FreezeApplication
 import me.colinwatson.beerdebt.engine.Ledger
+import me.colinwatson.beerdebt.engine.PaymentBasis
 import me.colinwatson.beerdebt.engine.Report
 import me.colinwatson.beerdebt.engine.Rules
 import me.colinwatson.beerdebt.engine.RulesChange
@@ -19,6 +20,7 @@ import java.io.File
 import java.time.Instant
 import java.time.ZoneId
 import java.util.UUID
+import kotlin.math.roundToLong
 
 /**
  * Owns the persisted ledger and derives reports; a port of the Swift
@@ -202,10 +204,25 @@ class LedgerStore(
     fun declareBankruptcy(now: Instant = Instant.now()): Boolean {
         val opened = now.floored()
         mutate { l ->
+            // The payment basis survives like the rules: it is how the books work, not what is on them.
             Ledger.open(opened, l.currentRules)
+                .withPayment(l.payment)
                 .copy(excludedWorkoutIDs = l.excludedWorkoutIDs + l.runs.map { it.healthKitWorkoutID })
         }
         return isPersisted
+    }
+
+    /**
+     * Switches what pays the tab (iOS spec §28). Not an event: the whole
+     * ledger replays under the new basis, history included (iOS decisions
+     * §B.10). The rate is clamped to [CALORIES_PER_MILE_RANGE], whole calories.
+     */
+    fun updatePayment(payment: PaymentBasis) {
+        val rate = payment.caloriesPerMile.roundToLong().toDouble()
+            .coerceIn(CALORIES_PER_MILE_RANGE.start, CALORIES_PER_MILE_RANGE.endInclusive)
+        val clamped = payment.copy(caloriesPerMile = rate)
+        if (clamped == current.payment) return
+        mutate { it.withPayment(clamped) }
     }
 
     /** Forward-only: appended as an event, never rewrites history. */
@@ -279,6 +296,8 @@ class LedgerStore(
     companion object {
         const val BACKDATING_WINDOW_SECONDS = 30L * 24 * 60 * 60
         const val REOPENING_WINDOW_SECONDS = 365L * 24 * 60 * 60
+        /** The calorie rate the store accepts. Outside this a typo, not a choice. */
+        val CALORIES_PER_MILE_RANGE = 20.0..500.0
         val json = Json { prettyPrint = true; ignoreUnknownKeys = true; encodeDefaults = true }
     }
 }

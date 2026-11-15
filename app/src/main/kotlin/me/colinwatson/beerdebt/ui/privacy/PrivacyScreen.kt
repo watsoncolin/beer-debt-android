@@ -40,8 +40,8 @@ fun PrivacyScreen(onBack: () -> Unit) {
                     Card {
                         Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
                             Text("Why Beer Debt reads Health Connect", color = Palette.cream, fontSize = 18.sp, fontWeight = FontWeight.SemiBold)
-                            Bullet("It reads your running workouts: when a run started and ended, and how far you went. Nothing else.")
-                            Bullet("Runs pay down the beers on your tab and bank credit. That is the only thing the data is used for.")
+                            Bullet("It reads your running workouts: when a run started and ended, and how far you went. If you choose to pay with calories, it also reads your other workouts and the active calories they burned, asking only when you make that choice. Nothing else.")
+                            Bullet("Workouts pay down the beers on your tab and bank credit. That is the only thing the data is used for.")
                             Bullet("Everything stays on this phone. Nothing is uploaded, shared, sold, or used for ads. There is no account and no analytics.")
                             Bullet("Beer Debt never writes to Health Connect.")
                             Bullet("You can turn access off any time in Health Connect › App permissions › Beer Debt. The app keeps working; new runs just stop coming in.")

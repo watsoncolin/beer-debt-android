@@ -16,6 +16,9 @@ import me.colinwatson.beerdebt.engine.Balance
 import me.colinwatson.beerdebt.engine.BalanceState
 import me.colinwatson.beerdebt.engine.RunEntry
 import me.colinwatson.beerdebt.ui.Format
+import me.colinwatson.beerdebt.ui.Units
+import me.colinwatson.beerdebt.ui.runs.WorkoutKind
+import me.colinwatson.beerdebt.engine.PaymentBasis
 
 /** Local notifications for runs that arrive while the app is closed. */
 class RunNotifier(private val context: Context) {
@@ -40,6 +43,8 @@ class RunNotifier(private val context: Context) {
         val streakDays: Int = 0, val streakDay: Boolean = false,
         /** This sync made it two days in a row: interest just paused. */
         val streakActivated: Boolean = false,
+        /** Miles or calories, and which workouts count (iOS spec §28). */
+        val payment: PaymentBasis = PaymentBasis.RUNS,
     )
 
     init {
@@ -75,19 +80,22 @@ class RunNotifier(private val context: Context) {
 
         /** Pure, same copy as iOS. */
         fun message(change: Change): Message? {
-            val miles = change.addedRuns.sumOf { it.distanceMiles }
+            val units = Units(change.payment)
+            val miles = change.addedRuns.sumOf { change.payment.milesPaidBy(it) ?: 0.0 }
             val after = change.after
+            val noun = units.workout
             if (change.addedRuns.isEmpty()) {
                 if (change.removedRuns == 0) return null
-                val title = if (change.removedRuns == 1) "A run was removed from Health Connect" else "${change.removedRuns} runs were removed from Health Connect"
-                return Message(title, "You're at ${standing(after)}.")
+                val title = if (change.removedRuns == 1) "A $noun was removed from Health Connect" else "${change.removedRuns} ${noun}s were removed from Health Connect"
+                return Message(title, "You're at ${standing(after, units)}.")
             }
-            val title = if (change.addedRuns.size == 1) "Run logged: ${Format.miles(miles)}" else "${change.addedRuns.size} runs logged: ${Format.miles(miles)}"
+            val title = if (change.addedRuns.size == 1) "${WorkoutKind.of(change.addedRuns[0]).label} logged: ${units.amount(miles)}"
+                else "${change.addedRuns.size} ${noun}s logged: ${units.amount(miles)}"
             val body = when {
                 change.before.state == BalanceState.DEBT && after.state == BalanceState.DEBT -> {
                     val knocked = maxOf(0.0, change.debtPaidMiles)
-                    if (change.beersPaidOff > 0) "Paid off ${beers(change.beersPaidOff)}. ${Format.miles(after.debtMiles)} still owed."
-                    else "Knocked ${Format.miles(knocked)} off your tab. ${Format.miles(after.debtMiles)} still owed."
+                    if (change.beersPaidOff > 0) "Paid off ${beers(change.beersPaidOff)}. ${units.amount(after.debtMiles)} still owed."
+                    else "Knocked ${units.amount(knocked)} off your tab. ${units.amount(after.debtMiles)} still owed."
                 }
                 change.before.state == BalanceState.DEBT && after.state == BalanceState.CREDIT ->
                     "Tab paid, and ${Format.beersLabel(after.creditBeers)} banked. Cheers."
@@ -99,17 +107,17 @@ class RunNotifier(private val context: Context) {
                 }
                 else -> "Books are clean."
             }
-            if (change.removedRuns > 0) return Message("Runs updated", "You're at ${standing(after)}.")
+            if (change.removedRuns > 0) return Message("${units.workoutsTitle} updated", "You're at ${standing(after, units)}.")
             if (change.streakActivated) {
                 return Message("${change.streakDays} day streak: 0% APR, earned", "$title. $body Your debt interest is now paused.")
             }
             if (change.streakDay && change.streakDays >= 2) return Message(title, "$body 🔥 ${change.streakDays} day streak, interest paused.")
-            if (change.streakDay && change.streakDays == 1) return Message(title, "$body 🔥 Day one of a streak. Run 1+ mile tomorrow to pause interest.")
+            if (change.streakDay && change.streakDays == 1) return Message(title, "$body 🔥 Day one of a streak. ${units.dailyGoal} tomorrow to pause interest.")
             return Message(title, body)
         }
 
-        private fun standing(balance: Balance): String = when (balance.state) {
-            BalanceState.DEBT -> "${Format.miles(balance.debtMiles)} owed"
+        private fun standing(balance: Balance, units: Units): String = when (balance.state) {
+            BalanceState.DEBT -> "${units.amount(balance.debtMiles)} owed"
             BalanceState.CREDIT -> "${Format.beersLabel(balance.creditBeers)} banked"
             BalanceState.EVEN -> "zero. Books are clean"
         }

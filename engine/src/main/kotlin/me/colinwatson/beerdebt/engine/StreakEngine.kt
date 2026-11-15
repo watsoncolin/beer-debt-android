@@ -113,14 +113,20 @@ object StreakEngine {
     /** Never more than one in hand. */
     const val MAXIMUM_FREEZES = 1
 
-    /** Pure. Runs that ended by [at], grouped into calendar days in [zone], walked in order. */
+    /**
+     * Pure. Runs that ended by [at], grouped into calendar days in [zone], walked in order.
+     * [payment] decides which workouts count and for how much (spec §28): in
+     * calorie mode a ride's calories arrive as miles, so a day qualifies at
+     * one mile's worth of burn by the same rule.
+     */
     fun calculate(
         runs: List<RunEntry>,
         freezeApplications: List<FreezeApplication> = emptyList(),
+        payment: PaymentBasis = PaymentBasis.RUNS,
         at: Instant,
         zone: ZoneId,
     ): StreakStatus {
-        val counted = runs.filter { !it.endedAt.isAfter(at) }
+        val counted = runs.filter { !it.endedAt.isAfter(at) && payment.milesPaidBy(it) != null }
         val today = at.atZone(zone).toLocalDate()
         // Applications are bucketed by local day so they survive a device whose
         // clock or zone moved between the tap and the replay.
@@ -133,7 +139,10 @@ object StreakEngine {
         val metersByDay = HashMap<LocalDate, Double>()
         for (run in counted) {
             val day = run.endedAt.atZone(zone).toLocalDate()
-            metersByDay[day] = (metersByDay[day] ?: 0.0) + run.distanceMeters
+            // A run's own meters, not a round trip through miles, so exactly a mile still clears.
+            val meters = if (run.isRunning) run.distanceMeters
+            else (payment.milesPaidBy(run) ?: 0.0) * RunEntry.METERS_PER_MILE
+            metersByDay[day] = (metersByDay[day] ?: 0.0) + meters
         }
         val firstDay = minOf(metersByDay.keys.minOrNull() ?: today, appliedDays.minOrNull() ?: today, today)
 

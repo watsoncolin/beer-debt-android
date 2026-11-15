@@ -1,5 +1,7 @@
 package me.colinwatson.beerdebt.ui.streak
 
+import me.colinwatson.beerdebt.ui.Units
+import me.colinwatson.beerdebt.ui.LocalUnits
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -95,21 +97,21 @@ fun FreezeBadge(text: String, prominent: Boolean = false) {
 object StreakCopy {
     fun title(s: StreakStatus): String = when (s.currentStreakDays) { 0 -> "Start a streak"; 1 -> "1 day streak"; else -> "${s.currentStreakDays} day streak" }
 
-    fun subtitle(s: StreakStatus, balance: BalanceState): String {
+    fun subtitle(s: StreakStatus, balance: BalanceState, units: Units = Units.MILES): String {
         // A rest day speaks for itself, whatever the streak length.
         if (s.todayFrozen) {
             return if (balance == BalanceState.DEBT) "Rest day — interest still paused" else "Rest day — 0% APR still active"
         }
         return when (s.currentStreakDays) {
-            0 -> "Run 1+ mile today and tomorrow to pause interest."
-            1 -> "Run 1+ mile tomorrow to unlock 0% APR."
+            0 -> "${units.dailyGoal} today and tomorrow to pause interest."
+            1 -> "${units.dailyGoal} tomorrow to unlock 0% APR."
             else -> when {
                 s.todayProtected ->
                     if (balance == BalanceState.DEBT) "Interest paused" else "0% APR — earned. Keep it going."
                 // A freeze in hand turns the nudge into a choice.
-                s.canFreezeToday -> "Run 1+ mile today, or spend your freeze."
-                balance == BalanceState.DEBT -> "Run 1+ mile today to keep interest paused."
-                else -> "Run 1+ mile today to keep it."
+                s.canFreezeToday -> "${units.dailyGoal} today, or spend your freeze."
+                balance == BalanceState.DEBT -> "${units.dailyGoal} today to keep interest paused."
+                else -> "${units.dailyGoal} today to keep it."
             }
         }
     }
@@ -123,10 +125,10 @@ object StreakCopy {
      * Progress toward the next one. Null while one is held, since holding one
      * stops the next accruing.
      */
-    fun freezeProgress(s: StreakStatus): String? {
+    fun freezeProgress(s: StreakStatus, units: Units = Units.MILES): String? {
         if (s.freezesHeld != 0) return null
         val left = StreakEngine.DAYS_PER_FREEZE - s.freezeProgressDays
-        return if (left == 1) "1 more running day earns a freeze." else "$left more running days earn a freeze."
+        return if (left == 1) "1 more ${units.activeDay} earns a freeze." else "$left more ${units.activeDay}s earn a freeze."
     }
 
     const val restDayTitle = "Rest day"
@@ -141,19 +143,19 @@ object StreakCopy {
     const val repairOfferButton = "Use Freeze"
 
     const val freezeEarnedTitle = "Streak freeze earned"
-    fun freezeEarnedBody(): String =
-        "${StreakEngine.DAYS_PER_FREEZE} qualifying run days. You've earned a day off without losing your streak."
+    fun freezeEarnedBody(units: Units = Units.MILES): String =
+        "${StreakEngine.DAYS_PER_FREEZE} qualifying ${units.activeDay}s. You've earned a day off without losing your streak."
 
-    fun standing(s: StreakStatus): String = when (s.currentStreakDays) {
+    fun standing(s: StreakStatus, units: Units = Units.MILES): String = when (s.currentStreakDays) {
         0 -> "No streak yet."
         1 -> "Day one. Nothing earned yet."
-        else -> if (s.todayProtected) "0% APR — earned." else "0% APR — earned, if you run today."
+        else -> if (s.todayProtected) "0% APR — earned." else "0% APR — earned, if you ${units.verb} today."
     }
 
-    fun detail(s: StreakStatus): String = when (s.currentStreakDays) {
-        0 -> "Run 1+ mile today and tomorrow. From day two, interest on your tab pauses."
-        1 -> "Run 1+ mile tomorrow to unlock 0% APR."
-        else -> "Keep running 1+ mile each day to keep interest paused."
+    fun detail(s: StreakStatus, units: Units = Units.MILES): String = when (s.currentStreakDays) {
+        0 -> "${units.dailyGoal} today and tomorrow. From day two, interest on your tab pauses."
+        1 -> "${units.dailyGoal} tomorrow to unlock 0% APR."
+        else -> "${units.keepGoing} each day to keep interest paused."
     }
 }
 
@@ -172,7 +174,7 @@ fun StreakCard(streak: StreakStatus, balance: BalanceState, onClick: () -> Unit)
         Spacer(Modifier.width(14.dp))
         Column(Modifier.weight(1f)) {
             Text(StreakCopy.title(streak), color = Palette.cream, fontWeight = FontWeight.SemiBold, fontSize = 17.sp)
-            Text(StreakCopy.subtitle(streak, balance), color = if (streak.interestProtectionActive && streak.todayProtected) Palette.gold else Palette.cream.copy(alpha = 0.7f), fontSize = 12.sp)
+            Text(StreakCopy.subtitle(streak, balance, LocalUnits.current), color = if (streak.interestProtectionActive && streak.todayProtected) Palette.gold else Palette.cream.copy(alpha = 0.7f), fontSize = 12.sp)
         }
         // Inventory, where the streak is already being read (spec §25.1).
         StreakCopy.freezeBadge(streak)?.let {
@@ -204,7 +206,7 @@ fun StreakScreen(onBack: () -> Unit) {
                                 Column {
                                     Text(if (streak.currentStreakDays == 1) "1 day" else "${streak.currentStreakDays} days", color = Palette.cream, fontSize = 40.sp, fontWeight = FontWeight.ExtraBold)
                                     Text(
-                                        if (streak.todayFrozen) StreakCopy.restDayStanding(streak) else StreakCopy.standing(streak),
+                                        if (streak.todayFrozen) StreakCopy.restDayStanding(streak) else StreakCopy.standing(streak, LocalUnits.current),
                                         color = when {
                                             streak.todayFrozen -> Palette.frost
                                             streak.interestProtectionActive -> Palette.gold
@@ -215,7 +217,7 @@ fun StreakScreen(onBack: () -> Unit) {
                                 }
                             }
                             Spacer(Modifier.height(10.dp))
-                            Text(StreakCopy.detail(streak), color = Palette.cream.copy(alpha = 0.7f), fontSize = 13.sp)
+                            Text(StreakCopy.detail(streak, LocalUnits.current), color = Palette.cream.copy(alpha = 0.7f), fontSize = 13.sp)
                         }
                     }
                 }
@@ -236,10 +238,10 @@ fun StreakScreen(onBack: () -> Unit) {
                 item {
                     Card {
                         Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                            Rule("Run at least 1.0 mile of verified running each day. Two short runs add up.")
+                            Rule(if (LocalUnits.current.isCalories) "${LocalUnits.current.dailyGoal} in workouts each day. A run counts its distance; anything else counts what it burned. Two short workouts add up." else "Run at least 1.0 mile of verified running each day. Two short runs add up.")
                             Rule("After two days in a row, interest on your beer debt pauses.")
-                            Rule("Keep running daily to keep your 0% rate. Miss a day and the streak ends.")
-                            Rule("Every ${StreakEngine.DAYS_PER_FREEZE} running days earn one streak freeze: a rest day that keeps your streak and your 0% rate. It adds no miles and pays nothing off.")
+                            Rule("Keep ${if (LocalUnits.current.isCalories) "working out" else "running"} daily to keep your 0% rate. Miss a day and the streak ends.")
+                            Rule("Every ${StreakEngine.DAYS_PER_FREEZE} ${LocalUnits.current.activeDay}s earn one streak freeze: a rest day that keeps your streak and your 0% rate. It adds no ${LocalUnits.current.word} and pays nothing off.")
                             Rule("Your streak never reduces what you already owe.")
                         }
                     }
@@ -323,7 +325,7 @@ fun StreakActivatedSheet(celebration: StreakCelebration, onDismiss: () -> Unit) 
             Text("${celebration.days} day streak", color = Palette.gold, fontSize = 40.sp, fontWeight = FontWeight.ExtraBold)
             Text("0% APR — earned.", color = Palette.cream, fontSize = 20.sp, fontWeight = FontWeight.SemiBold)
             Spacer(Modifier.height(8.dp))
-            Text("Your debt interest is now paused. Keep running 1+ mile a day to keep it that way.", color = Palette.cream.copy(alpha = 0.8f), textAlign = TextAlign.Center)
+            Text("Your debt interest is now paused. ${LocalUnits.current.keepGoing} a day to keep it that way.", color = Palette.cream.copy(alpha = 0.8f), textAlign = TextAlign.Center)
             Spacer(Modifier.height(24.dp))
             GoldButton("Cheers!", onClick = onDismiss)
             Spacer(Modifier.height(16.dp))
@@ -365,7 +367,7 @@ fun FreezeSection(report: Report, now: Instant) {
                 button = StreakCopy.repairOfferButton,
             ) { app.store.applyFreeze(repairable, now, zone) }
             else -> {
-                val progress = StreakCopy.freezeProgress(streak)
+                val progress = StreakCopy.freezeProgress(streak, LocalUnits.current)
                 if (progress != null) {
                     Text(progress, color = Palette.cream.copy(alpha = 0.7f), fontSize = 13.sp)
                 } else {
@@ -418,12 +420,12 @@ fun FreezeEarnedSheet(celebration: FreezeEarnedCelebration, onDismiss: () -> Uni
             )
             Spacer(Modifier.height(12.dp))
             Text(
-                StreakCopy.freezeEarnedBody(), color = Palette.cream, fontSize = 18.sp,
+                StreakCopy.freezeEarnedBody(LocalUnits.current), color = Palette.cream, fontSize = 18.sp,
                 fontWeight = FontWeight.SemiBold, textAlign = TextAlign.Center,
             )
             Spacer(Modifier.height(10.dp))
             Text(
-                "It keeps your ${celebration.streakDays} day streak and your 0% rate. It adds no miles and pays nothing off your tab.",
+                "It keeps your ${celebration.streakDays} day streak and your 0% rate. It adds no ${LocalUnits.current.word} and pays nothing off your tab.",
                 color = Palette.cream.copy(alpha = 0.7f), fontSize = 13.sp, textAlign = TextAlign.Center,
             )
             Spacer(Modifier.height(24.dp))
