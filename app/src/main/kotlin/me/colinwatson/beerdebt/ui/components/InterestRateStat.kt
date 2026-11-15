@@ -42,7 +42,7 @@ fun InterestRateStat(report: Report, modifier: Modifier = Modifier, alignment: A
     val paused = report.streak.todayProtected
     val on = report.rules.interestEnabled
     val units = LocalUnits.current
-    val value = units.number(report.balance.interestPerPeriodMiles, decimals = 2)
+    val value = units.charge(report.balance.interestPerPeriodMiles)
     val label = if (on) report.rules.interestPeriod.perLabel else "interest off"
     val struck = on && paused
 

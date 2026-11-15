@@ -4,6 +4,7 @@ import me.colinwatson.beerdebt.ui.Units
 import androidx.compose.material.icons.filled.LocalFireDepartment
 import me.colinwatson.beerdebt.ui.LocalUnits
 import androidx.compose.foundation.background
+import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -121,7 +122,7 @@ private fun BalanceHero(report: Report) {
     val balance = report.balance
     when (balance.state) {
         BalanceState.DEBT -> {
-            BigNumber(LocalUnits.current.number(balance.debtMiles))
+            BigNumber(LocalUnits.current.hero(balance.debtMiles))
             Text("${LocalUnits.current.symbol} owed", color = Palette.cream.copy(alpha = 0.85f), fontSize = 22.sp, fontWeight = FontWeight.SemiBold)
             Spacer(Modifier.height(20.dp))
             Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
@@ -150,7 +151,13 @@ private fun BalanceHero(report: Report) {
 
 @Composable
 private fun BigNumber(text: String) {
-    Text(text, color = Palette.cream, fontSize = 104.sp, fontWeight = FontWeight.Black, maxLines = 1, lineHeight = 108.sp)
+    // Scales down to fit one line rather than clipping, as iOS does with
+    // minimumScaleFactor(0.5): a clipped "17441" for 174417.9 read as a tenth
+    // of the tab (iOS spec §29).
+    Text(
+        text, color = Palette.cream, fontWeight = FontWeight.Black, maxLines = 1, lineHeight = 108.sp,
+        autoSize = TextAutoSize.StepBased(minFontSize = 52.sp, maxFontSize = 104.sp),
+    )
 }
 
 @Composable
