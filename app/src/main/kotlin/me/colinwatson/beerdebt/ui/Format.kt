@@ -162,6 +162,21 @@ data class Units(val payment: PaymentBasis) {
 
     fun compactAmount(miles: Double): String = compact(miles) + " " + symbol
 
+    /**
+     * Home's hero (iOS spec §29): the full number until it reaches six
+     * displayed figures, then compact. "17441788" says nothing "17M" doesn't.
+     */
+    fun hero(miles: Double): String =
+        if (abs(value(miles)) >= 100_000) Format.compact(value(miles)) else number(miles)
+
+    /**
+     * The daily charge beside the hero (iOS spec §29): a narrower tile, so
+     * compact from four displayed figures. Below that, the decimals asked for,
+     * which is what lets a one-beer tab read "0.10 a day".
+     */
+    fun charge(miles: Double, decimals: Int = 2): String =
+        if (abs(value(miles)) >= 1_000) compact(miles) else number(miles, decimals)
+
     /** "run" / "workout" */
     val workout: String get() = if (isCalories) "workout" else "run"
     /** "Runs" / "Workouts" */
