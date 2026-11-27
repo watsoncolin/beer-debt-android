@@ -52,6 +52,8 @@ import me.colinwatson.beerdebt.ui.Format
 import me.colinwatson.beerdebt.ui.components.GoldButton
 import me.colinwatson.beerdebt.ui.components.InterestRateStat
 import me.colinwatson.beerdebt.ui.milesRunInWeekOf
+import me.colinwatson.beerdebt.ui.settings.BankruptcyFiling
+import me.colinwatson.beerdebt.ui.settings.BankruptcySheet
 import me.colinwatson.beerdebt.ui.streak.StreakCard
 import me.colinwatson.beerdebt.ui.theme.Backdrop
 import me.colinwatson.beerdebt.ui.theme.Palette
@@ -73,6 +75,23 @@ fun HomeScreen(
     val now = remember(ledger, tick) { Instant.now() }
     val report = remember(now) { app.store.report(now) }
     var addedBeer by remember { mutableStateOf<BeerEntry?>(if (showLatestBeerSheet) ledger.beers.maxByOrNull { it.createdAt } else null) }
+    var filing by remember { mutableStateOf<BankruptcyFiling?>(null) }
+
+    // iOS spec §29. Under the threshold a "Not now" is forgotten, so a tab that
+    // recovers and then gets away again is offered afresh; bankruptcy lands here
+    // too, since clean books have no tier.
+    val prefs = remember { app.getSharedPreferences("app", 0) }
+    var dismissedOfferTier by remember {
+        mutableStateOf(prefs.getInt(BankruptcyOffer.DISMISSED_TIER_KEY, -1).takeIf { it >= 0 })
+    }
+    val offerTier = BankruptcyOffer.tier(report.balance)
+    val offering = BankruptcyOffer.shows(offerTier, dismissedOfferTier)
+    LaunchedEffect(offerTier) {
+        if (offerTier == null && dismissedOfferTier != null) {
+            prefs.edit().remove(BankruptcyOffer.DISMISSED_TIER_KEY).apply()
+            dismissedOfferTier = null
+        }
+    }
 
     Backdrop {
         Column(Modifier.fillMaxSize().safeDrawingPadding().padding(horizontal = 24.dp, vertical = 12.dp)) {
@@ -92,6 +111,17 @@ fun HomeScreen(
                 Text("Your tab ›", color = Palette.gold.copy(alpha = 0.9f), fontSize = 13.sp, fontWeight = FontWeight.SemiBold)
             }
             Spacer(Modifier.weight(1f))
+            if (offering) {
+                BankruptcyOfferCard(
+                    owed = LocalUnits.current.compactAmount(report.balance.debtMiles),
+                    onFile = { filing = BankruptcyFiling(app.store.report()) },
+                    onDismiss = {
+                        offerTier?.let { prefs.edit().putInt(BankruptcyOffer.DISMISSED_TIER_KEY, it).apply() }
+                        dismissedOfferTier = offerTier
+                    },
+                )
+                Spacer(Modifier.height(12.dp))
+            }
             StreakCard(report.streak, report.balance.state, onOpenStreak)
             Spacer(Modifier.height(16.dp))
             GoldButton("🍺  + Beer") { addedBeer = app.store.addBeer() }
@@ -106,15 +136,22 @@ fun HomeScreen(
                 Spacer(Modifier.width(6.dp))
                 Text("Mile Markers", color = Palette.gold.copy(alpha = 0.9f), fontSize = 13.sp, fontWeight = FontWeight.SemiBold)
             }
-            Spacer(Modifier.height(10.dp))
-            Text(
-                quip(report.balance, LocalUnits.current), color = Palette.cream.copy(alpha = 0.7f), fontSize = 13.sp, fontStyle = FontStyle.Italic,
-                textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth(),
-            )
+            // The offer takes the quip's place: past 100 mi they say the same
+            // thing, and Home has no room for both (iOS spec §29).
+            if (!offering) {
+                Spacer(Modifier.height(10.dp))
+                Text(
+                    quip(report.balance, LocalUnits.current), color = Palette.cream.copy(alpha = 0.7f), fontSize = 13.sp, fontStyle = FontStyle.Italic,
+                    textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth(),
+                )
+            }
         }
     }
 
     addedBeer?.let { beer -> BeerAddedSheet(beerID = beer.id, onDismiss = { addedBeer = null }) }
+    filing?.let { current ->
+        BankruptcySheet(filing = current, onWriteOff = { app.store.declareBankruptcy() }, onDismiss = { filing = null })
+    }
 }
 
 @Composable
