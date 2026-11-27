@@ -86,7 +86,7 @@ class WeeklySummary(context: Context) {
             val units = Units(ledger.payment)
             val miles = ledger.runs
                 .filter { it.endedAt >= weekStart && it.endedAt < fireDate && it.endedAt >= ledger.booksOpenedAt }
-                .sumOf { ledger.payment.milesPaidBy(it) ?: 0.0 }
+                .sumOf { ledger.milesPaidBy(it) ?: 0.0 }
             val balance = BalanceEngine.report(ledger, fireDate).balance
 
             val standing = when (balance.state) {

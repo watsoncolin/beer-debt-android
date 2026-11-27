@@ -141,11 +141,12 @@ fun RunRow(statement: RunStatement) {
 /**
  * When it ended, and in calorie mode what it was: "Ride · Sep 9, 8:13 PM".
  * A workout that recorded no calories says so rather than reading as a zero
- * nobody can explain.
+ * nobody can explain. Back in runs mode a ride that paid while calories were
+ * in force still says what it was.
  */
 private fun subtitle(s: RunStatement, kind: WorkoutKind, units: Units): String {
     val whenText = Format.dateTime(s.run.endedAt)
-    if (!units.isCalories) return whenText
+    if (!units.isCalories && s.run.isRunning) return whenText
     if (s.run.isRunning) return "${kind.label} · ${Format.miles(s.run.distanceMiles)} · $whenText"
     if (s.run.activeEnergyKcal == null) return "${kind.label} · No calories recorded · $whenText"
     return "${kind.label} · $whenText"

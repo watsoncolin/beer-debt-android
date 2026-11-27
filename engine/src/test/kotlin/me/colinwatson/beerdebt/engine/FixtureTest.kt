@@ -95,8 +95,20 @@ class FixtureTest {
         val text = javaClass.getResource("/cases.json")?.readText() ?: fail("cases.json missing from test resources")
         val cases = json.decodeFromString<Fixtures>(text).cases.filter { it.name.startsWith("calories:") }
         assertTrue(cases.size >= 10, "expected the calorie scenarios, got ${cases.size}")
-        assertTrue(cases.any { it.ledger.paymentMode == PaymentMode.CALORIES }, "no case decoded as calorie mode")
-        assertTrue(cases.any { it.ledger.caloriesPerMile == 150.0 }, "caloriesPerMile not decoded")
+        // The basis is a dated history now (iOS decisions §B.10). Named here so a
+        // dropped field fails loudly rather than replaying everything as runs.
+        assertTrue(cases.all { it.ledger.paymentHistory.isNotEmpty() }, "paymentHistory not decoded")
+        assertTrue(cases.all { it.ledger.legacyPaymentMode == null }, "fixtures should carry paymentHistory, not the 1.2 fields")
+        assertTrue(cases.any { it.ledger.payment.mode == PaymentMode.CALORIES }, "no case decoded as calorie mode")
+        assertTrue(cases.any { c -> c.ledger.paymentHistory.any { it.caloriesPerMile == 150.0 } }, "caloriesPerMile not decoded")
+        assertTrue(cases.any { it.ledger.paymentHistory.size > 1 }, "no forward-only switch decoded")
+        for (name in listOf(
+            "calories: a ride paid in calories stays paid after switching to runs",
+            "calories: a ride after switching to runs pays nothing",
+            "calories: a ride before switching to calories never pays",
+            "calories: a rate change is forward-only",
+            "calories: a ride day still carries the streak after switching to runs",
+        )) assertTrue(cases.any { it.name == name }, "missing forward-only case: $name")
         val workouts = cases.flatMap { it.ledger.runs }
         assertTrue(workouts.any { it.activityType == 13 && it.activeEnergyKcal != null }, "workout fields not decoded")
     }

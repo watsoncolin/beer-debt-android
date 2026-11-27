@@ -35,13 +35,18 @@ until it is named in `FixtureTest`'s `Expected*` classes and asserted: a copied
 one non-optional, so the reverse — fixtures that predate a field the engine has
 — fails the decode loudly instead.
 
-**Calorie mode** (iOS spec §28, decisions §B.10): `Ledger.paymentMode` and
-`caloriesPerMile` are a payment basis, not a rule — every replay reads them
-whole, so switching reinterprets history. `PaymentBasis.milesPaidBy` decides
+**Calorie mode** (iOS spec §28, decisions §B.10): the payment basis is
+forward-only like the rules. `Ledger.paymentHistory` holds `PaymentChange`s
+(mode + `caloriesPerMile` from an instant), and a workout pays under the entry
+in force when it ended (`Ledger.milesPaidBy`). Read it through
+`Ledger.payments`, which turns a 1.2 ledger's `legacyPaymentMode` /
+`legacyCaloriesPerMile` (JSON `paymentMode` / `caloriesPerMile`, never written)
+into the opening entry. `LedgerStore.updatePayment` appends; only onboarding
+replaces the opening entry (`chooseOpeningPayment`). `PaymentBasis.milesPaidBy` decides
 what a workout pays (runs by distance always; anything else by
 `activeEnergyKcal` in calorie mode only). `RunEntry.activityType` stores iOS's
 `HKWorkoutActivityType` raw values; `health/WorkoutTypes` maps Health Connect
-exercise types onto them. `HealthSync` keeps one changes token per mode, and
+exercise types onto them. `HealthSync` reads by scope (running only until calorie mode has ever been in force, every type after, whatever the mode now) with one changes token per scope, drops workouts the basis at their end does not pay, and
 screens format every amount through `Units` (`LocalUnits`, provided in
 `MainActivity`), never multiplying miles into calories themselves.
 

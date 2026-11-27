@@ -128,10 +128,10 @@ fun SettingsScreen(
                 item {
                     Card {
                         Column {
-                            Segmented(PaymentMode.entries, ledger.paymentMode, { if (it == PaymentMode.RUNS) "Runs" else "Calories" }, ::choose,
+                            Segmented(PaymentMode.entries, ledger.payment.mode, { if (it == PaymentMode.RUNS) "Runs" else "Calories" }, ::choose,
                                 Modifier.padding(vertical = 8.dp))
                             if (units.isCalories) {
-                                PickerRow("Calories per Mile", listOf(80.0, 100.0, 120.0, 150.0).withCurrent(ledger.caloriesPerMile), ledger.caloriesPerMile,
+                                PickerRow("Calories per Mile", listOf(80.0, 100.0, 120.0, 150.0).withCurrent(ledger.payment.caloriesPerMile), ledger.payment.caloriesPerMile,
                                     { "${Format.number(it, 0)} kcal" }, last = true) { v -> scope.launch { app.sync.updatePayment(ledger.payment.copy(caloriesPerMile = v)) } }
                             }
                         }
@@ -139,8 +139,8 @@ fun SettingsScreen(
                 }
                 item {
                     Footer(
-                        if (units.isCalories) "Every workout counts. A run pays its distance; anything else pays the active calories it burned, at ${Format.number(ledger.caloriesPerMile, 0)} kcal a mile. Switching re-reads your whole history, and switching back loses nothing."
-                        else "Only running workouts count, by distance. Switch to calories to let rides, swims and lifts pay too. Switching re-reads your whole history, and switching back loses nothing."
+                        if (units.isCalories) "Every workout counts. A run pays its distance; anything else pays the active calories it burned, at ${Format.number(ledger.payment.caloriesPerMile, 0)} kcal a mile. Changes apply from now on: what's already paid stays paid."
+                        else "Only running workouts count, by distance. Switch to calories to let rides, swims and lifts pay from now on. What's already paid stays paid."
                     )
                 }
 
@@ -190,7 +190,7 @@ fun SettingsScreen(
                             } else {
                                 ValueRow("Health Connect", "Not connected")
                                 HorizontalDivider(color = Palette.cream.copy(alpha = 0.1f))
-                                Text("Connect Health Connect", color = Palette.gold, modifier = Modifier.fillMaxWidth().clickable { healthLauncher.launch(app.sync.health.requestedPermissions(ledger.paymentMode)) }.padding(vertical = 12.dp))
+                                Text("Connect Health Connect", color = Palette.gold, modifier = Modifier.fillMaxWidth().clickable { healthLauncher.launch(app.sync.health.requestedPermissions(if (ledger.hasCaloriePeriod) PaymentMode.CALORIES else PaymentMode.RUNS)) }.padding(vertical = 12.dp))
                             }
                             sync.lastError?.let { Text(it, color = Palette.debt, fontSize = 13.sp, modifier = Modifier.padding(top = 8.dp)) }
                         }
