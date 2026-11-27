@@ -83,7 +83,7 @@ private class Replay(private val ledger: Ledger, private val now: Double, zone: 
             !it.day.atZone(zone).toLocalDate()
                 .isBefore(ledger.booksOpenedAt.seconds.toInstant().atZone(zone).toLocalDate())
         },
-        payment = ledger.payment,
+        payment = ledger::paymentAt,
         at = now.toInstant(),
         zone = zone,
     )
@@ -96,7 +96,7 @@ private class Replay(private val ledger: Ledger, private val now: Double, zone: 
     fun run(): Report {
         val events: List<Event> = (ledger.rulesHistory.map { Event.RulesEvent(it) } +
             ledger.beers.map { Event.BeerEvent(it) } +
-            ledger.runs.mapNotNull { run -> ledger.payment.milesPaidBy(run)?.let { Event.RunEvent(run, it) } })
+            ledger.runs.mapNotNull { run -> ledger.milesPaidBy(run)?.let { Event.RunEvent(run, it) } })
             .filter { it.time <= now }
             .sortedWith(compareBy<Event> { it.time }.thenBy { it.rank }.thenBy { it.tieBreaker })
 

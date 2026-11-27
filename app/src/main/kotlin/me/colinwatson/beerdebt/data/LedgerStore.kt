@@ -10,6 +10,7 @@ import me.colinwatson.beerdebt.engine.BeerEntry
 import me.colinwatson.beerdebt.engine.FreezeApplication
 import me.colinwatson.beerdebt.engine.Ledger
 import me.colinwatson.beerdebt.engine.PaymentBasis
+import me.colinwatson.beerdebt.engine.PaymentChange
 import me.colinwatson.beerdebt.engine.Report
 import me.colinwatson.beerdebt.engine.Rules
 import me.colinwatson.beerdebt.engine.RulesChange
@@ -177,7 +178,11 @@ class LedgerStore(
         mutate { l ->
             val history = l.rulesHistory.toMutableList()
             if (history.isNotEmpty() && history[0].effectiveAt == previous) history[0] = RulesChange(opened, history[0].rules)
-            l.copy(booksOpenedAt = opened, rulesHistory = history)
+            // The opening payment basis covers the newly opened days too.
+            val payments = l.payments.toMutableList()
+            if (payments[0].effectiveAt == previous) payments[0] = PaymentChange(opened, payments[0].payment)
+            l.copy(booksOpenedAt = opened, rulesHistory = history, paymentHistory = payments,
+                legacyPaymentMode = null, legacyCaloriesPerMile = null)
         }
         return true
     }
@@ -204,25 +209,42 @@ class LedgerStore(
     fun declareBankruptcy(now: Instant = Instant.now()): Boolean {
         val opened = now.floored()
         mutate { l ->
-            // The payment basis survives like the rules: it is how the books work, not what is on them.
-            Ledger.open(opened, l.currentRules)
-                .withPayment(l.payment)
+            // The payment basis survives like the rules: it is how the books work,
+            // not what is on them. Its history collapses to the one in force.
+            Ledger.open(opened, l.currentRules, l.payment)
                 .copy(excludedWorkoutIDs = l.excludedWorkoutIDs + l.runs.map { it.healthKitWorkoutID })
         }
         return isPersisted
     }
 
     /**
-     * Switches what pays the tab (iOS spec §28). Not an event: the whole
-     * ledger replays under the new basis, history included (iOS decisions
-     * §B.10). The rate is clamped to [CALORIES_PER_MILE_RANGE], whole calories.
+     * Switches what pays the tab from [at] forward (iOS spec §28, decisions
+     * §B.10). Like a rules change it is appended, never rewritten: workouts
+     * that already ended keep paying what they paid under the basis they ended
+     * in. The rate is clamped to [CALORIES_PER_MILE_RANGE], whole calories.
      */
-    fun updatePayment(payment: PaymentBasis) {
+    fun updatePayment(payment: PaymentBasis, at: Instant = Instant.now()) {
+        val clamped = clamped(payment)
+        if (clamped == current.payment) return
+        mutate { it.switchingPayment(clamped, at) }
+    }
+
+    /**
+     * The basis the books open under, chosen during onboarding before Health
+     * Connect is connected. Replaces the history rather than appending, so the
+     * choice covers every workout since the books opened. Only for books with
+     * nothing paid yet; on live books use [updatePayment].
+     */
+    fun chooseOpeningPayment(payment: PaymentBasis) {
+        val clamped = clamped(payment)
+        if (current.paymentHistory == listOf(PaymentChange(current.booksOpenedAt, clamped))) return
+        mutate { it.withPayment(clamped) }
+    }
+
+    private fun clamped(payment: PaymentBasis): PaymentBasis {
         val rate = payment.caloriesPerMile.roundToLong().toDouble()
             .coerceIn(CALORIES_PER_MILE_RANGE.start, CALORIES_PER_MILE_RANGE.endInclusive)
-        val clamped = payment.copy(caloriesPerMile = rate)
-        if (clamped == current.payment) return
-        mutate { it.withPayment(clamped) }
+        return payment.copy(caloriesPerMile = rate)
     }
 
     /** Forward-only: appended as an event, never rewrites history. */

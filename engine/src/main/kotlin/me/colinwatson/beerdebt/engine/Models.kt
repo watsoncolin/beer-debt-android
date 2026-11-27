@@ -2,6 +2,8 @@
 
 package me.colinwatson.beerdebt.engine
 
+import kotlinx.serialization.EncodeDefault
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.UseSerializers
@@ -120,8 +122,10 @@ enum class PaymentMode {
 
 /**
  * The mode and the calorie rate together: everything the engine needs to turn
- * a workout into miles paid. Not a rule: rules are forward-only, this
- * reinterprets the whole ledger on every replay (iOS decisions §B.10).
+ * a workout into miles paid. Forward-only like the rules (iOS decisions
+ * §B.10): [Ledger.paymentHistory] records when each basis took effect, and a
+ * workout pays under the basis in force when it ended. A switch never changes
+ * what an earlier workout paid.
  */
 data class PaymentBasis(
     val mode: PaymentMode = PaymentMode.RUNS,
@@ -145,6 +149,14 @@ data class PaymentBasis(
         const val DEFAULT_CALORIES_PER_MILE = 100.0
         val RUNS = PaymentBasis()
     }
+}
+
+/** A payment basis, effective from [effectiveAt] forward (iOS decisions §B.10). */
+@Serializable
+data class PaymentChange(val effectiveAt: Instant, val mode: PaymentMode, val caloriesPerMile: Double) {
+    constructor(effectiveAt: Instant, payment: PaymentBasis) : this(effectiveAt, payment.mode, payment.caloriesPerMile)
+
+    val payment: PaymentBasis get() = PaymentBasis(mode, caloriesPerMile)
 }
 
 @Serializable
@@ -188,6 +200,7 @@ data class FreezeApplication(
     }
 }
 
+@OptIn(ExperimentalSerializationApi::class)
 @Serializable
 data class Ledger(
     val version: Int = 1,
@@ -205,21 +218,72 @@ data class Ledger(
      * Absent in every ledger written before freezes existed.
      */
     val freezeApplications: List<FreezeApplication> = emptyList(),
-    /** What pays the tab (spec §28). Not a rule: the whole ledger replays under it. */
-    val paymentMode: PaymentMode = PaymentMode.RUNS,
-    /** Calories worth one mile in calorie mode. Reinterprets like the mode. */
-    val caloriesPerMile: Double = PaymentBasis.DEFAULT_CALORIES_PER_MILE,
+    /**
+     * What pays the tab, and at what calorie rate (spec §28). Sorted by
+     * effectiveAt; the first entry is the opening basis. Forward-only like
+     * [rulesHistory]: a workout pays under the entry in force when it ended
+     * (iOS decisions §B.10). Read it through [payments], which fills in a
+     * ledger written before the history existed.
+     */
+    val paymentHistory: List<PaymentChange> = emptyList(),
+    /**
+     * Written by 1.2, when one basis reinterpreted the whole history. Read
+     * only: it becomes the opening entry of [payments], and is never written.
+     */
+    @SerialName("paymentMode") @EncodeDefault(EncodeDefault.Mode.NEVER) val legacyPaymentMode: PaymentMode? = null,
+    @SerialName("caloriesPerMile") @EncodeDefault(EncodeDefault.Mode.NEVER) val legacyCaloriesPerMile: Double? = null,
 ) {
     val currentRules: Rules get() = rulesHistory.lastOrNull()?.rules ?: Rules()
 
-    val payment: PaymentBasis get() = PaymentBasis(paymentMode, caloriesPerMile)
+    /**
+     * The payment history, never empty. A 1.2 ledger replayed everything under
+     * its one basis, so that basis has been in force since the books opened
+     * and nobody's numbers move on upgrade.
+     */
+    val payments: List<PaymentChange>
+        get() = paymentHistory.ifEmpty {
+            listOf(PaymentChange(booksOpenedAt, legacyPaymentMode ?: PaymentMode.RUNS,
+                legacyCaloriesPerMile ?: PaymentBasis.DEFAULT_CALORIES_PER_MILE))
+        }
 
+    /** The basis in force now: what Settings shows and what amounts display in. */
+    val payment: PaymentBasis get() = payments.last().payment
+
+    /** The basis a workout that ended at [instant] pays under. */
+    fun paymentAt(instant: Instant): PaymentBasis =
+        (payments.lastOrNull { !it.effectiveAt.isAfter(instant) } ?: payments.first()).payment
+
+    /** Miles [workout] pays under the basis in force when it ended, or null if that basis doesn't count it. */
+    fun milesPaidBy(workout: RunEntry): Double? = paymentAt(workout.endedAt).milesPaidBy(workout)
+
+    /**
+     * Whether calorie mode has ever been in force. Once it has, Health Connect
+     * is read for every exercise type whatever the mode now, so a ride that
+     * ended in calorie mode but syncs after a switch back still lands.
+     */
+    val hasCaloriePeriod: Boolean get() = payments.any { it.mode == PaymentMode.CALORIES }
+
+    /**
+     * Replaces the history with [payment] from the day the books opened. Right
+     * only when nothing has been paid yet (onboarding) and for fixtures; a
+     * switch on live books is [switchingPayment].
+     */
     fun withPayment(payment: PaymentBasis): Ledger =
-        copy(paymentMode = payment.mode, caloriesPerMile = payment.caloriesPerMile)
+        copy(paymentHistory = listOf(PaymentChange(booksOpenedAt, payment)), legacyPaymentMode = null, legacyCaloriesPerMile = null)
+
+    /** [payment] from [at] forward, appended; at the same instant as the last change, it replaces it. */
+    fun switchingPayment(payment: PaymentBasis, at: Instant): Ledger {
+        var history = payments
+        val effectiveAt = maxOf(at.floored(), history.last().effectiveAt)
+        if (history.size > 1 && history.last().effectiveAt == effectiveAt) history = history.dropLast(1)
+        if (history.last().payment != payment) history = history + PaymentChange(effectiveAt, payment)
+        return copy(paymentHistory = history, legacyPaymentMode = null, legacyCaloriesPerMile = null)
+    }
 
     companion object {
-        fun open(at: Instant, rules: Rules = Rules.OPENING): Ledger =
-            Ledger(booksOpenedAt = at, rulesHistory = listOf(RulesChange(at, rules)))
+        fun open(at: Instant, rules: Rules = Rules.OPENING, payment: PaymentBasis = PaymentBasis.RUNS): Ledger =
+            Ledger(booksOpenedAt = at, rulesHistory = listOf(RulesChange(at, rules)),
+                paymentHistory = listOf(PaymentChange(at, payment)))
     }
 }
 

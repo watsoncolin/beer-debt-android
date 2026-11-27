@@ -40,14 +40,19 @@
 
         ],
         "booksOpenedAt" : "2026-09-12T20:00:00Z",
-        "caloriesPerMile" : 100,
         "excludedWorkoutIDs" : [
 
         ],
         "freezeApplications" : [
 
         ],
-        "paymentMode" : "runs",
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "mode" : "runs"
+          }
+        ],
         "rulesHistory" : [
           {
             "effectiveAt" : "2026-09-12T20:00:00Z",
@@ -127,14 +132,19 @@
           }
         ],
         "booksOpenedAt" : "2026-09-12T20:00:00Z",
-        "caloriesPerMile" : 100,
         "excludedWorkoutIDs" : [
 
         ],
         "freezeApplications" : [
 
         ],
-        "paymentMode" : "runs",
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "mode" : "runs"
+          }
+        ],
         "rulesHistory" : [
           {
             "effectiveAt" : "2026-09-12T20:00:00Z",
@@ -250,14 +260,19 @@
           }
         ],
         "booksOpenedAt" : "2026-09-12T20:00:00Z",
-        "caloriesPerMile" : 100,
         "excludedWorkoutIDs" : [
 
         ],
         "freezeApplications" : [
 
         ],
-        "paymentMode" : "runs",
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "mode" : "runs"
+          }
+        ],
         "rulesHistory" : [
           {
             "effectiveAt" : "2026-09-12T20:00:00Z",
@@ -337,14 +352,19 @@
           }
         ],
         "booksOpenedAt" : "2026-09-12T20:00:00Z",
-        "caloriesPerMile" : 100,
         "excludedWorkoutIDs" : [
 
         ],
         "freezeApplications" : [
 
         ],
-        "paymentMode" : "runs",
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "mode" : "runs"
+          }
+        ],
         "rulesHistory" : [
           {
             "effectiveAt" : "2026-09-12T20:00:00Z",
@@ -410,14 +430,19 @@
           }
         ],
         "booksOpenedAt" : "2026-09-12T20:00:00Z",
-        "caloriesPerMile" : 100,
         "excludedWorkoutIDs" : [
 
         ],
         "freezeApplications" : [
 
         ],
-        "paymentMode" : "runs",
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "mode" : "runs"
+          }
+        ],
         "rulesHistory" : [
           {
             "effectiveAt" : "2026-09-12T20:00:00Z",
@@ -497,14 +522,19 @@
           }
         ],
         "booksOpenedAt" : "2026-09-12T20:00:00Z",
-        "caloriesPerMile" : 100,
         "excludedWorkoutIDs" : [
 
         ],
         "freezeApplications" : [
 
         ],
-        "paymentMode" : "runs",
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "mode" : "runs"
+          }
+        ],
         "rulesHistory" : [
           {
             "effectiveAt" : "2026-09-12T20:00:00Z",
@@ -584,14 +614,19 @@
           }
         ],
         "booksOpenedAt" : "2026-09-12T20:00:00Z",
-        "caloriesPerMile" : 100,
         "excludedWorkoutIDs" : [
 
         ],
         "freezeApplications" : [
 
         ],
-        "paymentMode" : "runs",
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "mode" : "runs"
+          }
+        ],
         "rulesHistory" : [
           {
             "effectiveAt" : "2026-09-12T20:00:00Z",
@@ -671,14 +706,19 @@
           }
         ],
         "booksOpenedAt" : "2026-09-12T20:00:00Z",
-        "caloriesPerMile" : 100,
         "excludedWorkoutIDs" : [
 
         ],
         "freezeApplications" : [
 
         ],
-        "paymentMode" : "runs",
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "mode" : "runs"
+          }
+        ],
         "rulesHistory" : [
           {
             "effectiveAt" : "2026-09-12T20:00:00Z",
@@ -758,14 +798,19 @@
           }
         ],
         "booksOpenedAt" : "2026-09-12T20:00:00Z",
-        "caloriesPerMile" : 100,
         "excludedWorkoutIDs" : [
 
         ],
         "freezeApplications" : [
 
         ],
-        "paymentMode" : "runs",
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "mode" : "runs"
+          }
+        ],
         "rulesHistory" : [
           {
             "effectiveAt" : "2026-09-12T20:00:00Z",
@@ -845,14 +890,19 @@
           }
         ],
         "booksOpenedAt" : "2026-09-12T20:00:00Z",
-        "caloriesPerMile" : 100,
         "excludedWorkoutIDs" : [
 
         ],
         "freezeApplications" : [
 
         ],
-        "paymentMode" : "runs",
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "mode" : "runs"
+          }
+        ],
         "rulesHistory" : [
           {
             "effectiveAt" : "2026-09-12T20:00:00Z",
@@ -932,14 +982,19 @@
           }
         ],
         "booksOpenedAt" : "2026-09-12T20:00:00Z",
-        "caloriesPerMile" : 100,
         "excludedWorkoutIDs" : [
 
         ],
         "freezeApplications" : [
 
         ],
-        "paymentMode" : "runs",
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "mode" : "runs"
+          }
+        ],
         "rulesHistory" : [
           {
             "effectiveAt" : "2026-09-12T20:00:00Z",
@@ -1019,14 +1074,19 @@
           }
         ],
         "booksOpenedAt" : "2026-09-12T20:00:00Z",
-        "caloriesPerMile" : 100,
         "excludedWorkoutIDs" : [
 
         ],
         "freezeApplications" : [
 
         ],
-        "paymentMode" : "runs",
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "mode" : "runs"
+          }
+        ],
         "rulesHistory" : [
           {
             "effectiveAt" : "2026-09-12T20:00:00Z",
@@ -1106,14 +1166,19 @@
           }
         ],
         "booksOpenedAt" : "2026-09-12T20:00:00Z",
-        "caloriesPerMile" : 100,
         "excludedWorkoutIDs" : [
 
         ],
         "freezeApplications" : [
 
         ],
-        "paymentMode" : "runs",
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "mode" : "runs"
+          }
+        ],
         "rulesHistory" : [
           {
             "effectiveAt" : "2026-09-12T20:00:00Z",
@@ -1193,14 +1258,19 @@
           }
         ],
         "booksOpenedAt" : "2026-09-12T20:00:00Z",
-        "caloriesPerMile" : 100,
         "excludedWorkoutIDs" : [
 
         ],
         "freezeApplications" : [
 
         ],
-        "paymentMode" : "runs",
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "mode" : "runs"
+          }
+        ],
         "rulesHistory" : [
           {
             "effectiveAt" : "2026-09-12T20:00:00Z",
@@ -1280,14 +1350,19 @@
           }
         ],
         "booksOpenedAt" : "2026-09-12T20:00:00Z",
-        "caloriesPerMile" : 100,
         "excludedWorkoutIDs" : [
 
         ],
         "freezeApplications" : [
 
         ],
-        "paymentMode" : "runs",
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "mode" : "runs"
+          }
+        ],
         "rulesHistory" : [
           {
             "effectiveAt" : "2026-09-12T20:00:00Z",
@@ -1367,14 +1442,19 @@
           }
         ],
         "booksOpenedAt" : "2026-09-12T20:00:00Z",
-        "caloriesPerMile" : 100,
         "excludedWorkoutIDs" : [
 
         ],
         "freezeApplications" : [
 
         ],
-        "paymentMode" : "runs",
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "mode" : "runs"
+          }
+        ],
         "rulesHistory" : [
           {
             "effectiveAt" : "2026-09-12T20:00:00Z",
@@ -1452,14 +1532,19 @@
           }
         ],
         "booksOpenedAt" : "2026-09-12T20:00:00Z",
-        "caloriesPerMile" : 100,
         "excludedWorkoutIDs" : [
 
         ],
         "freezeApplications" : [
 
         ],
-        "paymentMode" : "runs",
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "mode" : "runs"
+          }
+        ],
         "rulesHistory" : [
           {
             "effectiveAt" : "2026-09-12T20:00:00Z",
@@ -1631,14 +1716,19 @@
           }
         ],
         "booksOpenedAt" : "2026-09-12T20:00:00Z",
-        "caloriesPerMile" : 100,
         "excludedWorkoutIDs" : [
 
         ],
         "freezeApplications" : [
 
         ],
-        "paymentMode" : "runs",
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "mode" : "runs"
+          }
+        ],
         "rulesHistory" : [
           {
             "effectiveAt" : "2026-09-12T20:00:00Z",
@@ -1738,14 +1828,19 @@
           }
         ],
         "booksOpenedAt" : "2026-09-12T20:00:00Z",
-        "caloriesPerMile" : 100,
         "excludedWorkoutIDs" : [
 
         ],
         "freezeApplications" : [
 
         ],
-        "paymentMode" : "runs",
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "mode" : "runs"
+          }
+        ],
         "rulesHistory" : [
           {
             "effectiveAt" : "2026-09-12T20:00:00Z",
@@ -1846,14 +1941,19 @@
           }
         ],
         "booksOpenedAt" : "2026-09-12T20:00:00Z",
-        "caloriesPerMile" : 100,
         "excludedWorkoutIDs" : [
 
         ],
         "freezeApplications" : [
 
         ],
-        "paymentMode" : "runs",
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "mode" : "runs"
+          }
+        ],
         "rulesHistory" : [
           {
             "effectiveAt" : "2026-09-12T20:00:00Z",
@@ -1998,14 +2098,19 @@
           }
         ],
         "booksOpenedAt" : "2026-09-12T20:00:00Z",
-        "caloriesPerMile" : 100,
         "excludedWorkoutIDs" : [
 
         ],
         "freezeApplications" : [
 
         ],
-        "paymentMode" : "runs",
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "mode" : "runs"
+          }
+        ],
         "rulesHistory" : [
           {
             "effectiveAt" : "2026-09-12T20:00:00Z",
@@ -2106,14 +2211,19 @@
           }
         ],
         "booksOpenedAt" : "2026-09-12T20:00:00Z",
-        "caloriesPerMile" : 100,
         "excludedWorkoutIDs" : [
 
         ],
         "freezeApplications" : [
 
         ],
-        "paymentMode" : "runs",
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "mode" : "runs"
+          }
+        ],
         "rulesHistory" : [
           {
             "effectiveAt" : "2026-09-12T20:00:00Z",
@@ -2222,14 +2332,19 @@
           }
         ],
         "booksOpenedAt" : "2026-09-12T20:00:00Z",
-        "caloriesPerMile" : 100,
         "excludedWorkoutIDs" : [
 
         ],
         "freezeApplications" : [
 
         ],
-        "paymentMode" : "runs",
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "mode" : "runs"
+          }
+        ],
         "rulesHistory" : [
           {
             "effectiveAt" : "2026-09-12T20:00:00Z",
@@ -2329,14 +2444,19 @@
           }
         ],
         "booksOpenedAt" : "2026-09-12T20:00:00Z",
-        "caloriesPerMile" : 100,
         "excludedWorkoutIDs" : [
 
         ],
         "freezeApplications" : [
 
         ],
-        "paymentMode" : "runs",
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "mode" : "runs"
+          }
+        ],
         "rulesHistory" : [
           {
             "effectiveAt" : "2026-09-12T20:00:00Z",
@@ -2420,14 +2540,19 @@
 
         ],
         "booksOpenedAt" : "2026-09-12T20:00:00Z",
-        "caloriesPerMile" : 100,
         "excludedWorkoutIDs" : [
 
         ],
         "freezeApplications" : [
 
         ],
-        "paymentMode" : "runs",
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "mode" : "runs"
+          }
+        ],
         "rulesHistory" : [
           {
             "effectiveAt" : "2026-09-12T20:00:00Z",
@@ -2511,14 +2636,19 @@
 
         ],
         "booksOpenedAt" : "2026-09-12T20:00:00Z",
-        "caloriesPerMile" : 100,
         "excludedWorkoutIDs" : [
 
         ],
         "freezeApplications" : [
 
         ],
-        "paymentMode" : "runs",
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "mode" : "runs"
+          }
+        ],
         "rulesHistory" : [
           {
             "effectiveAt" : "2026-09-12T20:00:00Z",
@@ -2602,14 +2732,19 @@
 
         ],
         "booksOpenedAt" : "2026-09-12T20:00:00Z",
-        "caloriesPerMile" : 100,
         "excludedWorkoutIDs" : [
 
         ],
         "freezeApplications" : [
 
         ],
-        "paymentMode" : "runs",
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "mode" : "runs"
+          }
+        ],
         "rulesHistory" : [
           {
             "effectiveAt" : "2026-09-12T20:00:00Z",
@@ -2749,14 +2884,19 @@
 
         ],
         "booksOpenedAt" : "2026-09-12T20:00:00Z",
-        "caloriesPerMile" : 100,
         "excludedWorkoutIDs" : [
 
         ],
         "freezeApplications" : [
 
         ],
-        "paymentMode" : "runs",
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "mode" : "runs"
+          }
+        ],
         "rulesHistory" : [
           {
             "effectiveAt" : "2026-09-12T20:00:00Z",
@@ -2952,14 +3092,19 @@
 
         ],
         "booksOpenedAt" : "2026-09-12T20:00:00Z",
-        "caloriesPerMile" : 100,
         "excludedWorkoutIDs" : [
 
         ],
         "freezeApplications" : [
 
         ],
-        "paymentMode" : "runs",
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "mode" : "runs"
+          }
+        ],
         "rulesHistory" : [
           {
             "effectiveAt" : "2026-09-12T20:00:00Z",
@@ -3603,14 +3748,19 @@
 
         ],
         "booksOpenedAt" : "2026-09-12T20:00:00Z",
-        "caloriesPerMile" : 100,
         "excludedWorkoutIDs" : [
 
         ],
         "freezeApplications" : [
 
         ],
-        "paymentMode" : "runs",
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "mode" : "runs"
+          }
+        ],
         "rulesHistory" : [
           {
             "effectiveAt" : "2026-09-12T20:00:00Z",
@@ -3710,14 +3860,19 @@
           }
         ],
         "booksOpenedAt" : "2026-09-12T20:00:00Z",
-        "caloriesPerMile" : 100,
         "excludedWorkoutIDs" : [
 
         ],
         "freezeApplications" : [
 
         ],
-        "paymentMode" : "runs",
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "mode" : "runs"
+          }
+        ],
         "rulesHistory" : [
           {
             "effectiveAt" : "2026-09-12T20:00:00Z",
@@ -3818,14 +3973,19 @@
           }
         ],
         "booksOpenedAt" : "2026-09-12T20:00:00Z",
-        "caloriesPerMile" : 100,
         "excludedWorkoutIDs" : [
 
         ],
         "freezeApplications" : [
 
         ],
-        "paymentMode" : "runs",
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "mode" : "runs"
+          }
+        ],
         "rulesHistory" : [
           {
             "effectiveAt" : "2026-09-12T20:00:00Z",
@@ -3916,14 +4076,19 @@
           }
         ],
         "booksOpenedAt" : "2026-09-12T20:00:00Z",
-        "caloriesPerMile" : 100,
         "excludedWorkoutIDs" : [
 
         ],
         "freezeApplications" : [
 
         ],
-        "paymentMode" : "runs",
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "mode" : "runs"
+          }
+        ],
         "rulesHistory" : [
           {
             "effectiveAt" : "2026-09-12T20:00:00Z",
@@ -4027,14 +4192,19 @@
           }
         ],
         "booksOpenedAt" : "2026-09-12T20:00:00Z",
-        "caloriesPerMile" : 100,
         "excludedWorkoutIDs" : [
 
         ],
         "freezeApplications" : [
 
         ],
-        "paymentMode" : "runs",
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "mode" : "runs"
+          }
+        ],
         "rulesHistory" : [
           {
             "effectiveAt" : "2026-09-12T20:00:00Z",
@@ -4153,14 +4323,19 @@
           }
         ],
         "booksOpenedAt" : "2026-09-12T20:00:00Z",
-        "caloriesPerMile" : 100,
         "excludedWorkoutIDs" : [
 
         ],
         "freezeApplications" : [
 
         ],
-        "paymentMode" : "runs",
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "mode" : "runs"
+          }
+        ],
         "rulesHistory" : [
           {
             "effectiveAt" : "2026-09-12T20:00:00Z",
@@ -4248,14 +4423,19 @@
           }
         ],
         "booksOpenedAt" : "2026-09-12T20:00:00Z",
-        "caloriesPerMile" : 100,
         "excludedWorkoutIDs" : [
 
         ],
         "freezeApplications" : [
 
         ],
-        "paymentMode" : "runs",
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "mode" : "runs"
+          }
+        ],
         "rulesHistory" : [
           {
             "effectiveAt" : "2026-09-12T20:00:00Z",
@@ -4355,14 +4535,19 @@
           }
         ],
         "booksOpenedAt" : "2026-09-12T20:00:00Z",
-        "caloriesPerMile" : 100,
         "excludedWorkoutIDs" : [
 
         ],
         "freezeApplications" : [
 
         ],
-        "paymentMode" : "runs",
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "mode" : "runs"
+          }
+        ],
         "rulesHistory" : [
           {
             "effectiveAt" : "2026-09-12T20:00:00Z",
@@ -4446,14 +4631,19 @@
 
         ],
         "booksOpenedAt" : "2026-09-12T20:00:00Z",
-        "caloriesPerMile" : 100,
         "excludedWorkoutIDs" : [
 
         ],
         "freezeApplications" : [
 
         ],
-        "paymentMode" : "runs",
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "mode" : "runs"
+          }
+        ],
         "rulesHistory" : [
           {
             "effectiveAt" : "2026-09-12T20:00:00Z",
@@ -4553,14 +4743,19 @@
           }
         ],
         "booksOpenedAt" : "2026-09-12T20:00:00Z",
-        "caloriesPerMile" : 100,
         "excludedWorkoutIDs" : [
 
         ],
         "freezeApplications" : [
 
         ],
-        "paymentMode" : "runs",
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "mode" : "runs"
+          }
+        ],
         "rulesHistory" : [
           {
             "effectiveAt" : "2026-09-12T20:00:00Z",
@@ -4660,14 +4855,19 @@
           }
         ],
         "booksOpenedAt" : "2026-09-12T20:00:00Z",
-        "caloriesPerMile" : 100,
         "excludedWorkoutIDs" : [
 
         ],
         "freezeApplications" : [
 
         ],
-        "paymentMode" : "runs",
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "mode" : "runs"
+          }
+        ],
         "rulesHistory" : [
           {
             "effectiveAt" : "2026-09-12T20:00:00Z",
@@ -4768,14 +4968,19 @@
           }
         ],
         "booksOpenedAt" : "2026-09-12T20:00:00Z",
-        "caloriesPerMile" : 100,
         "excludedWorkoutIDs" : [
 
         ],
         "freezeApplications" : [
 
         ],
-        "paymentMode" : "runs",
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "mode" : "runs"
+          }
+        ],
         "rulesHistory" : [
           {
             "effectiveAt" : "2026-09-12T20:00:00Z",
@@ -4881,14 +5086,19 @@
           }
         ],
         "booksOpenedAt" : "2026-09-12T20:00:00Z",
-        "caloriesPerMile" : 100,
         "excludedWorkoutIDs" : [
 
         ],
         "freezeApplications" : [
 
         ],
-        "paymentMode" : "runs",
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "mode" : "runs"
+          }
+        ],
         "rulesHistory" : [
           {
             "effectiveAt" : "2026-09-12T20:00:00Z",
@@ -4980,14 +5190,19 @@
           }
         ],
         "booksOpenedAt" : "2026-09-12T20:00:00Z",
-        "caloriesPerMile" : 100,
         "excludedWorkoutIDs" : [
 
         ],
         "freezeApplications" : [
 
         ],
-        "paymentMode" : "runs",
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "mode" : "runs"
+          }
+        ],
         "rulesHistory" : [
           {
             "effectiveAt" : "2026-09-12T20:00:00Z",
@@ -5077,14 +5292,19 @@
           }
         ],
         "booksOpenedAt" : "2026-09-12T20:00:00Z",
-        "caloriesPerMile" : 100,
         "excludedWorkoutIDs" : [
 
         ],
         "freezeApplications" : [
 
         ],
-        "paymentMode" : "runs",
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "mode" : "runs"
+          }
+        ],
         "rulesHistory" : [
           {
             "effectiveAt" : "2026-09-12T20:00:00Z",
@@ -5176,14 +5396,19 @@
           }
         ],
         "booksOpenedAt" : "2026-09-12T20:00:00Z",
-        "caloriesPerMile" : 100,
         "excludedWorkoutIDs" : [
 
         ],
         "freezeApplications" : [
 
         ],
-        "paymentMode" : "runs",
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "mode" : "runs"
+          }
+        ],
         "rulesHistory" : [
           {
             "effectiveAt" : "2026-09-12T20:00:00Z",
@@ -5275,14 +5500,19 @@
           }
         ],
         "booksOpenedAt" : "2026-09-12T20:00:00Z",
-        "caloriesPerMile" : 100,
         "excludedWorkoutIDs" : [
 
         ],
         "freezeApplications" : [
 
         ],
-        "paymentMode" : "runs",
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "mode" : "runs"
+          }
+        ],
         "rulesHistory" : [
           {
             "effectiveAt" : "2026-09-12T20:00:00Z",
@@ -5374,14 +5604,19 @@
           }
         ],
         "booksOpenedAt" : "2026-09-12T20:00:00Z",
-        "caloriesPerMile" : 100,
         "excludedWorkoutIDs" : [
 
         ],
         "freezeApplications" : [
 
         ],
-        "paymentMode" : "runs",
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "mode" : "runs"
+          }
+        ],
         "rulesHistory" : [
           {
             "effectiveAt" : "2026-09-12T20:00:00Z",
@@ -5473,14 +5708,19 @@
           }
         ],
         "booksOpenedAt" : "2026-09-12T20:00:00Z",
-        "caloriesPerMile" : 100,
         "excludedWorkoutIDs" : [
 
         ],
         "freezeApplications" : [
 
         ],
-        "paymentMode" : "runs",
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "mode" : "runs"
+          }
+        ],
         "rulesHistory" : [
           {
             "effectiveAt" : "2026-09-12T20:00:00Z",
@@ -5572,14 +5812,19 @@
           }
         ],
         "booksOpenedAt" : "2026-09-12T20:00:00Z",
-        "caloriesPerMile" : 100,
         "excludedWorkoutIDs" : [
 
         ],
         "freezeApplications" : [
 
         ],
-        "paymentMode" : "runs",
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "mode" : "runs"
+          }
+        ],
         "rulesHistory" : [
           {
             "effectiveAt" : "2026-09-12T20:00:00Z",
@@ -5671,14 +5916,19 @@
           }
         ],
         "booksOpenedAt" : "2026-09-12T20:00:00Z",
-        "caloriesPerMile" : 100,
         "excludedWorkoutIDs" : [
 
         ],
         "freezeApplications" : [
 
         ],
-        "paymentMode" : "runs",
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "mode" : "runs"
+          }
+        ],
         "rulesHistory" : [
           {
             "effectiveAt" : "2026-09-12T20:00:00Z",
@@ -5770,14 +6020,19 @@
           }
         ],
         "booksOpenedAt" : "2026-09-12T20:00:00Z",
-        "caloriesPerMile" : 100,
         "excludedWorkoutIDs" : [
 
         ],
         "freezeApplications" : [
 
         ],
-        "paymentMode" : "runs",
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "mode" : "runs"
+          }
+        ],
         "rulesHistory" : [
           {
             "effectiveAt" : "2026-09-12T20:00:00Z",
@@ -5869,14 +6124,19 @@
           }
         ],
         "booksOpenedAt" : "2026-09-12T20:00:00Z",
-        "caloriesPerMile" : 100,
         "excludedWorkoutIDs" : [
 
         ],
         "freezeApplications" : [
 
         ],
-        "paymentMode" : "runs",
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "mode" : "runs"
+          }
+        ],
         "rulesHistory" : [
           {
             "effectiveAt" : "2026-09-12T20:00:00Z",
@@ -5968,14 +6228,19 @@
           }
         ],
         "booksOpenedAt" : "2026-09-12T20:00:00Z",
-        "caloriesPerMile" : 100,
         "excludedWorkoutIDs" : [
 
         ],
         "freezeApplications" : [
 
         ],
-        "paymentMode" : "runs",
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "mode" : "runs"
+          }
+        ],
         "rulesHistory" : [
           {
             "effectiveAt" : "2026-09-12T20:00:00Z",
@@ -6070,14 +6335,19 @@
 
         ],
         "booksOpenedAt" : "2026-09-12T20:00:00Z",
-        "caloriesPerMile" : 100,
         "excludedWorkoutIDs" : [
 
         ],
         "freezeApplications" : [
 
         ],
-        "paymentMode" : "runs",
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "mode" : "runs"
+          }
+        ],
         "rulesHistory" : [
           {
             "effectiveAt" : "2026-09-12T20:00:00Z",
@@ -6175,14 +6445,19 @@
 
         ],
         "booksOpenedAt" : "2026-09-12T20:00:00Z",
-        "caloriesPerMile" : 100,
         "excludedWorkoutIDs" : [
 
         ],
         "freezeApplications" : [
 
         ],
-        "paymentMode" : "runs",
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "mode" : "runs"
+          }
+        ],
         "rulesHistory" : [
           {
             "effectiveAt" : "2026-09-12T20:00:00Z",
@@ -6330,14 +6605,19 @@
           }
         ],
         "booksOpenedAt" : "2026-09-12T20:00:00Z",
-        "caloriesPerMile" : 100,
         "excludedWorkoutIDs" : [
 
         ],
         "freezeApplications" : [
 
         ],
-        "paymentMode" : "runs",
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "mode" : "runs"
+          }
+        ],
         "rulesHistory" : [
           {
             "effectiveAt" : "2026-09-12T20:00:00Z",
@@ -6446,14 +6726,19 @@
           }
         ],
         "booksOpenedAt" : "2026-09-12T20:00:00Z",
-        "caloriesPerMile" : 100,
         "excludedWorkoutIDs" : [
 
         ],
         "freezeApplications" : [
 
         ],
-        "paymentMode" : "runs",
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "mode" : "runs"
+          }
+        ],
         "rulesHistory" : [
           {
             "effectiveAt" : "2026-09-12T20:00:00Z",
@@ -6541,14 +6826,19 @@
           }
         ],
         "booksOpenedAt" : "2026-09-12T20:00:00Z",
-        "caloriesPerMile" : 100,
         "excludedWorkoutIDs" : [
 
         ],
         "freezeApplications" : [
 
         ],
-        "paymentMode" : "runs",
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "mode" : "runs"
+          }
+        ],
         "rulesHistory" : [
           {
             "effectiveAt" : "2026-09-12T20:00:00Z",
@@ -6648,14 +6938,19 @@
           }
         ],
         "booksOpenedAt" : "2026-09-12T20:00:00Z",
-        "caloriesPerMile" : 100,
         "excludedWorkoutIDs" : [
 
         ],
         "freezeApplications" : [
 
         ],
-        "paymentMode" : "runs",
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "mode" : "runs"
+          }
+        ],
         "rulesHistory" : [
           {
             "effectiveAt" : "2026-09-12T20:00:00Z",
@@ -6743,14 +7038,19 @@
           }
         ],
         "booksOpenedAt" : "2026-10-31T20:00:00Z",
-        "caloriesPerMile" : 100,
         "excludedWorkoutIDs" : [
 
         ],
         "freezeApplications" : [
 
         ],
-        "paymentMode" : "runs",
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-10-31T20:00:00Z",
+            "mode" : "runs"
+          }
+        ],
         "rulesHistory" : [
           {
             "effectiveAt" : "2026-10-31T20:00:00Z",
@@ -6830,14 +7130,19 @@
           }
         ],
         "booksOpenedAt" : "2026-10-31T20:00:00Z",
-        "caloriesPerMile" : 100,
         "excludedWorkoutIDs" : [
 
         ],
         "freezeApplications" : [
 
         ],
-        "paymentMode" : "runs",
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-10-31T20:00:00Z",
+            "mode" : "runs"
+          }
+        ],
         "rulesHistory" : [
           {
             "effectiveAt" : "2026-10-31T20:00:00Z",
@@ -7022,14 +7327,19 @@
           }
         ],
         "booksOpenedAt" : "2026-09-12T20:00:00Z",
-        "caloriesPerMile" : 100,
         "excludedWorkoutIDs" : [
 
         ],
         "freezeApplications" : [
 
         ],
-        "paymentMode" : "runs",
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "mode" : "runs"
+          }
+        ],
         "rulesHistory" : [
           {
             "effectiveAt" : "2026-09-12T20:00:00Z",
@@ -7325,14 +7635,19 @@
           }
         ],
         "booksOpenedAt" : "2026-09-12T20:00:00Z",
-        "caloriesPerMile" : 100,
         "excludedWorkoutIDs" : [
 
         ],
         "freezeApplications" : [
 
         ],
-        "paymentMode" : "runs",
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "mode" : "runs"
+          }
+        ],
         "rulesHistory" : [
           {
             "effectiveAt" : "2026-09-12T20:00:00Z",
@@ -7666,14 +7981,19 @@
           }
         ],
         "booksOpenedAt" : "2026-09-12T20:00:00Z",
-        "caloriesPerMile" : 100,
         "excludedWorkoutIDs" : [
 
         ],
         "freezeApplications" : [
 
         ],
-        "paymentMode" : "runs",
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "mode" : "runs"
+          }
+        ],
         "rulesHistory" : [
           {
             "effectiveAt" : "2026-09-12T20:00:00Z",
@@ -7873,14 +8193,19 @@
           }
         ],
         "booksOpenedAt" : "2026-09-12T20:00:00Z",
-        "caloriesPerMile" : 100,
         "excludedWorkoutIDs" : [
 
         ],
         "freezeApplications" : [
 
         ],
-        "paymentMode" : "runs",
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "mode" : "runs"
+          }
+        ],
         "rulesHistory" : [
           {
             "effectiveAt" : "2026-09-12T20:00:00Z",
@@ -8079,14 +8404,19 @@
           }
         ],
         "booksOpenedAt" : "2026-09-12T20:00:00Z",
-        "caloriesPerMile" : 100,
         "excludedWorkoutIDs" : [
 
         ],
         "freezeApplications" : [
 
         ],
-        "paymentMode" : "runs",
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "mode" : "runs"
+          }
+        ],
         "rulesHistory" : [
           {
             "effectiveAt" : "2026-09-12T20:00:00Z",
@@ -8293,14 +8623,19 @@
           }
         ],
         "booksOpenedAt" : "2026-09-12T20:00:00Z",
-        "caloriesPerMile" : 100,
         "excludedWorkoutIDs" : [
 
         ],
         "freezeApplications" : [
 
         ],
-        "paymentMode" : "runs",
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "mode" : "runs"
+          }
+        ],
         "rulesHistory" : [
           {
             "effectiveAt" : "2026-09-12T20:00:00Z",
@@ -8499,14 +8834,19 @@
           }
         ],
         "booksOpenedAt" : "2026-09-12T20:00:00Z",
-        "caloriesPerMile" : 100,
         "excludedWorkoutIDs" : [
 
         ],
         "freezeApplications" : [
 
         ],
-        "paymentMode" : "runs",
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "mode" : "runs"
+          }
+        ],
         "rulesHistory" : [
           {
             "effectiveAt" : "2026-09-12T20:00:00Z",
@@ -8705,14 +9045,19 @@
           }
         ],
         "booksOpenedAt" : "2026-09-12T20:00:00Z",
-        "caloriesPerMile" : 100,
         "excludedWorkoutIDs" : [
 
         ],
         "freezeApplications" : [
 
         ],
-        "paymentMode" : "runs",
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "mode" : "runs"
+          }
+        ],
         "rulesHistory" : [
           {
             "effectiveAt" : "2026-09-12T20:00:00Z",
@@ -8955,14 +9300,19 @@
           }
         ],
         "booksOpenedAt" : "2026-09-12T00:00:00Z",
-        "caloriesPerMile" : 100,
         "excludedWorkoutIDs" : [
 
         ],
         "freezeApplications" : [
 
         ],
-        "paymentMode" : "runs",
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-12T00:00:00Z",
+            "mode" : "runs"
+          }
+        ],
         "rulesHistory" : [
           {
             "effectiveAt" : "2026-09-12T00:00:00Z",
@@ -9226,14 +9576,19 @@
           }
         ],
         "booksOpenedAt" : "2026-09-12T00:00:00Z",
-        "caloriesPerMile" : 100,
         "excludedWorkoutIDs" : [
 
         ],
         "freezeApplications" : [
 
         ],
-        "paymentMode" : "runs",
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-12T00:00:00Z",
+            "mode" : "runs"
+          }
+        ],
         "rulesHistory" : [
           {
             "effectiveAt" : "2026-09-12T00:00:00Z",
@@ -9514,7 +9869,6 @@
           }
         ],
         "booksOpenedAt" : "2026-09-12T00:00:00Z",
-        "caloriesPerMile" : 100,
         "excludedWorkoutIDs" : [
 
         ],
@@ -9522,10 +9876,16 @@
           {
             "appliedAt" : "2026-09-17T07:00:00Z",
             "day" : "2026-09-17T12:00:00Z",
-            "id" : "3344888D-F323-4873-A052-E90A5A7309EC"
+            "id" : "4AF0AEA4-94E4-477B-8C9C-8253320FDE77"
           }
         ],
-        "paymentMode" : "runs",
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-12T00:00:00Z",
+            "mode" : "runs"
+          }
+        ],
         "rulesHistory" : [
           {
             "effectiveAt" : "2026-09-12T00:00:00Z",
@@ -9870,7 +10230,6 @@
           }
         ],
         "booksOpenedAt" : "2026-09-12T00:00:00Z",
-        "caloriesPerMile" : 100,
         "excludedWorkoutIDs" : [
 
         ],
@@ -9878,10 +10237,16 @@
           {
             "appliedAt" : "2026-09-17T07:00:00Z",
             "day" : "2026-09-17T12:00:00Z",
-            "id" : "50F4E02C-F8AD-4ADE-AF79-01853FDFD4A2"
+            "id" : "3F2141A4-472A-49DD-BBDE-C84BC0D13602"
           }
         ],
-        "paymentMode" : "runs",
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-12T00:00:00Z",
+            "mode" : "runs"
+          }
+        ],
         "rulesHistory" : [
           {
             "effectiveAt" : "2026-09-12T00:00:00Z",
@@ -10214,7 +10579,6 @@
           }
         ],
         "booksOpenedAt" : "2026-09-12T00:00:00Z",
-        "caloriesPerMile" : 100,
         "excludedWorkoutIDs" : [
 
         ],
@@ -10222,10 +10586,16 @@
           {
             "appliedAt" : "2026-09-17T07:00:00Z",
             "day" : "2026-09-17T12:00:00Z",
-            "id" : "C62EA66D-62C6-4E7C-877E-6B22479C598E"
+            "id" : "CDBD52CD-1AAB-4562-AEB7-9E5CC1B7F288"
           }
         ],
-        "paymentMode" : "runs",
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-12T00:00:00Z",
+            "mode" : "runs"
+          }
+        ],
         "rulesHistory" : [
           {
             "effectiveAt" : "2026-09-12T00:00:00Z",
@@ -10468,7 +10838,6 @@
           }
         ],
         "booksOpenedAt" : "2026-09-12T00:00:00Z",
-        "caloriesPerMile" : 100,
         "excludedWorkoutIDs" : [
 
         ],
@@ -10476,10 +10845,16 @@
           {
             "appliedAt" : "2026-09-14T07:00:00Z",
             "day" : "2026-09-14T12:00:00Z",
-            "id" : "5E7FA190-D87D-410A-93F5-F44EBFA19377"
+            "id" : "3E82AC3E-7B61-4E91-929C-4F71888B89FA"
           }
         ],
-        "paymentMode" : "runs",
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-12T00:00:00Z",
+            "mode" : "runs"
+          }
+        ],
         "rulesHistory" : [
           {
             "effectiveAt" : "2026-09-12T00:00:00Z",
@@ -10756,7 +11131,6 @@
           }
         ],
         "booksOpenedAt" : "2026-09-12T00:00:00Z",
-        "caloriesPerMile" : 100,
         "excludedWorkoutIDs" : [
 
         ],
@@ -10764,10 +11138,16 @@
           {
             "appliedAt" : "2026-09-17T07:00:00Z",
             "day" : "2026-09-17T12:00:00Z",
-            "id" : "94CC4F8A-6374-48DA-A7C8-DEF7B49776EE"
+            "id" : "F5A761A8-B9E0-4E97-85D0-F85E3F5F5EAC"
           }
         ],
-        "paymentMode" : "runs",
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-12T00:00:00Z",
+            "mode" : "runs"
+          }
+        ],
         "rulesHistory" : [
           {
             "effectiveAt" : "2026-09-12T00:00:00Z",
@@ -11073,7 +11453,6 @@
           }
         ],
         "booksOpenedAt" : "2026-09-12T00:00:00Z",
-        "caloriesPerMile" : 100,
         "excludedWorkoutIDs" : [
 
         ],
@@ -11081,10 +11460,16 @@
           {
             "appliedAt" : "2026-09-17T07:00:00Z",
             "day" : "2026-09-17T12:00:00Z",
-            "id" : "60B86AFC-4D15-42C9-9F97-263664252F7D"
+            "id" : "658DE413-F4FF-4F9E-855E-8109E6A25F94"
           }
         ],
-        "paymentMode" : "runs",
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-12T00:00:00Z",
+            "mode" : "runs"
+          }
+        ],
         "rulesHistory" : [
           {
             "effectiveAt" : "2026-09-12T00:00:00Z",
@@ -11283,14 +11668,19 @@
           }
         ],
         "booksOpenedAt" : "2026-09-12T20:00:00Z",
-        "caloriesPerMile" : 100,
         "excludedWorkoutIDs" : [
 
         ],
         "freezeApplications" : [
 
         ],
-        "paymentMode" : "runs",
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "mode" : "runs"
+          }
+        ],
         "rulesHistory" : [
           {
             "effectiveAt" : "2026-09-12T20:00:00Z",
@@ -11498,14 +11888,19 @@
           }
         ],
         "booksOpenedAt" : "2026-09-11T20:00:00Z",
-        "caloriesPerMile" : 100,
         "excludedWorkoutIDs" : [
 
         ],
         "freezeApplications" : [
 
         ],
-        "paymentMode" : "runs",
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-11T20:00:00Z",
+            "mode" : "runs"
+          }
+        ],
         "rulesHistory" : [
           {
             "effectiveAt" : "2026-09-11T20:00:00Z",
@@ -11666,14 +12061,19 @@
 
         ],
         "booksOpenedAt" : "2026-09-08T20:00:00Z",
-        "caloriesPerMile" : 100,
         "excludedWorkoutIDs" : [
 
         ],
         "freezeApplications" : [
 
         ],
-        "paymentMode" : "runs",
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-08T20:00:00Z",
+            "mode" : "runs"
+          }
+        ],
         "rulesHistory" : [
           {
             "effectiveAt" : "2026-09-08T20:00:00Z",
@@ -11824,14 +12224,19 @@
 
         ],
         "booksOpenedAt" : "2026-09-08T20:00:00Z",
-        "caloriesPerMile" : 100,
         "excludedWorkoutIDs" : [
 
         ],
         "freezeApplications" : [
 
         ],
-        "paymentMode" : "runs",
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-08T20:00:00Z",
+            "mode" : "runs"
+          }
+        ],
         "rulesHistory" : [
           {
             "effectiveAt" : "2026-09-08T20:00:00Z",
@@ -11940,14 +12345,19 @@
 
         ],
         "booksOpenedAt" : "2026-09-11T20:00:00Z",
-        "caloriesPerMile" : 100,
         "excludedWorkoutIDs" : [
 
         ],
         "freezeApplications" : [
 
         ],
-        "paymentMode" : "runs",
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-11T20:00:00Z",
+            "mode" : "runs"
+          }
+        ],
         "rulesHistory" : [
           {
             "effectiveAt" : "2026-09-11T20:00:00Z",
@@ -12040,14 +12450,19 @@
 
         ],
         "booksOpenedAt" : "2026-09-11T20:00:00Z",
-        "caloriesPerMile" : 100,
         "excludedWorkoutIDs" : [
 
         ],
         "freezeApplications" : [
 
         ],
-        "paymentMode" : "runs",
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-11T20:00:00Z",
+            "mode" : "runs"
+          }
+        ],
         "rulesHistory" : [
           {
             "effectiveAt" : "2026-09-11T20:00:00Z",
@@ -12236,14 +12651,19 @@
           }
         ],
         "booksOpenedAt" : "2026-09-11T20:00:00Z",
-        "caloriesPerMile" : 100,
         "excludedWorkoutIDs" : [
 
         ],
         "freezeApplications" : [
 
         ],
-        "paymentMode" : "runs",
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-11T20:00:00Z",
+            "mode" : "runs"
+          }
+        ],
         "rulesHistory" : [
           {
             "effectiveAt" : "2026-09-11T20:00:00Z",
@@ -12376,14 +12796,19 @@
           }
         ],
         "booksOpenedAt" : "2026-09-12T20:00:00Z",
-        "caloriesPerMile" : 100,
         "excludedWorkoutIDs" : [
 
         ],
         "freezeApplications" : [
 
         ],
-        "paymentMode" : "runs",
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "mode" : "runs"
+          }
+        ],
         "rulesHistory" : [
           {
             "effectiveAt" : "2026-09-12T20:00:00Z",
@@ -12485,14 +12910,19 @@
           }
         ],
         "booksOpenedAt" : "2026-09-12T20:00:00Z",
-        "caloriesPerMile" : 100,
         "excludedWorkoutIDs" : [
 
         ],
         "freezeApplications" : [
 
         ],
-        "paymentMode" : "calories",
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "mode" : "calories"
+          }
+        ],
         "rulesHistory" : [
           {
             "effectiveAt" : "2026-09-12T20:00:00Z",
@@ -12594,14 +13024,19 @@
           }
         ],
         "booksOpenedAt" : "2026-09-12T20:00:00Z",
-        "caloriesPerMile" : 100,
         "excludedWorkoutIDs" : [
 
         ],
         "freezeApplications" : [
 
         ],
-        "paymentMode" : "calories",
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "mode" : "calories"
+          }
+        ],
         "rulesHistory" : [
           {
             "effectiveAt" : "2026-09-12T20:00:00Z",
@@ -12704,14 +13139,19 @@
           }
         ],
         "booksOpenedAt" : "2026-09-12T20:00:00Z",
-        "caloriesPerMile" : 100,
         "excludedWorkoutIDs" : [
 
         ],
         "freezeApplications" : [
 
         ],
-        "paymentMode" : "calories",
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "mode" : "calories"
+          }
+        ],
         "rulesHistory" : [
           {
             "effectiveAt" : "2026-09-12T20:00:00Z",
@@ -12789,14 +13229,19 @@
 
         ],
         "booksOpenedAt" : "2026-09-12T20:00:00Z",
-        "caloriesPerMile" : 100,
         "excludedWorkoutIDs" : [
 
         ],
         "freezeApplications" : [
 
         ],
-        "paymentMode" : "calories",
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "mode" : "calories"
+          }
+        ],
         "rulesHistory" : [
           {
             "effectiveAt" : "2026-09-12T20:00:00Z",
@@ -12834,9 +13279,9 @@
         "balance" : {
           "creditBeers" : 0,
           "creditMiles" : 0,
-          "debtMiles" : 1.61051,
-          "interestMiles" : 0.61051,
-          "interestPerPeriodMiles" : 0.16105100000000003,
+          "debtMiles" : 1,
+          "interestMiles" : 0,
+          "interestPerPeriodMiles" : 0.1,
           "principalMiles" : 1,
           "state" : "debt"
         },
@@ -12860,9 +13305,9 @@
             "coveredByCreditMiles" : 0,
             "createdAt" : "2026-09-12T20:00:00Z",
             "id" : "00000000-0000-4000-8000-000000000209",
-            "interestAccruedMiles" : 0.61051,
-            "interestRemainingMiles" : 0.61051,
-            "nextInterestAt" : "2026-09-18T20:00:00Z",
+            "interestAccruedMiles" : 0,
+            "interestRemainingMiles" : 0,
+            "nextInterestAt" : "2026-09-13T20:00:00Z",
             "number" : 2,
             "paidMiles" : 0,
             "principalMiles" : 1,
@@ -12871,7 +13316,7 @@
           }
         ],
         "creditExpiringThisWeekMiles" : 0,
-        "nextInterestAt" : "2026-09-18T20:00:00Z",
+        "nextInterestAt" : "2026-09-13T20:00:00Z",
         "runs" : [
           {
             "creditEarnedMiles" : 0,
@@ -12883,7 +13328,7 @@
         ],
         "streak" : {
           "canFreezeToday" : false,
-          "currentStreakDays" : 0,
+          "currentStreakDays" : 1,
           "days" : [
             {
               "day" : "2026-09-12T00:00:00Z",
@@ -12892,46 +13337,6 @@
               "miles" : 1,
               "qualifies" : true,
               "streakNumber" : 1
-            },
-            {
-              "day" : "2026-09-13T00:00:00Z",
-              "frozen" : false,
-              "interestProtected" : false,
-              "miles" : 0,
-              "qualifies" : false,
-              "streakNumber" : 0
-            },
-            {
-              "day" : "2026-09-14T00:00:00Z",
-              "frozen" : false,
-              "interestProtected" : false,
-              "miles" : 0,
-              "qualifies" : false,
-              "streakNumber" : 0
-            },
-            {
-              "day" : "2026-09-15T00:00:00Z",
-              "frozen" : false,
-              "interestProtected" : false,
-              "miles" : 0,
-              "qualifies" : false,
-              "streakNumber" : 0
-            },
-            {
-              "day" : "2026-09-16T00:00:00Z",
-              "frozen" : false,
-              "interestProtected" : false,
-              "miles" : 0,
-              "qualifies" : false,
-              "streakNumber" : 0
-            },
-            {
-              "day" : "2026-09-17T00:00:00Z",
-              "frozen" : false,
-              "interestProtected" : false,
-              "miles" : 0,
-              "qualifies" : false,
-              "streakNumber" : 0
             }
           ],
           "freezeProgressDays" : 1,
@@ -12939,9 +13344,9 @@
           "interestProtectionActive" : false,
           "longestStreakDays" : 1,
           "todayFrozen" : false,
-          "todayMiles" : 0,
+          "todayMiles" : 1,
           "todayProtected" : false,
-          "todayQualifies" : false,
+          "todayQualifies" : true,
           "totalQualifyingDays" : 1
         }
       },
@@ -12957,19 +13362,29 @@
           }
         ],
         "booksOpenedAt" : "2026-09-12T20:00:00Z",
-        "caloriesPerMile" : 100,
         "excludedWorkoutIDs" : [
 
         ],
         "freezeApplications" : [
 
         ],
-        "paymentMode" : "runs",
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "mode" : "calories"
+          },
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-12T22:00:00Z",
+            "mode" : "runs"
+          }
+        ],
         "rulesHistory" : [
           {
             "effectiveAt" : "2026-09-12T20:00:00Z",
             "rules" : {
-              "creditDecayRatePerWeek" : 0.1,
+              "creditDecayRatePerWeek" : 0,
               "gracePeriod" : 86400,
               "interestPeriod" : "daily",
               "interestRate" : 0.1,
@@ -12981,178 +13396,102 @@
         ],
         "runs" : [
           {
-            "distanceMeters" : 1609.344,
+            "activeEnergyKcal" : 100,
+            "activityType" : 13,
+            "distanceMeters" : 0,
             "endedAt" : "2026-09-12T21:00:00Z",
             "healthKitWorkoutID" : "00000000-0000-4000-8000-000000000211",
             "id" : "00000000-0000-4000-8000-000000000210",
             "importedAt" : "2026-09-12T21:00:00Z",
             "sourceName" : "Fixture",
-            "startedAt" : "2026-09-12T20:30:00Z"
-          },
-          {
-            "activeEnergyKcal" : 100,
-            "activityType" : 13,
-            "distanceMeters" : 0,
-            "endedAt" : "2026-09-12T22:00:00Z",
-            "healthKitWorkoutID" : "00000000-0000-4000-8000-000000000213",
-            "id" : "00000000-0000-4000-8000-000000000212",
-            "importedAt" : "2026-09-12T22:00:00Z",
-            "sourceName" : "Fixture",
-            "startedAt" : "2026-09-12T21:15:00Z"
+            "startedAt" : "2026-09-12T20:15:00Z"
           }
         ],
         "version" : 1
       },
-      "name" : "calories: switching replays history (runs)",
-      "now" : "2026-09-17T20:00:00Z"
+      "name" : "calories: a ride paid in calories stays paid after switching to runs",
+      "now" : "2026-09-12T23:00:00Z"
     },
     {
       "expected" : {
         "balance" : {
           "creditBeers" : 0,
           "creditMiles" : 0,
-          "debtMiles" : 0,
+          "debtMiles" : 1,
           "interestMiles" : 0,
-          "interestPerPeriodMiles" : 0,
-          "principalMiles" : 0,
-          "state" : "even"
+          "interestPerPeriodMiles" : 0.1,
+          "principalMiles" : 1,
+          "state" : "debt"
         },
         "beers" : [
           {
             "costMiles" : 1,
             "coveredByCreditMiles" : 0,
             "createdAt" : "2026-09-12T20:00:00Z",
-            "id" : "00000000-0000-4000-8000-000000000208",
+            "id" : "00000000-0000-4000-8000-000000000212",
             "interestAccruedMiles" : 0,
             "interestRemainingMiles" : 0,
+            "nextInterestAt" : "2026-09-13T20:00:00Z",
             "number" : 1,
-            "paidAt" : "2026-09-12T21:00:00Z",
-            "paidMiles" : 1,
+            "paidMiles" : 0,
             "principalMiles" : 1,
-            "principalRemainingMiles" : 0,
-            "writtenOffMiles" : 0
-          },
-          {
-            "costMiles" : 1,
-            "coveredByCreditMiles" : 0,
-            "createdAt" : "2026-09-12T20:00:00Z",
-            "id" : "00000000-0000-4000-8000-000000000209",
-            "interestAccruedMiles" : 0,
-            "interestRemainingMiles" : 0,
-            "number" : 2,
-            "paidAt" : "2026-09-12T22:00:00Z",
-            "paidMiles" : 1,
-            "principalMiles" : 1,
-            "principalRemainingMiles" : 0,
+            "principalRemainingMiles" : 1,
             "writtenOffMiles" : 0
           }
         ],
         "creditExpiringThisWeekMiles" : 0,
+        "nextInterestAt" : "2026-09-13T20:00:00Z",
         "runs" : [
-          {
-            "creditEarnedMiles" : 0,
-            "debtPaidMiles" : 1,
-            "discardedMiles" : 0,
-            "id" : "00000000-0000-4000-8000-000000000210",
-            "ignored" : false
-          },
-          {
-            "creditEarnedMiles" : 0,
-            "debtPaidMiles" : 1,
-            "discardedMiles" : 0,
-            "id" : "00000000-0000-4000-8000-000000000212",
-            "ignored" : false
-          }
+
         ],
         "streak" : {
           "canFreezeToday" : false,
           "currentStreakDays" : 0,
           "days" : [
-            {
-              "day" : "2026-09-12T00:00:00Z",
-              "frozen" : false,
-              "interestProtected" : false,
-              "miles" : 2,
-              "qualifies" : true,
-              "streakNumber" : 1
-            },
-            {
-              "day" : "2026-09-13T00:00:00Z",
-              "frozen" : false,
-              "interestProtected" : false,
-              "miles" : 0,
-              "qualifies" : false,
-              "streakNumber" : 0
-            },
-            {
-              "day" : "2026-09-14T00:00:00Z",
-              "frozen" : false,
-              "interestProtected" : false,
-              "miles" : 0,
-              "qualifies" : false,
-              "streakNumber" : 0
-            },
-            {
-              "day" : "2026-09-15T00:00:00Z",
-              "frozen" : false,
-              "interestProtected" : false,
-              "miles" : 0,
-              "qualifies" : false,
-              "streakNumber" : 0
-            },
-            {
-              "day" : "2026-09-16T00:00:00Z",
-              "frozen" : false,
-              "interestProtected" : false,
-              "miles" : 0,
-              "qualifies" : false,
-              "streakNumber" : 0
-            },
-            {
-              "day" : "2026-09-17T00:00:00Z",
-              "frozen" : false,
-              "interestProtected" : false,
-              "miles" : 0,
-              "qualifies" : false,
-              "streakNumber" : 0
-            }
+
           ],
-          "freezeProgressDays" : 1,
+          "freezeProgressDays" : 0,
           "freezesHeld" : 0,
           "interestProtectionActive" : false,
-          "longestStreakDays" : 1,
+          "longestStreakDays" : 0,
           "todayFrozen" : false,
           "todayMiles" : 0,
           "todayProtected" : false,
           "todayQualifies" : false,
-          "totalQualifyingDays" : 1
+          "totalQualifyingDays" : 0
         }
       },
       "ledger" : {
         "beers" : [
           {
             "createdAt" : "2026-09-12T20:00:00Z",
-            "id" : "00000000-0000-4000-8000-000000000208"
-          },
-          {
-            "createdAt" : "2026-09-12T20:00:00Z",
-            "id" : "00000000-0000-4000-8000-000000000209"
+            "id" : "00000000-0000-4000-8000-000000000212"
           }
         ],
         "booksOpenedAt" : "2026-09-12T20:00:00Z",
-        "caloriesPerMile" : 100,
         "excludedWorkoutIDs" : [
 
         ],
         "freezeApplications" : [
 
         ],
-        "paymentMode" : "calories",
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "mode" : "calories"
+          },
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-12T22:00:00Z",
+            "mode" : "runs"
+          }
+        ],
         "rulesHistory" : [
           {
             "effectiveAt" : "2026-09-12T20:00:00Z",
             "rules" : {
-              "creditDecayRatePerWeek" : 0.1,
+              "creditDecayRatePerWeek" : 0,
               "gracePeriod" : 86400,
               "interestPeriod" : "daily",
               "interestRate" : 0.1,
@@ -13164,30 +13503,128 @@
         ],
         "runs" : [
           {
-            "distanceMeters" : 1609.344,
-            "endedAt" : "2026-09-12T21:00:00Z",
-            "healthKitWorkoutID" : "00000000-0000-4000-8000-000000000211",
-            "id" : "00000000-0000-4000-8000-000000000210",
-            "importedAt" : "2026-09-12T21:00:00Z",
-            "sourceName" : "Fixture",
-            "startedAt" : "2026-09-12T20:30:00Z"
-          },
-          {
-            "activeEnergyKcal" : 100,
+            "activeEnergyKcal" : 300,
             "activityType" : 13,
             "distanceMeters" : 0,
-            "endedAt" : "2026-09-12T22:00:00Z",
-            "healthKitWorkoutID" : "00000000-0000-4000-8000-000000000213",
-            "id" : "00000000-0000-4000-8000-000000000212",
-            "importedAt" : "2026-09-12T22:00:00Z",
+            "endedAt" : "2026-09-12T23:00:00Z",
+            "healthKitWorkoutID" : "00000000-0000-4000-8000-000000000214",
+            "id" : "00000000-0000-4000-8000-000000000213",
+            "importedAt" : "2026-09-12T23:00:00Z",
             "sourceName" : "Fixture",
-            "startedAt" : "2026-09-12T21:15:00Z"
+            "startedAt" : "2026-09-12T22:15:00Z"
           }
         ],
         "version" : 1
       },
-      "name" : "calories: switching replays history (calories)",
-      "now" : "2026-09-17T20:00:00Z"
+      "name" : "calories: a ride after switching to runs pays nothing",
+      "now" : "2026-09-13T00:00:00Z"
+    },
+    {
+      "expected" : {
+        "balance" : {
+          "creditBeers" : 0,
+          "creditMiles" : 0,
+          "debtMiles" : 1,
+          "interestMiles" : 0,
+          "interestPerPeriodMiles" : 0.1,
+          "principalMiles" : 1,
+          "state" : "debt"
+        },
+        "beers" : [
+          {
+            "costMiles" : 1,
+            "coveredByCreditMiles" : 0,
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000215",
+            "interestAccruedMiles" : 0,
+            "interestRemainingMiles" : 0,
+            "nextInterestAt" : "2026-09-13T20:00:00Z",
+            "number" : 1,
+            "paidMiles" : 0,
+            "principalMiles" : 1,
+            "principalRemainingMiles" : 1,
+            "writtenOffMiles" : 0
+          }
+        ],
+        "creditExpiringThisWeekMiles" : 0,
+        "nextInterestAt" : "2026-09-13T20:00:00Z",
+        "runs" : [
+
+        ],
+        "streak" : {
+          "canFreezeToday" : false,
+          "currentStreakDays" : 0,
+          "days" : [
+
+          ],
+          "freezeProgressDays" : 0,
+          "freezesHeld" : 0,
+          "interestProtectionActive" : false,
+          "longestStreakDays" : 0,
+          "todayFrozen" : false,
+          "todayMiles" : 0,
+          "todayProtected" : false,
+          "todayQualifies" : false,
+          "totalQualifyingDays" : 0
+        }
+      },
+      "ledger" : {
+        "beers" : [
+          {
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000215"
+          }
+        ],
+        "booksOpenedAt" : "2026-09-12T20:00:00Z",
+        "excludedWorkoutIDs" : [
+
+        ],
+        "freezeApplications" : [
+
+        ],
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "mode" : "runs"
+          },
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-12T22:00:00Z",
+            "mode" : "calories"
+          }
+        ],
+        "rulesHistory" : [
+          {
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "rules" : {
+              "creditDecayRatePerWeek" : 0,
+              "gracePeriod" : 86400,
+              "interestPeriod" : "daily",
+              "interestRate" : 0.1,
+              "maximumCreditBeers" : 3,
+              "milesPerBeer" : 1,
+              "streakProtection" : true
+            }
+          }
+        ],
+        "runs" : [
+          {
+            "activeEnergyKcal" : 300,
+            "activityType" : 13,
+            "distanceMeters" : 0,
+            "endedAt" : "2026-09-12T21:00:00Z",
+            "healthKitWorkoutID" : "00000000-0000-4000-8000-000000000217",
+            "id" : "00000000-0000-4000-8000-000000000216",
+            "importedAt" : "2026-09-12T21:00:00Z",
+            "sourceName" : "Fixture",
+            "startedAt" : "2026-09-12T20:15:00Z"
+          }
+        ],
+        "version" : 1
+      },
+      "name" : "calories: a ride before switching to calories never pays",
+      "now" : "2026-09-12T23:00:00Z"
     },
     {
       "expected" : {
@@ -13205,7 +13642,7 @@
             "costMiles" : 1,
             "coveredByCreditMiles" : 0,
             "createdAt" : "2026-09-12T20:00:00Z",
-            "id" : "00000000-0000-4000-8000-000000000214",
+            "id" : "00000000-0000-4000-8000-000000000218",
             "interestAccruedMiles" : 0,
             "interestRemainingMiles" : 0,
             "number" : 1,
@@ -13219,7 +13656,189 @@
             "costMiles" : 1,
             "coveredByCreditMiles" : 0,
             "createdAt" : "2026-09-12T20:00:00Z",
-            "id" : "00000000-0000-4000-8000-000000000215",
+            "id" : "00000000-0000-4000-8000-000000000219",
+            "interestAccruedMiles" : 0,
+            "interestRemainingMiles" : 0,
+            "number" : 2,
+            "paidAt" : "2026-09-12T23:00:00Z",
+            "paidMiles" : 1,
+            "principalMiles" : 1,
+            "principalRemainingMiles" : 0,
+            "writtenOffMiles" : 0
+          },
+          {
+            "costMiles" : 1,
+            "coveredByCreditMiles" : 0,
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000220",
+            "interestAccruedMiles" : 0,
+            "interestRemainingMiles" : 0,
+            "nextInterestAt" : "2026-09-13T20:00:00Z",
+            "number" : 3,
+            "paidMiles" : 0.5,
+            "principalMiles" : 1,
+            "principalRemainingMiles" : 0.5,
+            "writtenOffMiles" : 0
+          }
+        ],
+        "creditExpiringThisWeekMiles" : 0,
+        "nextInterestAt" : "2026-09-13T20:00:00Z",
+        "runs" : [
+          {
+            "creditEarnedMiles" : 0,
+            "debtPaidMiles" : 1.5,
+            "discardedMiles" : 0,
+            "id" : "00000000-0000-4000-8000-000000000221",
+            "ignored" : false
+          },
+          {
+            "creditEarnedMiles" : 0,
+            "debtPaidMiles" : 1,
+            "discardedMiles" : 0,
+            "id" : "00000000-0000-4000-8000-000000000223",
+            "ignored" : false
+          }
+        ],
+        "streak" : {
+          "canFreezeToday" : false,
+          "currentStreakDays" : 1,
+          "days" : [
+            {
+              "day" : "2026-09-12T00:00:00Z",
+              "frozen" : false,
+              "interestProtected" : false,
+              "miles" : 2.5,
+              "qualifies" : true,
+              "streakNumber" : 1
+            },
+            {
+              "day" : "2026-09-13T00:00:00Z",
+              "frozen" : false,
+              "interestProtected" : false,
+              "miles" : 0,
+              "qualifies" : false,
+              "streakNumber" : 0
+            }
+          ],
+          "freezeProgressDays" : 1,
+          "freezesHeld" : 0,
+          "interestProtectionActive" : false,
+          "longestStreakDays" : 1,
+          "todayFrozen" : false,
+          "todayMiles" : 0,
+          "todayProtected" : false,
+          "todayQualifies" : false,
+          "totalQualifyingDays" : 1
+        }
+      },
+      "ledger" : {
+        "beers" : [
+          {
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000218"
+          },
+          {
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000219"
+          },
+          {
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000220"
+          }
+        ],
+        "booksOpenedAt" : "2026-09-12T20:00:00Z",
+        "excludedWorkoutIDs" : [
+
+        ],
+        "freezeApplications" : [
+
+        ],
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "mode" : "calories"
+          },
+          {
+            "caloriesPerMile" : 150,
+            "effectiveAt" : "2026-09-12T22:00:00Z",
+            "mode" : "calories"
+          }
+        ],
+        "rulesHistory" : [
+          {
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "rules" : {
+              "creditDecayRatePerWeek" : 0,
+              "gracePeriod" : 86400,
+              "interestPeriod" : "daily",
+              "interestRate" : 0.1,
+              "maximumCreditBeers" : 3,
+              "milesPerBeer" : 1,
+              "streakProtection" : true
+            }
+          }
+        ],
+        "runs" : [
+          {
+            "activeEnergyKcal" : 150,
+            "activityType" : 13,
+            "distanceMeters" : 0,
+            "endedAt" : "2026-09-12T21:00:00Z",
+            "healthKitWorkoutID" : "00000000-0000-4000-8000-000000000222",
+            "id" : "00000000-0000-4000-8000-000000000221",
+            "importedAt" : "2026-09-12T21:00:00Z",
+            "sourceName" : "Fixture",
+            "startedAt" : "2026-09-12T20:15:00Z"
+          },
+          {
+            "activeEnergyKcal" : 150,
+            "activityType" : 13,
+            "distanceMeters" : 0,
+            "endedAt" : "2026-09-12T23:00:00Z",
+            "healthKitWorkoutID" : "00000000-0000-4000-8000-000000000224",
+            "id" : "00000000-0000-4000-8000-000000000223",
+            "importedAt" : "2026-09-12T23:00:00Z",
+            "sourceName" : "Fixture",
+            "startedAt" : "2026-09-12T22:15:00Z"
+          }
+        ],
+        "version" : 1
+      },
+      "name" : "calories: a rate change is forward-only",
+      "now" : "2026-09-13T00:00:00Z"
+    },
+    {
+      "expected" : {
+        "balance" : {
+          "creditBeers" : 0,
+          "creditMiles" : 0,
+          "debtMiles" : 0.5,
+          "interestMiles" : 0,
+          "interestPerPeriodMiles" : 0.05,
+          "principalMiles" : 0.5,
+          "state" : "debt"
+        },
+        "beers" : [
+          {
+            "costMiles" : 1,
+            "coveredByCreditMiles" : 0,
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000225",
+            "interestAccruedMiles" : 0,
+            "interestRemainingMiles" : 0,
+            "number" : 1,
+            "paidAt" : "2026-09-12T21:00:00Z",
+            "paidMiles" : 1,
+            "principalMiles" : 1,
+            "principalRemainingMiles" : 0,
+            "writtenOffMiles" : 0
+          },
+          {
+            "costMiles" : 1,
+            "coveredByCreditMiles" : 0,
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000226",
             "interestAccruedMiles" : 0,
             "interestRemainingMiles" : 0,
             "number" : 2,
@@ -13233,7 +13852,7 @@
             "costMiles" : 1,
             "coveredByCreditMiles" : 0,
             "createdAt" : "2026-09-12T20:00:00Z",
-            "id" : "00000000-0000-4000-8000-000000000216",
+            "id" : "00000000-0000-4000-8000-000000000227",
             "interestAccruedMiles" : 0,
             "interestRemainingMiles" : 0,
             "nextInterestAt" : "2026-09-13T20:00:00Z",
@@ -13251,14 +13870,14 @@
             "creditEarnedMiles" : 0,
             "debtPaidMiles" : 1,
             "discardedMiles" : 0,
-            "id" : "00000000-0000-4000-8000-000000000217",
+            "id" : "00000000-0000-4000-8000-000000000228",
             "ignored" : false
           },
           {
             "creditEarnedMiles" : 0,
             "debtPaidMiles" : 1.5,
             "discardedMiles" : 0,
-            "id" : "00000000-0000-4000-8000-000000000219",
+            "id" : "00000000-0000-4000-8000-000000000230",
             "ignored" : false
           }
         ],
@@ -13290,26 +13909,31 @@
         "beers" : [
           {
             "createdAt" : "2026-09-12T20:00:00Z",
-            "id" : "00000000-0000-4000-8000-000000000214"
+            "id" : "00000000-0000-4000-8000-000000000225"
           },
           {
             "createdAt" : "2026-09-12T20:00:00Z",
-            "id" : "00000000-0000-4000-8000-000000000215"
+            "id" : "00000000-0000-4000-8000-000000000226"
           },
           {
             "createdAt" : "2026-09-12T20:00:00Z",
-            "id" : "00000000-0000-4000-8000-000000000216"
+            "id" : "00000000-0000-4000-8000-000000000227"
           }
         ],
         "booksOpenedAt" : "2026-09-12T20:00:00Z",
-        "caloriesPerMile" : 100,
         "excludedWorkoutIDs" : [
 
         ],
         "freezeApplications" : [
 
         ],
-        "paymentMode" : "calories",
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "mode" : "calories"
+          }
+        ],
         "rulesHistory" : [
           {
             "effectiveAt" : "2026-09-12T20:00:00Z",
@@ -13328,8 +13952,8 @@
           {
             "distanceMeters" : 1609.344,
             "endedAt" : "2026-09-12T21:00:00Z",
-            "healthKitWorkoutID" : "00000000-0000-4000-8000-000000000218",
-            "id" : "00000000-0000-4000-8000-000000000217",
+            "healthKitWorkoutID" : "00000000-0000-4000-8000-000000000229",
+            "id" : "00000000-0000-4000-8000-000000000228",
             "importedAt" : "2026-09-12T21:00:00Z",
             "sourceName" : "Fixture",
             "startedAt" : "2026-09-12T20:30:00Z"
@@ -13339,8 +13963,8 @@
             "activityType" : 13,
             "distanceMeters" : 0,
             "endedAt" : "2026-09-12T22:00:00Z",
-            "healthKitWorkoutID" : "00000000-0000-4000-8000-000000000220",
-            "id" : "00000000-0000-4000-8000-000000000219",
+            "healthKitWorkoutID" : "00000000-0000-4000-8000-000000000231",
+            "id" : "00000000-0000-4000-8000-000000000230",
             "importedAt" : "2026-09-12T22:00:00Z",
             "sourceName" : "Fixture",
             "startedAt" : "2026-09-12T21:15:00Z"
@@ -13367,7 +13991,7 @@
             "costMiles" : 1,
             "coveredByCreditMiles" : 0,
             "createdAt" : "2026-09-12T20:00:00Z",
-            "id" : "00000000-0000-4000-8000-000000000214",
+            "id" : "00000000-0000-4000-8000-000000000225",
             "interestAccruedMiles" : 0,
             "interestRemainingMiles" : 0,
             "number" : 1,
@@ -13381,7 +14005,7 @@
             "costMiles" : 1,
             "coveredByCreditMiles" : 0,
             "createdAt" : "2026-09-12T20:00:00Z",
-            "id" : "00000000-0000-4000-8000-000000000215",
+            "id" : "00000000-0000-4000-8000-000000000226",
             "interestAccruedMiles" : 0,
             "interestRemainingMiles" : 0,
             "number" : 2,
@@ -13395,7 +14019,7 @@
             "costMiles" : 1,
             "coveredByCreditMiles" : 0,
             "createdAt" : "2026-09-12T20:00:00Z",
-            "id" : "00000000-0000-4000-8000-000000000216",
+            "id" : "00000000-0000-4000-8000-000000000227",
             "interestAccruedMiles" : 0,
             "interestRemainingMiles" : 0,
             "nextInterestAt" : "2026-09-13T20:00:00Z",
@@ -13413,14 +14037,14 @@
             "creditEarnedMiles" : 0,
             "debtPaidMiles" : 1,
             "discardedMiles" : 0,
-            "id" : "00000000-0000-4000-8000-000000000217",
+            "id" : "00000000-0000-4000-8000-000000000228",
             "ignored" : false
           },
           {
             "creditEarnedMiles" : 0,
             "debtPaidMiles" : 1,
             "discardedMiles" : 0,
-            "id" : "00000000-0000-4000-8000-000000000219",
+            "id" : "00000000-0000-4000-8000-000000000230",
             "ignored" : false
           }
         ],
@@ -13452,26 +14076,31 @@
         "beers" : [
           {
             "createdAt" : "2026-09-12T20:00:00Z",
-            "id" : "00000000-0000-4000-8000-000000000214"
+            "id" : "00000000-0000-4000-8000-000000000225"
           },
           {
             "createdAt" : "2026-09-12T20:00:00Z",
-            "id" : "00000000-0000-4000-8000-000000000215"
+            "id" : "00000000-0000-4000-8000-000000000226"
           },
           {
             "createdAt" : "2026-09-12T20:00:00Z",
-            "id" : "00000000-0000-4000-8000-000000000216"
+            "id" : "00000000-0000-4000-8000-000000000227"
           }
         ],
         "booksOpenedAt" : "2026-09-12T20:00:00Z",
-        "caloriesPerMile" : 150,
         "excludedWorkoutIDs" : [
 
         ],
         "freezeApplications" : [
 
         ],
-        "paymentMode" : "calories",
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 150,
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "mode" : "calories"
+          }
+        ],
         "rulesHistory" : [
           {
             "effectiveAt" : "2026-09-12T20:00:00Z",
@@ -13490,8 +14119,8 @@
           {
             "distanceMeters" : 1609.344,
             "endedAt" : "2026-09-12T21:00:00Z",
-            "healthKitWorkoutID" : "00000000-0000-4000-8000-000000000218",
-            "id" : "00000000-0000-4000-8000-000000000217",
+            "healthKitWorkoutID" : "00000000-0000-4000-8000-000000000229",
+            "id" : "00000000-0000-4000-8000-000000000228",
             "importedAt" : "2026-09-12T21:00:00Z",
             "sourceName" : "Fixture",
             "startedAt" : "2026-09-12T20:30:00Z"
@@ -13501,8 +14130,8 @@
             "activityType" : 13,
             "distanceMeters" : 0,
             "endedAt" : "2026-09-12T22:00:00Z",
-            "healthKitWorkoutID" : "00000000-0000-4000-8000-000000000220",
-            "id" : "00000000-0000-4000-8000-000000000219",
+            "healthKitWorkoutID" : "00000000-0000-4000-8000-000000000231",
+            "id" : "00000000-0000-4000-8000-000000000230",
             "importedAt" : "2026-09-12T22:00:00Z",
             "sourceName" : "Fixture",
             "startedAt" : "2026-09-12T21:15:00Z"
@@ -13529,7 +14158,7 @@
             "costMiles" : 1,
             "coveredByCreditMiles" : 0,
             "createdAt" : "2026-09-12T20:00:00Z",
-            "id" : "00000000-0000-4000-8000-000000000221",
+            "id" : "00000000-0000-4000-8000-000000000232",
             "interestAccruedMiles" : 0,
             "interestRemainingMiles" : 0,
             "number" : 1,
@@ -13543,7 +14172,7 @@
             "costMiles" : 1,
             "coveredByCreditMiles" : 0,
             "createdAt" : "2026-09-12T20:00:00Z",
-            "id" : "00000000-0000-4000-8000-000000000222",
+            "id" : "00000000-0000-4000-8000-000000000233",
             "interestAccruedMiles" : 0.21000000000000002,
             "interestRemainingMiles" : 0.21000000000000002,
             "nextInterestAt" : "2026-09-15T20:00:00Z",
@@ -13557,7 +14186,7 @@
             "costMiles" : 1,
             "coveredByCreditMiles" : 0,
             "createdAt" : "2026-09-12T20:00:00Z",
-            "id" : "00000000-0000-4000-8000-000000000223",
+            "id" : "00000000-0000-4000-8000-000000000234",
             "interestAccruedMiles" : 0.21000000000000002,
             "interestRemainingMiles" : 0.21000000000000002,
             "nextInterestAt" : "2026-09-15T20:00:00Z",
@@ -13571,7 +14200,7 @@
             "costMiles" : 1,
             "coveredByCreditMiles" : 0,
             "createdAt" : "2026-09-12T20:00:00Z",
-            "id" : "00000000-0000-4000-8000-000000000224",
+            "id" : "00000000-0000-4000-8000-000000000235",
             "interestAccruedMiles" : 0.21000000000000002,
             "interestRemainingMiles" : 0.21000000000000002,
             "nextInterestAt" : "2026-09-15T20:00:00Z",
@@ -13585,7 +14214,7 @@
             "costMiles" : 1,
             "coveredByCreditMiles" : 0,
             "createdAt" : "2026-09-12T20:00:00Z",
-            "id" : "00000000-0000-4000-8000-000000000225",
+            "id" : "00000000-0000-4000-8000-000000000236",
             "interestAccruedMiles" : 0.21000000000000002,
             "interestRemainingMiles" : 0.21000000000000002,
             "nextInterestAt" : "2026-09-15T20:00:00Z",
@@ -13603,7 +14232,7 @@
             "creditEarnedMiles" : 0,
             "debtPaidMiles" : 1,
             "discardedMiles" : 0,
-            "id" : "00000000-0000-4000-8000-000000000226",
+            "id" : "00000000-0000-4000-8000-000000000237",
             "ignored" : false
           }
         ],
@@ -13643,34 +14272,39 @@
         "beers" : [
           {
             "createdAt" : "2026-09-12T20:00:00Z",
-            "id" : "00000000-0000-4000-8000-000000000221"
+            "id" : "00000000-0000-4000-8000-000000000232"
           },
           {
             "createdAt" : "2026-09-12T20:00:00Z",
-            "id" : "00000000-0000-4000-8000-000000000222"
+            "id" : "00000000-0000-4000-8000-000000000233"
           },
           {
             "createdAt" : "2026-09-12T20:00:00Z",
-            "id" : "00000000-0000-4000-8000-000000000223"
+            "id" : "00000000-0000-4000-8000-000000000234"
           },
           {
             "createdAt" : "2026-09-12T20:00:00Z",
-            "id" : "00000000-0000-4000-8000-000000000224"
+            "id" : "00000000-0000-4000-8000-000000000235"
           },
           {
             "createdAt" : "2026-09-12T20:00:00Z",
-            "id" : "00000000-0000-4000-8000-000000000225"
+            "id" : "00000000-0000-4000-8000-000000000236"
           }
         ],
         "booksOpenedAt" : "2026-09-12T20:00:00Z",
-        "caloriesPerMile" : 100,
         "excludedWorkoutIDs" : [
 
         ],
         "freezeApplications" : [
 
         ],
-        "paymentMode" : "runs",
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "mode" : "runs"
+          }
+        ],
         "rulesHistory" : [
           {
             "effectiveAt" : "2026-09-12T20:00:00Z",
@@ -13689,8 +14323,8 @@
           {
             "distanceMeters" : 1609.344,
             "endedAt" : "2026-09-13T07:00:00Z",
-            "healthKitWorkoutID" : "00000000-0000-4000-8000-000000000227",
-            "id" : "00000000-0000-4000-8000-000000000226",
+            "healthKitWorkoutID" : "00000000-0000-4000-8000-000000000238",
+            "id" : "00000000-0000-4000-8000-000000000237",
             "importedAt" : "2026-09-13T07:00:00Z",
             "sourceName" : "Fixture",
             "startedAt" : "2026-09-13T06:30:00Z"
@@ -13700,8 +14334,8 @@
             "activityType" : 13,
             "distanceMeters" : 0,
             "endedAt" : "2026-09-14T07:00:00Z",
-            "healthKitWorkoutID" : "00000000-0000-4000-8000-000000000229",
-            "id" : "00000000-0000-4000-8000-000000000228",
+            "healthKitWorkoutID" : "00000000-0000-4000-8000-000000000240",
+            "id" : "00000000-0000-4000-8000-000000000239",
             "importedAt" : "2026-09-14T07:00:00Z",
             "sourceName" : "Fixture",
             "startedAt" : "2026-09-14T06:15:00Z"
@@ -13728,7 +14362,7 @@
             "costMiles" : 1,
             "coveredByCreditMiles" : 0,
             "createdAt" : "2026-09-12T20:00:00Z",
-            "id" : "00000000-0000-4000-8000-000000000221",
+            "id" : "00000000-0000-4000-8000-000000000232",
             "interestAccruedMiles" : 0,
             "interestRemainingMiles" : 0,
             "number" : 1,
@@ -13742,7 +14376,7 @@
             "costMiles" : 1,
             "coveredByCreditMiles" : 0,
             "createdAt" : "2026-09-12T20:00:00Z",
-            "id" : "00000000-0000-4000-8000-000000000222",
+            "id" : "00000000-0000-4000-8000-000000000233",
             "interestAccruedMiles" : 0.1,
             "interestRemainingMiles" : 0,
             "number" : 2,
@@ -13756,7 +14390,7 @@
             "costMiles" : 1,
             "coveredByCreditMiles" : 0,
             "createdAt" : "2026-09-12T20:00:00Z",
-            "id" : "00000000-0000-4000-8000-000000000223",
+            "id" : "00000000-0000-4000-8000-000000000234",
             "interestAccruedMiles" : 0.1,
             "interestRemainingMiles" : 1.3877787807814457e-16,
             "nextInterestAt" : "2026-09-15T20:00:00Z",
@@ -13770,7 +14404,7 @@
             "costMiles" : 1,
             "coveredByCreditMiles" : 0,
             "createdAt" : "2026-09-12T20:00:00Z",
-            "id" : "00000000-0000-4000-8000-000000000224",
+            "id" : "00000000-0000-4000-8000-000000000235",
             "interestAccruedMiles" : 0.1,
             "interestRemainingMiles" : 0.1,
             "nextInterestAt" : "2026-09-15T20:00:00Z",
@@ -13784,7 +14418,7 @@
             "costMiles" : 1,
             "coveredByCreditMiles" : 0,
             "createdAt" : "2026-09-12T20:00:00Z",
-            "id" : "00000000-0000-4000-8000-000000000225",
+            "id" : "00000000-0000-4000-8000-000000000236",
             "interestAccruedMiles" : 0.1,
             "interestRemainingMiles" : 0.1,
             "nextInterestAt" : "2026-09-15T20:00:00Z",
@@ -13802,7 +14436,7 @@
             "creditEarnedMiles" : 0,
             "debtPaidMiles" : 1,
             "discardedMiles" : 0,
-            "id" : "00000000-0000-4000-8000-000000000226",
+            "id" : "00000000-0000-4000-8000-000000000237",
             "ignored" : false,
             "streakDayNumber" : 1
           },
@@ -13810,7 +14444,7 @@
             "creditEarnedMiles" : 0,
             "debtPaidMiles" : 1.2,
             "discardedMiles" : 0,
-            "id" : "00000000-0000-4000-8000-000000000228",
+            "id" : "00000000-0000-4000-8000-000000000239",
             "ignored" : false,
             "streakDayNumber" : 2
           }
@@ -13851,34 +14485,39 @@
         "beers" : [
           {
             "createdAt" : "2026-09-12T20:00:00Z",
-            "id" : "00000000-0000-4000-8000-000000000221"
+            "id" : "00000000-0000-4000-8000-000000000232"
           },
           {
             "createdAt" : "2026-09-12T20:00:00Z",
-            "id" : "00000000-0000-4000-8000-000000000222"
+            "id" : "00000000-0000-4000-8000-000000000233"
           },
           {
             "createdAt" : "2026-09-12T20:00:00Z",
-            "id" : "00000000-0000-4000-8000-000000000223"
+            "id" : "00000000-0000-4000-8000-000000000234"
           },
           {
             "createdAt" : "2026-09-12T20:00:00Z",
-            "id" : "00000000-0000-4000-8000-000000000224"
+            "id" : "00000000-0000-4000-8000-000000000235"
           },
           {
             "createdAt" : "2026-09-12T20:00:00Z",
-            "id" : "00000000-0000-4000-8000-000000000225"
+            "id" : "00000000-0000-4000-8000-000000000236"
           }
         ],
         "booksOpenedAt" : "2026-09-12T20:00:00Z",
-        "caloriesPerMile" : 100,
         "excludedWorkoutIDs" : [
 
         ],
         "freezeApplications" : [
 
         ],
-        "paymentMode" : "calories",
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "mode" : "calories"
+          }
+        ],
         "rulesHistory" : [
           {
             "effectiveAt" : "2026-09-12T20:00:00Z",
@@ -13897,8 +14536,8 @@
           {
             "distanceMeters" : 1609.344,
             "endedAt" : "2026-09-13T07:00:00Z",
-            "healthKitWorkoutID" : "00000000-0000-4000-8000-000000000227",
-            "id" : "00000000-0000-4000-8000-000000000226",
+            "healthKitWorkoutID" : "00000000-0000-4000-8000-000000000238",
+            "id" : "00000000-0000-4000-8000-000000000237",
             "importedAt" : "2026-09-13T07:00:00Z",
             "sourceName" : "Fixture",
             "startedAt" : "2026-09-13T06:30:00Z"
@@ -13908,8 +14547,8 @@
             "activityType" : 13,
             "distanceMeters" : 0,
             "endedAt" : "2026-09-14T07:00:00Z",
-            "healthKitWorkoutID" : "00000000-0000-4000-8000-000000000229",
-            "id" : "00000000-0000-4000-8000-000000000228",
+            "healthKitWorkoutID" : "00000000-0000-4000-8000-000000000240",
+            "id" : "00000000-0000-4000-8000-000000000239",
             "importedAt" : "2026-09-14T07:00:00Z",
             "sourceName" : "Fixture",
             "startedAt" : "2026-09-14T06:15:00Z"
@@ -13919,6 +14558,224 @@
       },
       "name" : "calories: a ride carries the streak in calorie mode",
       "now" : "2026-09-14T21:00:00Z"
+    },
+    {
+      "expected" : {
+        "balance" : {
+          "creditBeers" : 0,
+          "creditMiles" : 0,
+          "debtMiles" : 3.2000000000000006,
+          "interestMiles" : 0.20000000000000015,
+          "interestPerPeriodMiles" : 0.32000000000000006,
+          "principalMiles" : 3,
+          "state" : "debt"
+        },
+        "beers" : [
+          {
+            "costMiles" : 1,
+            "coveredByCreditMiles" : 0,
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000232",
+            "interestAccruedMiles" : 0,
+            "interestRemainingMiles" : 0,
+            "number" : 1,
+            "paidAt" : "2026-09-13T07:00:00Z",
+            "paidMiles" : 1,
+            "principalMiles" : 1,
+            "principalRemainingMiles" : 0,
+            "writtenOffMiles" : 0
+          },
+          {
+            "costMiles" : 1,
+            "coveredByCreditMiles" : 0,
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000233",
+            "interestAccruedMiles" : 0.1,
+            "interestRemainingMiles" : 0,
+            "number" : 2,
+            "paidAt" : "2026-09-14T07:00:00Z",
+            "paidMiles" : 1.1,
+            "principalMiles" : 1,
+            "principalRemainingMiles" : 0,
+            "writtenOffMiles" : 0
+          },
+          {
+            "costMiles" : 1,
+            "coveredByCreditMiles" : 0,
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000234",
+            "interestAccruedMiles" : 0.1,
+            "interestRemainingMiles" : 1.3877787807814457e-16,
+            "nextInterestAt" : "2026-09-15T20:00:00Z",
+            "number" : 3,
+            "paidMiles" : 0.09999999999999987,
+            "principalMiles" : 1,
+            "principalRemainingMiles" : 1,
+            "writtenOffMiles" : 0
+          },
+          {
+            "costMiles" : 1,
+            "coveredByCreditMiles" : 0,
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000235",
+            "interestAccruedMiles" : 0.1,
+            "interestRemainingMiles" : 0.1,
+            "nextInterestAt" : "2026-09-15T20:00:00Z",
+            "number" : 4,
+            "paidMiles" : 0,
+            "principalMiles" : 1,
+            "principalRemainingMiles" : 1,
+            "writtenOffMiles" : 0
+          },
+          {
+            "costMiles" : 1,
+            "coveredByCreditMiles" : 0,
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000236",
+            "interestAccruedMiles" : 0.1,
+            "interestRemainingMiles" : 0.1,
+            "nextInterestAt" : "2026-09-15T20:00:00Z",
+            "number" : 5,
+            "paidMiles" : 0,
+            "principalMiles" : 1,
+            "principalRemainingMiles" : 1,
+            "writtenOffMiles" : 0
+          }
+        ],
+        "creditExpiringThisWeekMiles" : 0,
+        "nextInterestAt" : "2026-09-15T20:00:00Z",
+        "runs" : [
+          {
+            "creditEarnedMiles" : 0,
+            "debtPaidMiles" : 1,
+            "discardedMiles" : 0,
+            "id" : "00000000-0000-4000-8000-000000000237",
+            "ignored" : false,
+            "streakDayNumber" : 1
+          },
+          {
+            "creditEarnedMiles" : 0,
+            "debtPaidMiles" : 1.2,
+            "discardedMiles" : 0,
+            "id" : "00000000-0000-4000-8000-000000000239",
+            "ignored" : false,
+            "streakDayNumber" : 2
+          }
+        ],
+        "streak" : {
+          "canFreezeToday" : false,
+          "currentStreakDays" : 2,
+          "days" : [
+            {
+              "day" : "2026-09-13T00:00:00Z",
+              "frozen" : false,
+              "interestProtected" : false,
+              "miles" : 1,
+              "qualifies" : true,
+              "streakNumber" : 1
+            },
+            {
+              "day" : "2026-09-14T00:00:00Z",
+              "frozen" : false,
+              "interestProtected" : true,
+              "miles" : 1.2,
+              "qualifies" : true,
+              "streakNumber" : 2
+            }
+          ],
+          "freezeProgressDays" : 2,
+          "freezesHeld" : 0,
+          "interestProtectionActive" : true,
+          "longestStreakDays" : 2,
+          "todayFrozen" : false,
+          "todayMiles" : 1.2,
+          "todayProtected" : true,
+          "todayQualifies" : true,
+          "totalQualifyingDays" : 2
+        }
+      },
+      "ledger" : {
+        "beers" : [
+          {
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000232"
+          },
+          {
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000233"
+          },
+          {
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000234"
+          },
+          {
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000235"
+          },
+          {
+            "createdAt" : "2026-09-12T20:00:00Z",
+            "id" : "00000000-0000-4000-8000-000000000236"
+          }
+        ],
+        "booksOpenedAt" : "2026-09-12T20:00:00Z",
+        "excludedWorkoutIDs" : [
+
+        ],
+        "freezeApplications" : [
+
+        ],
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "mode" : "calories"
+          },
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-14T08:00:00Z",
+            "mode" : "runs"
+          }
+        ],
+        "rulesHistory" : [
+          {
+            "effectiveAt" : "2026-09-12T20:00:00Z",
+            "rules" : {
+              "creditDecayRatePerWeek" : 0.1,
+              "gracePeriod" : 86400,
+              "interestPeriod" : "daily",
+              "interestRate" : 0.1,
+              "maximumCreditBeers" : 3,
+              "milesPerBeer" : 1,
+              "streakProtection" : true
+            }
+          }
+        ],
+        "runs" : [
+          {
+            "distanceMeters" : 1609.344,
+            "endedAt" : "2026-09-13T07:00:00Z",
+            "healthKitWorkoutID" : "00000000-0000-4000-8000-000000000238",
+            "id" : "00000000-0000-4000-8000-000000000237",
+            "importedAt" : "2026-09-13T07:00:00Z",
+            "sourceName" : "Fixture",
+            "startedAt" : "2026-09-13T06:30:00Z"
+          },
+          {
+            "activeEnergyKcal" : 120,
+            "activityType" : 13,
+            "distanceMeters" : 0,
+            "endedAt" : "2026-09-14T07:00:00Z",
+            "healthKitWorkoutID" : "00000000-0000-4000-8000-000000000240",
+            "id" : "00000000-0000-4000-8000-000000000239",
+            "importedAt" : "2026-09-14T07:00:00Z",
+            "sourceName" : "Fixture",
+            "startedAt" : "2026-09-14T06:15:00Z"
+          }
+        ],
+        "version" : 1
+      },
+      "name" : "calories: a ride day still carries the streak after switching to runs",
+      "now" : "2026-09-14T22:00:00Z"
     },
     {
       "expected" : {
@@ -13940,7 +14797,7 @@
             "creditEarnedMiles" : 0.99,
             "debtPaidMiles" : 0,
             "discardedMiles" : 0,
-            "id" : "00000000-0000-4000-8000-000000000230",
+            "id" : "00000000-0000-4000-8000-000000000241",
             "ignored" : false
           }
         ],
@@ -13973,14 +14830,19 @@
 
         ],
         "booksOpenedAt" : "2026-09-11T20:00:00Z",
-        "caloriesPerMile" : 100,
         "excludedWorkoutIDs" : [
 
         ],
         "freezeApplications" : [
 
         ],
-        "paymentMode" : "calories",
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-11T20:00:00Z",
+            "mode" : "calories"
+          }
+        ],
         "rulesHistory" : [
           {
             "effectiveAt" : "2026-09-11T20:00:00Z",
@@ -14001,8 +14863,8 @@
             "activityType" : 13,
             "distanceMeters" : 0,
             "endedAt" : "2026-09-12T07:00:00Z",
-            "healthKitWorkoutID" : "00000000-0000-4000-8000-000000000231",
-            "id" : "00000000-0000-4000-8000-000000000230",
+            "healthKitWorkoutID" : "00000000-0000-4000-8000-000000000242",
+            "id" : "00000000-0000-4000-8000-000000000241",
             "importedAt" : "2026-09-12T07:00:00Z",
             "sourceName" : "Fixture",
             "startedAt" : "2026-09-12T06:15:00Z"
@@ -14033,7 +14895,7 @@
             "creditEarnedMiles" : 1,
             "debtPaidMiles" : 0,
             "discardedMiles" : 0,
-            "id" : "00000000-0000-4000-8000-000000000232",
+            "id" : "00000000-0000-4000-8000-000000000243",
             "ignored" : false
           }
         ],
@@ -14066,14 +14928,19 @@
 
         ],
         "booksOpenedAt" : "2026-09-11T20:00:00Z",
-        "caloriesPerMile" : 100,
         "excludedWorkoutIDs" : [
 
         ],
         "freezeApplications" : [
 
         ],
-        "paymentMode" : "calories",
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-11T20:00:00Z",
+            "mode" : "calories"
+          }
+        ],
         "rulesHistory" : [
           {
             "effectiveAt" : "2026-09-11T20:00:00Z",
@@ -14094,8 +14961,8 @@
             "activityType" : 13,
             "distanceMeters" : 0,
             "endedAt" : "2026-09-12T07:00:00Z",
-            "healthKitWorkoutID" : "00000000-0000-4000-8000-000000000233",
-            "id" : "00000000-0000-4000-8000-000000000232",
+            "healthKitWorkoutID" : "00000000-0000-4000-8000-000000000244",
+            "id" : "00000000-0000-4000-8000-000000000243",
             "importedAt" : "2026-09-12T07:00:00Z",
             "sourceName" : "Fixture",
             "startedAt" : "2026-09-12T06:15:00Z"
@@ -14122,7 +14989,7 @@
             "costMiles" : 1,
             "coveredByCreditMiles" : 0.9918802476838103,
             "createdAt" : "2026-09-12T20:00:00Z",
-            "id" : "00000000-0000-4000-8000-000000000234",
+            "id" : "00000000-0000-4000-8000-000000000245",
             "interestAccruedMiles" : 0,
             "interestRemainingMiles" : 0,
             "number" : 1,
@@ -14136,7 +15003,7 @@
             "costMiles" : 1,
             "coveredByCreditMiles" : 0,
             "createdAt" : "2026-09-12T20:00:00Z",
-            "id" : "00000000-0000-4000-8000-000000000235",
+            "id" : "00000000-0000-4000-8000-000000000246",
             "interestAccruedMiles" : 0,
             "interestRemainingMiles" : 0,
             "number" : 2,
@@ -14150,7 +15017,7 @@
             "costMiles" : 1,
             "coveredByCreditMiles" : 0,
             "createdAt" : "2026-09-12T20:00:00Z",
-            "id" : "00000000-0000-4000-8000-000000000236",
+            "id" : "00000000-0000-4000-8000-000000000247",
             "interestAccruedMiles" : 0,
             "interestRemainingMiles" : 0,
             "number" : 3,
@@ -14164,7 +15031,7 @@
             "costMiles" : 1,
             "coveredByCreditMiles" : 0,
             "createdAt" : "2026-09-12T20:00:00Z",
-            "id" : "00000000-0000-4000-8000-000000000237",
+            "id" : "00000000-0000-4000-8000-000000000248",
             "interestAccruedMiles" : 0,
             "interestRemainingMiles" : 0,
             "number" : 4,
@@ -14178,7 +15045,7 @@
             "costMiles" : 1,
             "coveredByCreditMiles" : 0,
             "createdAt" : "2026-09-12T20:00:00Z",
-            "id" : "00000000-0000-4000-8000-000000000238",
+            "id" : "00000000-0000-4000-8000-000000000249",
             "interestAccruedMiles" : 0,
             "interestRemainingMiles" : 0,
             "number" : 5,
@@ -14195,7 +15062,7 @@
             "creditEarnedMiles" : 1,
             "debtPaidMiles" : 0,
             "discardedMiles" : 0,
-            "id" : "00000000-0000-4000-8000-000000000239",
+            "id" : "00000000-0000-4000-8000-000000000250",
             "ignored" : false,
             "streakDayNumber" : 1
           },
@@ -14203,7 +15070,7 @@
             "creditEarnedMiles" : 0,
             "debtPaidMiles" : 1,
             "discardedMiles" : 0,
-            "id" : "00000000-0000-4000-8000-000000000241",
+            "id" : "00000000-0000-4000-8000-000000000252",
             "ignored" : false,
             "streakDayNumber" : 2
           },
@@ -14211,7 +15078,7 @@
             "creditEarnedMiles" : 0,
             "debtPaidMiles" : 1,
             "discardedMiles" : 0,
-            "id" : "00000000-0000-4000-8000-000000000243",
+            "id" : "00000000-0000-4000-8000-000000000254",
             "ignored" : false,
             "streakDayNumber" : 3
           },
@@ -14219,7 +15086,7 @@
             "creditEarnedMiles" : 0,
             "debtPaidMiles" : 1,
             "discardedMiles" : 0,
-            "id" : "00000000-0000-4000-8000-000000000245",
+            "id" : "00000000-0000-4000-8000-000000000256",
             "ignored" : false,
             "streakDayNumber" : 4
           },
@@ -14227,7 +15094,7 @@
             "creditEarnedMiles" : 0,
             "debtPaidMiles" : 1,
             "discardedMiles" : 0,
-            "id" : "00000000-0000-4000-8000-000000000247",
+            "id" : "00000000-0000-4000-8000-000000000258",
             "ignored" : false,
             "streakDayNumber" : 5
           }
@@ -14300,27 +15167,26 @@
         "beers" : [
           {
             "createdAt" : "2026-09-12T20:00:00Z",
-            "id" : "00000000-0000-4000-8000-000000000234"
+            "id" : "00000000-0000-4000-8000-000000000245"
           },
           {
             "createdAt" : "2026-09-12T20:00:00Z",
-            "id" : "00000000-0000-4000-8000-000000000235"
+            "id" : "00000000-0000-4000-8000-000000000246"
           },
           {
             "createdAt" : "2026-09-12T20:00:00Z",
-            "id" : "00000000-0000-4000-8000-000000000236"
+            "id" : "00000000-0000-4000-8000-000000000247"
           },
           {
             "createdAt" : "2026-09-12T20:00:00Z",
-            "id" : "00000000-0000-4000-8000-000000000237"
+            "id" : "00000000-0000-4000-8000-000000000248"
           },
           {
             "createdAt" : "2026-09-12T20:00:00Z",
-            "id" : "00000000-0000-4000-8000-000000000238"
+            "id" : "00000000-0000-4000-8000-000000000249"
           }
         ],
         "booksOpenedAt" : "2026-09-12T00:00:00Z",
-        "caloriesPerMile" : 100,
         "excludedWorkoutIDs" : [
 
         ],
@@ -14328,10 +15194,16 @@
           {
             "appliedAt" : "2026-09-17T07:00:00Z",
             "day" : "2026-09-17T12:00:00Z",
-            "id" : "B6AE7A11-B119-4DC9-A349-525AED2E3B57"
+            "id" : "FB5C8FEF-E8C0-43D7-B5D8-370D857358EC"
           }
         ],
-        "paymentMode" : "runs",
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-12T00:00:00Z",
+            "mode" : "runs"
+          }
+        ],
         "rulesHistory" : [
           {
             "effectiveAt" : "2026-09-12T00:00:00Z",
@@ -14350,8 +15222,8 @@
           {
             "distanceMeters" : 1609.344,
             "endedAt" : "2026-09-12T07:00:00Z",
-            "healthKitWorkoutID" : "00000000-0000-4000-8000-000000000240",
-            "id" : "00000000-0000-4000-8000-000000000239",
+            "healthKitWorkoutID" : "00000000-0000-4000-8000-000000000251",
+            "id" : "00000000-0000-4000-8000-000000000250",
             "importedAt" : "2026-09-12T07:00:00Z",
             "sourceName" : "Fixture",
             "startedAt" : "2026-09-12T06:30:00Z"
@@ -14359,8 +15231,8 @@
           {
             "distanceMeters" : 1609.344,
             "endedAt" : "2026-09-13T07:00:00Z",
-            "healthKitWorkoutID" : "00000000-0000-4000-8000-000000000242",
-            "id" : "00000000-0000-4000-8000-000000000241",
+            "healthKitWorkoutID" : "00000000-0000-4000-8000-000000000253",
+            "id" : "00000000-0000-4000-8000-000000000252",
             "importedAt" : "2026-09-13T07:00:00Z",
             "sourceName" : "Fixture",
             "startedAt" : "2026-09-13T06:30:00Z"
@@ -14368,8 +15240,8 @@
           {
             "distanceMeters" : 1609.344,
             "endedAt" : "2026-09-14T07:00:00Z",
-            "healthKitWorkoutID" : "00000000-0000-4000-8000-000000000244",
-            "id" : "00000000-0000-4000-8000-000000000243",
+            "healthKitWorkoutID" : "00000000-0000-4000-8000-000000000255",
+            "id" : "00000000-0000-4000-8000-000000000254",
             "importedAt" : "2026-09-14T07:00:00Z",
             "sourceName" : "Fixture",
             "startedAt" : "2026-09-14T06:30:00Z"
@@ -14377,8 +15249,8 @@
           {
             "distanceMeters" : 1609.344,
             "endedAt" : "2026-09-15T07:00:00Z",
-            "healthKitWorkoutID" : "00000000-0000-4000-8000-000000000246",
-            "id" : "00000000-0000-4000-8000-000000000245",
+            "healthKitWorkoutID" : "00000000-0000-4000-8000-000000000257",
+            "id" : "00000000-0000-4000-8000-000000000256",
             "importedAt" : "2026-09-15T07:00:00Z",
             "sourceName" : "Fixture",
             "startedAt" : "2026-09-15T06:30:00Z"
@@ -14386,8 +15258,8 @@
           {
             "distanceMeters" : 1609.344,
             "endedAt" : "2026-09-16T07:00:00Z",
-            "healthKitWorkoutID" : "00000000-0000-4000-8000-000000000248",
-            "id" : "00000000-0000-4000-8000-000000000247",
+            "healthKitWorkoutID" : "00000000-0000-4000-8000-000000000259",
+            "id" : "00000000-0000-4000-8000-000000000258",
             "importedAt" : "2026-09-16T07:00:00Z",
             "sourceName" : "Fixture",
             "startedAt" : "2026-09-16T06:30:00Z"
@@ -14397,8 +15269,8 @@
             "activityType" : 13,
             "distanceMeters" : 0,
             "endedAt" : "2026-09-17T07:00:00Z",
-            "healthKitWorkoutID" : "00000000-0000-4000-8000-000000000250",
-            "id" : "00000000-0000-4000-8000-000000000249",
+            "healthKitWorkoutID" : "00000000-0000-4000-8000-000000000261",
+            "id" : "00000000-0000-4000-8000-000000000260",
             "importedAt" : "2026-09-17T07:00:00Z",
             "sourceName" : "Fixture",
             "startedAt" : "2026-09-17T06:15:00Z"
@@ -14425,7 +15297,7 @@
             "costMiles" : 1,
             "coveredByCreditMiles" : 0.9918802476838103,
             "createdAt" : "2026-09-12T20:00:00Z",
-            "id" : "00000000-0000-4000-8000-000000000234",
+            "id" : "00000000-0000-4000-8000-000000000245",
             "interestAccruedMiles" : 0,
             "interestRemainingMiles" : 0,
             "number" : 1,
@@ -14439,7 +15311,7 @@
             "costMiles" : 1,
             "coveredByCreditMiles" : 0,
             "createdAt" : "2026-09-12T20:00:00Z",
-            "id" : "00000000-0000-4000-8000-000000000235",
+            "id" : "00000000-0000-4000-8000-000000000246",
             "interestAccruedMiles" : 0,
             "interestRemainingMiles" : 0,
             "number" : 2,
@@ -14453,7 +15325,7 @@
             "costMiles" : 1,
             "coveredByCreditMiles" : 0,
             "createdAt" : "2026-09-12T20:00:00Z",
-            "id" : "00000000-0000-4000-8000-000000000236",
+            "id" : "00000000-0000-4000-8000-000000000247",
             "interestAccruedMiles" : 0,
             "interestRemainingMiles" : 0,
             "number" : 3,
@@ -14467,7 +15339,7 @@
             "costMiles" : 1,
             "coveredByCreditMiles" : 0,
             "createdAt" : "2026-09-12T20:00:00Z",
-            "id" : "00000000-0000-4000-8000-000000000237",
+            "id" : "00000000-0000-4000-8000-000000000248",
             "interestAccruedMiles" : 0,
             "interestRemainingMiles" : 0,
             "number" : 4,
@@ -14481,7 +15353,7 @@
             "costMiles" : 1,
             "coveredByCreditMiles" : 0,
             "createdAt" : "2026-09-12T20:00:00Z",
-            "id" : "00000000-0000-4000-8000-000000000238",
+            "id" : "00000000-0000-4000-8000-000000000249",
             "interestAccruedMiles" : 0,
             "interestRemainingMiles" : 0,
             "number" : 5,
@@ -14498,7 +15370,7 @@
             "creditEarnedMiles" : 1,
             "debtPaidMiles" : 0,
             "discardedMiles" : 0,
-            "id" : "00000000-0000-4000-8000-000000000239",
+            "id" : "00000000-0000-4000-8000-000000000250",
             "ignored" : false,
             "streakDayNumber" : 1
           },
@@ -14506,7 +15378,7 @@
             "creditEarnedMiles" : 0,
             "debtPaidMiles" : 1,
             "discardedMiles" : 0,
-            "id" : "00000000-0000-4000-8000-000000000241",
+            "id" : "00000000-0000-4000-8000-000000000252",
             "ignored" : false,
             "streakDayNumber" : 2
           },
@@ -14514,7 +15386,7 @@
             "creditEarnedMiles" : 0,
             "debtPaidMiles" : 1,
             "discardedMiles" : 0,
-            "id" : "00000000-0000-4000-8000-000000000243",
+            "id" : "00000000-0000-4000-8000-000000000254",
             "ignored" : false,
             "streakDayNumber" : 3
           },
@@ -14522,7 +15394,7 @@
             "creditEarnedMiles" : 0,
             "debtPaidMiles" : 1,
             "discardedMiles" : 0,
-            "id" : "00000000-0000-4000-8000-000000000245",
+            "id" : "00000000-0000-4000-8000-000000000256",
             "ignored" : false,
             "streakDayNumber" : 4
           },
@@ -14530,7 +15402,7 @@
             "creditEarnedMiles" : 0,
             "debtPaidMiles" : 1,
             "discardedMiles" : 0,
-            "id" : "00000000-0000-4000-8000-000000000247",
+            "id" : "00000000-0000-4000-8000-000000000258",
             "ignored" : false,
             "streakDayNumber" : 5
           },
@@ -14538,7 +15410,7 @@
             "creditEarnedMiles" : 2,
             "debtPaidMiles" : 0,
             "discardedMiles" : 0,
-            "id" : "00000000-0000-4000-8000-000000000249",
+            "id" : "00000000-0000-4000-8000-000000000260",
             "ignored" : false,
             "streakDayNumber" : 6
           }
@@ -14611,27 +15483,26 @@
         "beers" : [
           {
             "createdAt" : "2026-09-12T20:00:00Z",
-            "id" : "00000000-0000-4000-8000-000000000234"
+            "id" : "00000000-0000-4000-8000-000000000245"
           },
           {
             "createdAt" : "2026-09-12T20:00:00Z",
-            "id" : "00000000-0000-4000-8000-000000000235"
+            "id" : "00000000-0000-4000-8000-000000000246"
           },
           {
             "createdAt" : "2026-09-12T20:00:00Z",
-            "id" : "00000000-0000-4000-8000-000000000236"
+            "id" : "00000000-0000-4000-8000-000000000247"
           },
           {
             "createdAt" : "2026-09-12T20:00:00Z",
-            "id" : "00000000-0000-4000-8000-000000000237"
+            "id" : "00000000-0000-4000-8000-000000000248"
           },
           {
             "createdAt" : "2026-09-12T20:00:00Z",
-            "id" : "00000000-0000-4000-8000-000000000238"
+            "id" : "00000000-0000-4000-8000-000000000249"
           }
         ],
         "booksOpenedAt" : "2026-09-12T00:00:00Z",
-        "caloriesPerMile" : 100,
         "excludedWorkoutIDs" : [
 
         ],
@@ -14639,10 +15510,16 @@
           {
             "appliedAt" : "2026-09-17T07:00:00Z",
             "day" : "2026-09-17T12:00:00Z",
-            "id" : "B6AE7A11-B119-4DC9-A349-525AED2E3B57"
+            "id" : "FB5C8FEF-E8C0-43D7-B5D8-370D857358EC"
           }
         ],
-        "paymentMode" : "calories",
+        "paymentHistory" : [
+          {
+            "caloriesPerMile" : 100,
+            "effectiveAt" : "2026-09-12T00:00:00Z",
+            "mode" : "calories"
+          }
+        ],
         "rulesHistory" : [
           {
             "effectiveAt" : "2026-09-12T00:00:00Z",
@@ -14661,8 +15538,8 @@
           {
             "distanceMeters" : 1609.344,
             "endedAt" : "2026-09-12T07:00:00Z",
-            "healthKitWorkoutID" : "00000000-0000-4000-8000-000000000240",
-            "id" : "00000000-0000-4000-8000-000000000239",
+            "healthKitWorkoutID" : "00000000-0000-4000-8000-000000000251",
+            "id" : "00000000-0000-4000-8000-000000000250",
             "importedAt" : "2026-09-12T07:00:00Z",
             "sourceName" : "Fixture",
             "startedAt" : "2026-09-12T06:30:00Z"
@@ -14670,8 +15547,8 @@
           {
             "distanceMeters" : 1609.344,
             "endedAt" : "2026-09-13T07:00:00Z",
-            "healthKitWorkoutID" : "00000000-0000-4000-8000-000000000242",
-            "id" : "00000000-0000-4000-8000-000000000241",
+            "healthKitWorkoutID" : "00000000-0000-4000-8000-000000000253",
+            "id" : "00000000-0000-4000-8000-000000000252",
             "importedAt" : "2026-09-13T07:00:00Z",
             "sourceName" : "Fixture",
             "startedAt" : "2026-09-13T06:30:00Z"
@@ -14679,8 +15556,8 @@
           {
             "distanceMeters" : 1609.344,
             "endedAt" : "2026-09-14T07:00:00Z",
-            "healthKitWorkoutID" : "00000000-0000-4000-8000-000000000244",
-            "id" : "00000000-0000-4000-8000-000000000243",
+            "healthKitWorkoutID" : "00000000-0000-4000-8000-000000000255",
+            "id" : "00000000-0000-4000-8000-000000000254",
             "importedAt" : "2026-09-14T07:00:00Z",
             "sourceName" : "Fixture",
             "startedAt" : "2026-09-14T06:30:00Z"
@@ -14688,8 +15565,8 @@
           {
             "distanceMeters" : 1609.344,
             "endedAt" : "2026-09-15T07:00:00Z",
-            "healthKitWorkoutID" : "00000000-0000-4000-8000-000000000246",
-            "id" : "00000000-0000-4000-8000-000000000245",
+            "healthKitWorkoutID" : "00000000-0000-4000-8000-000000000257",
+            "id" : "00000000-0000-4000-8000-000000000256",
             "importedAt" : "2026-09-15T07:00:00Z",
             "sourceName" : "Fixture",
             "startedAt" : "2026-09-15T06:30:00Z"
@@ -14697,8 +15574,8 @@
           {
             "distanceMeters" : 1609.344,
             "endedAt" : "2026-09-16T07:00:00Z",
-            "healthKitWorkoutID" : "00000000-0000-4000-8000-000000000248",
-            "id" : "00000000-0000-4000-8000-000000000247",
+            "healthKitWorkoutID" : "00000000-0000-4000-8000-000000000259",
+            "id" : "00000000-0000-4000-8000-000000000258",
             "importedAt" : "2026-09-16T07:00:00Z",
             "sourceName" : "Fixture",
             "startedAt" : "2026-09-16T06:30:00Z"
@@ -14708,8 +15585,8 @@
             "activityType" : 13,
             "distanceMeters" : 0,
             "endedAt" : "2026-09-17T07:00:00Z",
-            "healthKitWorkoutID" : "00000000-0000-4000-8000-000000000250",
-            "id" : "00000000-0000-4000-8000-000000000249",
+            "healthKitWorkoutID" : "00000000-0000-4000-8000-000000000261",
+            "id" : "00000000-0000-4000-8000-000000000260",
             "importedAt" : "2026-09-17T07:00:00Z",
             "sourceName" : "Fixture",
             "startedAt" : "2026-09-17T06:15:00Z"
