@@ -88,7 +88,7 @@ fun OnboardingScreen(onDone: () -> Unit) {
                 }
                 // Not connected yet: nothing to re-read, so the store alone.
                 Segmented(PaymentMode.entries, mode, { if (it == PaymentMode.RUNS) "Pay with runs" else "Pay with calories" },
-                    { app.store.updatePayment(units.payment.copy(mode = it)) })
+                    { app.store.chooseOpeningPayment(units.payment.copy(mode = it)) })
                 Rule(Icons.Default.Percent, "Ignore it and it grows.", "Interest starts after 24 hours. The rules are yours to tune.")
             }
             Spacer(Modifier.weight(1f))

@@ -73,11 +73,15 @@ class HealthSync(context: Context, private val store: LedgerStore, private val n
     @Volatile private var syncRequested = false
 
     /**
-     * The next completed sync is the re-read after a mode switch. What it
-     * imports was always there, so it celebrates and notifies nothing
-     * (iOS spec §28: a toggle is not an event).
+     * What to read from Health Connect: running sessions only until calorie
+     * mode has ever been in force, every exercise type from then on, whatever
+     * the mode now (iOS `HealthSync.readScope`). A ride that ended in calorie
+     * mode but syncs after a switch back to runs still pays, and its deletion
+     * is still seen. Rides that ended while runs were in force are read and
+     * dropped at import, so a runs-only user is never read beyond their runs.
      */
-    @Volatile private var quietUntilSynced = false
+    private val readScope: PaymentMode
+        get() = if (store.current.hasCaloriePeriod) PaymentMode.CALORIES else PaymentMode.RUNS
 
     val isAvailable: Boolean get() = health.isAvailable
 
@@ -141,19 +145,20 @@ class HealthSync(context: Context, private val store: LedgerStore, private val n
     }
 
     /**
-     * Switches what pays the tab (iOS spec §28) and replays the books under
-     * it. Ask for [HealthConnectService.caloriesPermission] first when
-     * switching to calories; declined, the switch still happens and workouts
-     * simply carry no calories. Choosing calories re-reads Health Connect from
-     * scratch through that mode's own token, so every workout since the books
-     * opened counts; switching back needs no re-read. A rate change alone is
-     * a replay and touches nothing in Health Connect.
+     * Switches what pays the tab from now on (iOS spec §28, decisions §B.10).
+     * Forward-only: nothing already on the books changes, so there is nothing
+     * to re-read for the past and nothing to celebrate. Ask for
+     * [HealthConnectService.caloriesPermission] first when switching to
+     * calories; declined, the switch still happens and workouts simply carry
+     * no calories. The first switch to calories widens the read to every
+     * exercise type ([readScope]), which then stays wide. A rate change alone
+     * touches nothing in Health Connect.
      */
     suspend fun updatePayment(payment: PaymentBasis) {
-        val switching = payment.mode != store.current.paymentMode
+        val switching = payment.mode != store.current.payment.mode
+        val scope = readScope
         store.updatePayment(payment)
-        if (!switching || !_state.value.isConnected) return
-        quietUntilSynced = true
+        if (!switching || !_state.value.isConnected || readScope == scope) return
         sync()
     }
 
@@ -176,7 +181,7 @@ class HealthSync(context: Context, private val store: LedgerStore, private val n
     /** Mirrors iOS `LedgerStore.refreshWidgets()`; the store's onChange covers writes. */
     private suspend fun refreshWidgets() = BalanceWidget.refresh(app)
 
-    /** Asked for while one is running, it runs again once that one ends, so a mode switch mid-sync still gets its re-read. */
+    /** Asked for while one is running, it runs again once that one ends, so a scope widened mid-sync still gets its read. */
     suspend fun sync() {
         if (!_state.value.isConnected) return
         if (_state.value.isSyncing) { syncRequested = true; return }
@@ -194,14 +199,18 @@ class HealthSync(context: Context, private val store: LedgerStore, private val n
         // quietly doing nothing. Skip instead; the next resume covers it.
         if (!isAppActive && !health.canReadInBackground()) return
         _state.update { it.copy(isSyncing = true) }
-        // Captured once: a mode switch mid-read can only move the token of the mode the read started in.
-        val mode = store.current.paymentMode
-        val tokenKey = tokenKey(mode)
-        val quiet = quietUntilSynced
+        // Captured once: a scope widened mid-read can only move the token of the scope the read started in.
+        val scope = readScope
+        val tokenKey = tokenKey(scope)
         try {
-            val result = health.fetchWorkouts(mode, prefs.getString(tokenKey, null), store.current.booksOpenedAt)
+            val result = health.fetchWorkouts(scope, prefs.getString(tokenKey, null), store.current.booksOpenedAt)
             val before = store.report()
-            val eligible = result.runs.filter { it.endedAt >= store.current.booksOpenedAt }
+            // Forward-only (iOS decisions §B.10): a workout that the basis in
+            // force when it ended doesn't count will never count, so it never
+            // reaches the books. That is a ride from a runs-mode stretch, read
+            // because the scope went wide.
+            val ledger = store.current
+            val eligible = result.runs.filter { it.endedAt >= ledger.booksOpenedAt && ledger.milesPaidBy(it) != null }
             val added = store.importRuns(eligible)
             val removed = store.removeRuns(result.deletedWorkoutIDs.toSet())
             // The changes token is the only record of which workouts have been
@@ -221,7 +230,6 @@ class HealthSync(context: Context, private val store: LedgerStore, private val n
             }
             prefs.edit().putString(tokenKey, result.token).apply()
             _state.update { it.copy(lastSyncAt = Instant.now(), lastError = null) }
-            if (quiet && mode == store.current.paymentMode) quietUntilSynced = false
             // Even when nothing changed. A reload asked for on a background
             // wake can be dropped, and the sync that would ask again imports
             // nothing the second time, so it never writes; this is what repairs
@@ -230,7 +238,6 @@ class HealthSync(context: Context, private val store: LedgerStore, private val n
 
             if (added.isEmpty() && removed == 0) return
             val after = store.report()
-            if (quiet) return
 
             if (added.isNotEmpty() && before.balance.state == BalanceState.DEBT && after.balance.state != BalanceState.DEBT) {
                 val party = DebtFreeCelebration(after.beers.size, after.runs.sumOf { it.debtPaidMiles }, after.balance.creditBeers)
@@ -257,6 +264,7 @@ class HealthSync(context: Context, private val store: LedgerStore, private val n
                 val change = RunNotifier.Change(
                     addedRuns = added, removedRuns = removed, before = before.balance, after = after.balance,
                     debtPaidMiles = after.runs.filter { it.run.id in addedIDs }.sumOf { it.debtPaidMiles },
+                    paidMiles = after.runs.filter { it.run.id in addedIDs }.sumOf { it.paidMiles },
                     beersPaidOff = maxOf(0, after.beers.count { it.isPaid } - before.beers.count { it.isPaid }),
                     streakDays = after.streak.currentStreakDays,
                     streakDay = added.any { after.streak.qualifies(it.endedAt) },
@@ -276,7 +284,7 @@ class HealthSync(context: Context, private val store: LedgerStore, private val n
             val failure = HealthFailure.of(e, available = health.isAvailable, needsInstall = health.needsInstall)
             _state.update { it.copy(lastError = failure.message(e.message ?: e.toString())) }
             if (failure.isReportable) {
-                Telemetry.report(e, context = "health", values = mapOf("action" to "sync", "mode" to mode.name, "hasToken" to (prefs.getString(tokenKey, null) != null)))
+                Telemetry.report(e, context = "health", values = mapOf("action" to "sync", "scope" to scope.name, "hasToken" to (prefs.getString(tokenKey, null) != null)))
             }
         } finally {
             _state.update { it.copy(isSyncing = false) }
@@ -293,12 +301,13 @@ class HealthSync(context: Context, private val store: LedgerStore, private val n
     companion object {
         private const val KEY_CONNECTED = "connected"
         /**
-         * One changes token per payment mode, because each reads a different
-         * slice of Health Connect: switching to calories starts that mode's
-         * read from scratch without touching where runs mode stood. Runs
-         * keeps the original key, so an upgrade carries on where it was.
+         * One changes token per read scope, because each reads a different
+         * slice of Health Connect: widening to every exercise type starts that
+         * scope's read from scratch without touching where the runs-only read
+         * stood. Runs keeps the original key, so an upgrade carries on where
+         * it was.
          */
-        private fun tokenKey(mode: PaymentMode) = when (mode) {
+        private fun tokenKey(scope: PaymentMode) = when (scope) {
             PaymentMode.RUNS -> "changesToken"
             PaymentMode.CALORIES -> "changesToken.calories"
         }

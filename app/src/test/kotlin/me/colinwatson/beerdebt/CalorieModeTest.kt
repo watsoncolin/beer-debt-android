@@ -6,6 +6,7 @@ import me.colinwatson.beerdebt.engine.BalanceEngine
 import me.colinwatson.beerdebt.engine.BalanceState
 import me.colinwatson.beerdebt.engine.Ledger
 import me.colinwatson.beerdebt.engine.PaymentBasis
+import me.colinwatson.beerdebt.engine.PaymentChange
 import me.colinwatson.beerdebt.engine.PaymentMode
 import me.colinwatson.beerdebt.engine.RunEntry
 import me.colinwatson.beerdebt.notify.RunNotifier
@@ -74,22 +75,75 @@ class CalorieModeTest {
     @Test fun switchingIsSavedAndClamped() {
         val dir = tempDir()
         val store = LedgerStore(dir, now = t0)
-        store.updatePayment(PaymentBasis(PaymentMode.CALORIES, 99.6))
+        store.updatePayment(PaymentBasis(PaymentMode.CALORIES, 99.6), at(HOUR))
         assertEquals(PaymentBasis(PaymentMode.CALORIES, 100.0), store.current.payment)
-        store.updatePayment(PaymentBasis(PaymentMode.CALORIES, 5.0))
-        assertEquals(LedgerStore.CALORIES_PER_MILE_RANGE.start, store.current.caloriesPerMile, 0.0)
-        // Not a rules change: nothing is appended to the history.
+        store.updatePayment(PaymentBasis(PaymentMode.CALORIES, 5.0), at(2 * HOUR))
+        assertEquals(LedgerStore.CALORIES_PER_MILE_RANGE.start, store.current.payment.caloriesPerMile, 0.0)
+        // Not a rules change: nothing is appended to the rules history.
         assertEquals(1, store.current.rulesHistory.size)
-        assertEquals(PaymentMode.CALORIES, LedgerStore(dir, now = at(HOUR)).current.paymentMode)
+        assertEquals(listOf(t0, at(HOUR), at(2 * HOUR)), store.current.paymentHistory.map { it.effectiveAt })
+        assertEquals(PaymentMode.CALORIES, LedgerStore(dir, now = at(3 * HOUR)).current.payment.mode)
+    }
+
+    // Forward-only (iOS decisions §B.10); same cases as iOS CalorieModeStoreTests.
+
+    @Test fun switchingAppendsAndKeepsWhatWasPaid() {
+        val store = LedgerStore(tempDir(), now = t0)
+        store.updatePayment(PaymentBasis(PaymentMode.CALORIES), t0)
+        store.addBeer(t0)
+        store.addBeer(t0)
+        store.importRuns(listOf(ride(100.0, at(HOUR))))
+        val paid = store.report(at(2 * HOUR)).balance
+        store.updatePayment(PaymentBasis.RUNS, at(2 * HOUR))
+        assertEquals(listOf(PaymentMode.RUNS, PaymentMode.CALORIES, PaymentMode.RUNS), store.current.paymentHistory.map { it.mode })
+        assertEquals(paid, store.report(at(2 * HOUR)).balance)
+    }
+
+    @Test fun flippingBackWithinASecondRecordsNothing() {
+        val store = LedgerStore(tempDir(), now = t0)
+        store.updatePayment(PaymentBasis(PaymentMode.CALORIES), at(HOUR))
+        store.updatePayment(PaymentBasis.RUNS, at(HOUR))
+        assertEquals(listOf(PaymentMode.RUNS), store.current.paymentHistory.map { it.mode })
+    }
+
+    @Test fun theOpeningChoiceCoversTheBooksFromDayOne() {
+        val store = LedgerStore(tempDir(), now = t0)
+        store.chooseOpeningPayment(PaymentBasis(PaymentMode.CALORIES))
+        assertEquals(listOf(PaymentChange(t0, PaymentBasis(PaymentMode.CALORIES))), store.current.paymentHistory)
+    }
+
+    @Test fun reopeningTheBooksMovesTheOpeningBasis() {
+        val store = LedgerStore(tempDir(), now = t0)
+        store.chooseOpeningPayment(PaymentBasis(PaymentMode.CALORIES))
+        assertTrue(store.reopenBooks(at(-DAY), now = t0))
+        assertEquals(at(-DAY), store.current.paymentHistory.first().effectiveAt)
+    }
+
+    @Test fun a12LedgerInCaloriesKeepsItsNumbers() {
+        val json = """
+            {"version":1,"booksOpenedAt":"2026-09-12T20:00:00Z","beers":[],"excludedWorkoutIDs":[],"freezeApplications":[],
+             "paymentMode":"calories","caloriesPerMile":120,
+             "rulesHistory":[{"effectiveAt":"2026-09-12T20:00:00Z","rules":{"creditDecayRatePerWeek":0.1,"gracePeriod":86400,
+               "interestPeriod":"daily","interestRate":0.1,"maximumCreditBeers":3,"milesPerBeer":1,"streakProtection":true}}],
+             "runs":[]}
+        """.trimIndent()
+        val l = LedgerStore.json.decodeFromString<Ledger>(json)
+        assertEquals(listOf(PaymentChange(l.booksOpenedAt, PaymentBasis(PaymentMode.CALORIES, 120.0))), l.payments)
+        assertTrue(l.hasCaloriePeriod)
+        // Written back as a history, never as the 1.2 fields.
+        val written = LedgerStore.json.encodeToString(Ledger.serializer(), l.switchingPayment(PaymentBasis.RUNS, Instant.parse("2026-09-13T00:00:00Z")))
+        assertTrue("paymentHistory" in written)
+        assertTrue("\"paymentMode\"" !in written)
+        assertEquals(2, LedgerStore.json.decodeFromString<Ledger>(written).paymentHistory.size)
     }
 
     @Test fun bankruptcyKeepsTheBasisAndWritesOffRides() {
         val store = LedgerStore(tempDir(), now = t0)
-        store.updatePayment(PaymentBasis(PaymentMode.CALORIES, 120.0))
+        store.updatePayment(PaymentBasis(PaymentMode.CALORIES, 120.0), t0)
         val workout = UUID.randomUUID()
         store.importRuns(listOf(ride(300.0, at(HOUR), workout)))
         assertTrue(store.declareBankruptcy(at(2 * HOUR)))
-        assertEquals(PaymentBasis(PaymentMode.CALORIES, 120.0), store.current.payment)
+        assertEquals(listOf(PaymentChange(at(2 * HOUR), PaymentBasis(PaymentMode.CALORIES, 120.0))), store.current.paymentHistory)
         assertTrue(workout in store.current.excludedWorkoutIDs)
     }
 

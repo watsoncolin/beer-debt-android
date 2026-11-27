@@ -45,6 +45,14 @@ class RunNotifier(private val context: Context) {
         val streakActivated: Boolean = false,
         /** Miles or calories, and which workouts count (iOS spec §28). */
         val payment: PaymentBasis = PaymentBasis.RUNS,
+        /**
+         * Everything the new workouts were worth, from their own statements:
+         * each paid under the basis in force when it ended, which for a ride
+         * that syncs late is not necessarily today's (iOS decisions §B.10).
+         * Null prices them at [payment], the same thing whenever the mode
+         * hasn't changed since they ended.
+         */
+        val paidMiles: Double? = null,
     )
 
     init {
@@ -81,7 +89,7 @@ class RunNotifier(private val context: Context) {
         /** Pure, same copy as iOS. */
         fun message(change: Change): Message? {
             val units = Units(change.payment)
-            val miles = change.addedRuns.sumOf { change.payment.milesPaidBy(it) ?: 0.0 }
+            val miles = change.paidMiles ?: change.addedRuns.sumOf { change.payment.milesPaidBy(it) ?: 0.0 }
             val after = change.after
             val noun = units.workout
             if (change.addedRuns.isEmpty()) {
